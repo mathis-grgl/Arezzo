@@ -6,13 +6,13 @@
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="menu" fx:controller="vues.VueMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.VueMenu">
    <children>
       <MenuBar prefHeight="29.0" prefWidth="600.0">
         <menus>
           <Menu mnemonicParsing="false" text="Melodie">
             <items>
-              <MenuItem mnemonicParsing="false" text="Nouveau" />
+              <MenuItem mnemonicParsing="false" onAction="#testT" text="Nouveau" />
                   <MenuItem mnemonicParsing="false" text="Ouvrir" />
                   <MenuItem mnemonicParsing="false" text="Enregistrer sous ..." />
                   <MenuItem mnemonicParsing="false" text="Quitter">
