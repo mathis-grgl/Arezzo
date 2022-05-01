@@ -15,7 +15,7 @@ public class Main extends Application {
         Parent piano = FXMLLoader.load(getClass().getResource("fxml/piano.fxml"));
         root.setBottom(piano);
         primaryStage.setTitle("Arezzo");
-        primaryStage.setScene(new Scene(root, 600, 550));
+        primaryStage.setScene(new Scene(root, 1000, 900));
         primaryStage.show();
     }
 
