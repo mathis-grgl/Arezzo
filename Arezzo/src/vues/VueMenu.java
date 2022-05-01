@@ -1,18 +1,30 @@
 package vues;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 
 public class VueMenu {
 
-    public VueMenu(){
-        System.out.println("Test");
+    @FXML
+    public void nouveauFichier(){}
+
+    @FXML
+    public void ouvrirFichier(){}
+
+    @FXML
+    public void enregistrerSous(){}
+
+    @FXML
+    public void quitterFenetre(){
+        Platform.exit();
     }
 
     @FXML
-    public void testT(){
-        System.out.println("Jessaie");
-    }
+    public void renommerNotes(){}
+
+    @FXML
+    public void transposerNotes(){}
 }
 
 

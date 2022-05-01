@@ -12,6 +12,8 @@ public class Main extends Application {
         BorderPane root = new BorderPane();
         Parent menu = FXMLLoader.load(getClass().getResource("fxml/menu.fxml"));
         root.setTop(menu);
+        Parent piano = FXMLLoader.load(getClass().getResource("fxml/piano.fxml"));
+        root.setBottom(piano);
         primaryStage.setTitle("Arezzo");
         primaryStage.setScene(new Scene(root, 600, 550));
         primaryStage.show();
