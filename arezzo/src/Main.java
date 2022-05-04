@@ -3,34 +3,31 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import partition.Partition;
+import melodie.Arezzo;
 import vues.VueInstruments;
 import vues.VueMenu;
 import vues.VuePiano;
-
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Synthesizer;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        Arezzo arezzo = new Arezzo();
+
         BorderPane root = new BorderPane();
 
-        Synthesizer synthesizer = MidiSystem.getSynthesizer();
-        Partition partition = new Partition(synthesizer);
 
         FXMLLoader menu = new FXMLLoader();
         menu.setLocation(getClass().getResource("fxml/menu.fxml"));
-        menu.setControllerFactory(iC-> new VueMenu(partition));
+        menu.setControllerFactory(iC-> new VueMenu(arezzo));
 
         FXMLLoader piano = new FXMLLoader();
         piano.setLocation(getClass().getResource("fxml/piano.fxml"));
-        piano.setControllerFactory(iC->new VuePiano(partition));
+        piano.setControllerFactory(iC->new VuePiano(arezzo));
 
         FXMLLoader instruments = new FXMLLoader();
         instruments.setLocation(getClass().getResource("fxml/instruments.fxml"));
-        instruments.setControllerFactory(iC->new VueInstruments(partition));
+        instruments.setControllerFactory(iC->new VueInstruments(arezzo));
 
 
         root.setTop(menu.load());

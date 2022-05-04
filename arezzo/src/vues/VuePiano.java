@@ -1,13 +1,14 @@
 package vues;
 
 import javafx.fxml.FXML;
+import melodie.Arezzo;
 import partition.Partition;
 
-public class VuePiano {
-    private Partition partitio;
+public class VuePiano implements Observateur {
+    private Arezzo arezzo;
 
-    public VuePiano(Partition part){
-            partitio = part;
+    public VuePiano(Arezzo arezzo){
+            this.arezzo = arezzo;
     }
 
     @FXML
@@ -75,5 +76,10 @@ public class VuePiano {
     public void jouerSilence(){
         partitio.setMelodie("z2");
         partitio.play();
+    }
+
+    @Override
+    public void reagir() {
+
     }
 }

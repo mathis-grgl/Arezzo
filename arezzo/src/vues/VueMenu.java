@@ -3,17 +3,17 @@ package vues;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import melodie.Arezzo;
 import partition.Partition;
 
 import javax.sound.midi.Synthesizer;
 
 
-public class VueMenu {
-    private Partition par;
-    public Label titre;
+public class VueMenu implements Observateur{
+    private Arezzo arezzo;
 
-    public VueMenu(Partition par){
-        this.par = par;
+    public VueMenu(Arezzo arezzo){
+        this.arezzo = arezzo;
     }
 
     @FXML
@@ -38,6 +38,11 @@ public class VueMenu {
 
     @FXML
     public void transposerNotes(){}
+
+    @Override
+    public void reagir() {
+
+    }
 }
 
 

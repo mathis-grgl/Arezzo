@@ -1,48 +1,46 @@
 package vues;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import melodie.Arezzo;
 import partition.Partition;
 
-public class VueInstruments {
-    private Partition par;
-
+public class VueInstruments implements Observateur{
+    @FXML
+    private ChoiceBox<String> boxInstruments;
+    @FXML
+    private ObservableList<String> listInstruments = FXCollections.observableArrayList("Piano","Guitare","Saxophone","Trompette");
     @FXML
     private RadioButton guitare,piano,saxophone, trompette;
 
-    public VueInstruments(Partition par){
-        this.par = par;
+    private Arezzo arezzo;
+
+    public VueInstruments(Arezzo arezzo){
+        this.arezzo = arezzo;
+        this.arezzo.ajouterObservateur(this);
     }
 
-    @FXML
-    public void changerPiano(){
-        par.setInstrument("Piano");
+    public void changerInstruments(){
+        par.setInstrument(boxInstruments.getValue());
     }
-
-    @FXML
-    public void changerGuitare(){
-        par.setInstrument("Guitare");
-    }
-
-    @FXML
-    public void changerSaxophone(){
-        par.setInstrument("Saxophone");
-    }
-
-    @FXML
-    public void changerTrompette(){
-        par.setInstrument("Trompette");
-    }
-
+    
     @FXML
     public void initialize(){
-        ToggleGroup listInstruments = new ToggleGroup();
-        
+        boxInstruments.setItems(listInstruments);
+        boxInstruments.setValue("Piano");
+        /*ToggleGroup listInstruments = new ToggleGroup();
         guitare.setToggleGroup(listInstruments);
         piano.setToggleGroup(listInstruments);
         saxophone.setToggleGroup(listInstruments);
-        trompette.setToggleGroup(listInstruments);
+        trompette.setToggleGroup(listInstruments);*/
     }
 
+    @Override
+    public void reagir() {
+        
+    }
 }
