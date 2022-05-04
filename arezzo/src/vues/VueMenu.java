@@ -17,7 +17,9 @@ public class VueMenu implements Observateur{
     }
 
     @FXML
-    public void nouveauFichier(){}
+    public void nouveauFichier(){
+        arezzo.resetAll();
+    }
 
     @FXML
     public void ouvrirFichier(){

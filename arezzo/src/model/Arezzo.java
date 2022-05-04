@@ -8,9 +8,9 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
 
 public class Arezzo extends SujetObserve {
-    private String instruments, octave, hauteur;
     private Synthesizer synthesizer;
     private Partition partition;
+    private Boolean nouveauProjet;
 
     public Arezzo(){
         try {
@@ -19,9 +19,28 @@ public class Arezzo extends SujetObserve {
             e.printStackTrace();
         }
         partition = new Partition(synthesizer);
+        nouveauProjet = false;
     }
 
     public Partition getPartition() {
         return partition;
+    }
+
+    public void resetAll(){
+        partition.setInstrument("Piano");
+        partition.setMelodie("");
+        partition.setTempo(180);
+        partition.setTitre("AHAHAHHAH");
+        partition.setVolume(50);
+        nouveauProjet = true;
+        this.notifierObservateur();
+    }
+
+    public Boolean getNouveauProjet() {
+        return nouveauProjet;
+    }
+
+    public void setNouveauProjet(Boolean nouveauProjet) {
+        this.nouveauProjet = nouveauProjet;
     }
 }
