@@ -30,7 +30,7 @@ public class Arezzo extends SujetObserve {
         partition.setInstrument("Piano");
         partition.setMelodie("");
         partition.setTempo(180);
-        partition.setTitre("AHAHAHHAH");
+        partition.setTitre("Nouveau Projet");
         partition.setVolume(50);
         nouveauProjet = true;
         this.notifierObservateur();

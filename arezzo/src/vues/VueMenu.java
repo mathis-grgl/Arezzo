@@ -2,6 +2,7 @@ package vues;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import model.Arezzo;
 import partition.Partition;
 
@@ -9,6 +10,8 @@ import partition.Partition;
 public class VueMenu implements Observateur{
     private Arezzo arezzo;
     private Partition par;
+    @FXML
+    private Label titre;
 
     public VueMenu(Arezzo arezzo){
         this.arezzo = arezzo;
@@ -19,6 +22,7 @@ public class VueMenu implements Observateur{
     @FXML
     public void nouveauFichier(){
         arezzo.resetAll();
+
     }
 
     @FXML
@@ -42,7 +46,7 @@ public class VueMenu implements Observateur{
 
     @Override
     public void reagir() {
-
+        titre.setText(par.getTitre());
     }
 }
 
