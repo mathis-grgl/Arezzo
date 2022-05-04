@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="105.0" prefWidth="107.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.VueInstruments">
+   <children>
+      <RadioButton fx:id="piano" mnemonicParsing="false" onMouseClicked="#changerPiano" text="Piano" />
+      <RadioButton fx:id="guitare" layoutY="26.0" mnemonicParsing="false" onMouseClicked="#changerGuitare" text="Guitare" />
+      <RadioButton fx:id="saxophone" layoutY="53.0" mnemonicParsing="false" onMouseClicked="#changerSaxophone" text="Saxophone" />
+      <RadioButton fx:id="trompette" layoutY="81.0" mnemonicParsing="false" onMouseClicked="#changerTrompette" text="Trompette" />
+   </children>
+</AnchorPane>
