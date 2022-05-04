@@ -86,6 +86,7 @@ public class VueInstruments implements Observateur{
             croche.setSelected(true);
             medium.setSelected(true);
             boxInstruments.setValue("Piano");
+            arezzo.setNouveauProjet(false);
         }
     }
 }
