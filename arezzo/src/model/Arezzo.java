@@ -1,4 +1,4 @@
-package melodie;
+package model;
 
 import partition.Partition;
 import vues.SujetObserve;
@@ -19,6 +19,9 @@ public class Arezzo extends SujetObserve {
             e.printStackTrace();
         }
         partition = new Partition(synthesizer);
+    }
 
+    public Partition getPartition() {
+        return partition;
     }
 }

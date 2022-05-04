@@ -3,7 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import melodie.Arezzo;
+import model.Arezzo;
 import vues.VueInstruments;
 import vues.VueMenu;
 import vues.VuePiano;

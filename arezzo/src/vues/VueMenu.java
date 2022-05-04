@@ -2,18 +2,18 @@ package vues;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import melodie.Arezzo;
+import model.Arezzo;
 import partition.Partition;
-
-import javax.sound.midi.Synthesizer;
 
 
 public class VueMenu implements Observateur{
     private Arezzo arezzo;
+    private Partition par;
 
     public VueMenu(Arezzo arezzo){
         this.arezzo = arezzo;
+        this.arezzo.ajouterObservateur(this);
+        par = this.arezzo.getPartition();
     }
 
     @FXML
@@ -21,7 +21,6 @@ public class VueMenu implements Observateur{
 
     @FXML
     public void ouvrirFichier(){
-        //this.titre.setText("AHAHAHAHAH");
     }
 
     @FXML

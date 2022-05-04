@@ -1,81 +1,95 @@
 package vues;
 
 import javafx.fxml.FXML;
-import melodie.Arezzo;
+import model.Arezzo;
 import partition.Partition;
 
 public class VuePiano implements Observateur {
     private Arezzo arezzo;
+    private Partition par;
 
     public VuePiano(Arezzo arezzo){
             this.arezzo = arezzo;
+            this.arezzo.ajouterObservateur(this);
+            par = this.arezzo.getPartition();
     }
 
     @FXML
     public void jouerLa(){
-        partitio.play("C");
+        arezzo.notifierObservateur();
+        par.play("C");
     }
 
     @FXML
     public void jouerLaDiese(){
-        partitio.play("^C");
+        arezzo.notifierObservateur();
+        par.play("^C");
     }
 
     @FXML
     public void jouerSi(){
-        partitio.play("D");
+        arezzo.notifierObservateur();
+        par.play("D");
     }
 
     @FXML
     public void jouerDo(){
-        partitio.play("E");
-
+        arezzo.notifierObservateur();
+        par.play("E");
     }
 
     @FXML
     public void jouerDoDiese(){
-        partitio.play("^E");
+        arezzo.notifierObservateur();
+        par.play("^E");
     }
 
     @FXML
     public void jouerRe(){
-        partitio.play("F");
+        arezzo.notifierObservateur();
+        par.play("F");
     }
 
     @FXML
     public void jouerReDiese(){
-        partitio.play("^F");
+        arezzo.notifierObservateur();
+        par.play("^F");
     }
 
     @FXML
     public void jouerMi(){
-        partitio.play("G");
+        arezzo.notifierObservateur();
+        par.play("G");
     }
 
     @FXML
     public void jouerFa(){
-        partitio.play("A");
+        arezzo.notifierObservateur();
+        par.play("A");
     }
 
     @FXML
     public void jouerFaDiese(){
-        partitio.play("^A");
+        arezzo.notifierObservateur();
+        par.play("^A");
     }
 
     @FXML
     public void jouerSol(){
-        partitio.play("B");
+        arezzo.notifierObservateur();
+        par.play("B");
     }
 
     @FXML
     public void jouerSolDiese(){
-        partitio.play("^B");
+        arezzo.notifierObservateur();
+        par.play("^B");
     }
 
     @FXML
     public void jouerSilence(){
-        partitio.setMelodie("z2");
-        partitio.play();
+        arezzo.notifierObservateur();
+        par.setMelodie("z2");
     }
 
     @Override
