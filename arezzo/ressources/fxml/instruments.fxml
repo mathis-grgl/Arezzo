@@ -9,7 +9,7 @@
    <children>
       <ChoiceBox fx:id="boxInstruments" layoutY="0.0" prefWidth="150.0" />
       <RadioButton fx:id="aigu" layoutX="6.0" layoutY="57.0" mnemonicParsing="false" text="Aigu" />
-      <RadioButton fx:id="medium" layoutX="6.0" layoutY="81.0" mnemonicParsing="false" selected="true" text="Medium" />
+      <RadioButton fx:id="croche" layoutX="6.0" layoutY="81.0" mnemonicParsing="false" selected="true" text="Medium" />
       <RadioButton fx:id="grave" layoutX="6.0" layoutY="106.0" mnemonicParsing="false" text="Grave" />
       <Line endX="50.0" layoutX="100.0" layoutY="50.0" startX="-100.0" />
       <Line endX="50.0" layoutX="100.0" layoutY="133.0" startX="-100.0" />

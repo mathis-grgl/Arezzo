@@ -8,9 +8,10 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
 
 public class Arezzo extends SujetObserve {
+    private Boolean aigu,medium,grave,croche,ronde,blanche,noire,nouveauProjet;
     private Synthesizer synthesizer;
     private Partition partition;
-    private Boolean nouveauProjet;
+    private String melodie;
 
     public Arezzo(){
         try {
@@ -20,6 +21,9 @@ public class Arezzo extends SujetObserve {
         }
         partition = new Partition(synthesizer);
         nouveauProjet = false;
+        aigu = false;
+        medium = true;
+        grave = false;
     }
 
     public Partition getPartition() {
@@ -42,5 +46,65 @@ public class Arezzo extends SujetObserve {
 
     public void setNouveauProjet(Boolean nouveauProjet) {
         this.nouveauProjet = nouveauProjet;
+    }
+
+    public void setHauteur(String hauteur){
+        if(String.valueOf(aigu).equals(hauteur)){
+            aigu = true;
+            medium = false;
+            grave = false;
+        }
+        if(String.valueOf(medium).equals(hauteur)){
+            aigu = false;
+            medium = true;
+            grave = false;
+        }
+        if(String.valueOf(grave).equals(hauteur)){
+            aigu = false;
+            medium = false;
+            grave = true;
+        }
+    }
+
+    public void setDuree(String duree){
+        if(String.valueOf(croche).equals(duree)){
+            croche = true;
+            ronde = false;
+            blanche = false;
+            noire = false;
+        }
+        if(String.valueOf(ronde).equals(duree)){
+            croche = false;
+            ronde = true;
+            blanche = false;
+            noire = false;
+        }
+        if(String.valueOf(blanche).equals(duree)){
+            croche = false;
+            ronde = false;
+            blanche = true;
+            noire = false;
+        }
+        if(String.valueOf(noire).equals(duree)){
+            croche = false;
+            ronde = false;
+            blanche = false;
+            noire = true;
+        }
+    }
+
+    public String getHauteur(){
+        if(aigu) return String.valueOf(aigu);
+        if(medium) return String.valueOf(medium);
+        if(grave) return String.valueOf(grave);
+        return null;
+    }
+
+    public String getDuree(){
+        if(croche) return String.valueOf(croche);
+        if(ronde) return String.valueOf(ronde);
+        if(blanche) return String.valueOf(blanche);
+        if(noire) return String.valueOf(noire);
+        return null;
     }
 }

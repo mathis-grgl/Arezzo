@@ -14,10 +14,30 @@ public class VuePiano implements Observateur {
             par = this.arezzo.getPartition();
     }
 
+    public String getNotationHauteurDuree(String lettre){
+        StringBuilder concatenation = new StringBuilder();
+        String hauteur = arezzo.getHauteur();
+        String lettreABC = lettre;
+        switch(hauteur){
+            case "aigu":
+                lettreABC.toLowerCase();
+                concatenation.append(lettreABC);
+                break;
+            case "grave":
+                concatenation.append(lettreABC);
+                concatenation.append(",");
+                break;
+            case "medium":
+                concatenation.append(lettreABC);
+        }
+
+        return concatenation.toString();
+    }
+
     @FXML
     public void jouerLa(){
         arezzo.notifierObservateur();
-        par.play("C");
+        par.play(getNotationHauteurDuree("B"));
     }
 
     @FXML
