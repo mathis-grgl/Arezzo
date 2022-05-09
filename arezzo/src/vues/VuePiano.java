@@ -18,9 +18,11 @@ public class VuePiano implements Observateur {
         StringBuilder concatenation = new StringBuilder();
         String hauteur = arezzo.getHauteur();
         String lettreABC = lettre;
+        System.out.println(lettreABC);
+        System.out.println(hauteur);
         switch(hauteur){
             case "aigu":
-                lettreABC.toLowerCase();
+                lettreABC = lettreABC.toLowerCase();
                 concatenation.append(lettreABC);
                 break;
             case "grave":
@@ -30,86 +32,86 @@ public class VuePiano implements Observateur {
             case "medium":
                 concatenation.append(lettreABC);
         }
-
+        System.out.println(concatenation);
         return concatenation.toString();
     }
 
     @FXML
     public void jouerLa(){
         arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("B"));
+        par.play(getNotationHauteurDuree("C"));
     }
 
     @FXML
     public void jouerLaDiese(){
         arezzo.notifierObservateur();
-        par.play("^C");
+        par.play(getNotationHauteurDuree("^C"));
     }
 
     @FXML
     public void jouerSi(){
         arezzo.notifierObservateur();
-        par.play("D");
+        par.play(getNotationHauteurDuree("D"));
     }
 
     @FXML
     public void jouerDo(){
         arezzo.notifierObservateur();
-        par.play("E");
+        par.play(getNotationHauteurDuree("E"));
     }
 
     @FXML
     public void jouerDoDiese(){
         arezzo.notifierObservateur();
-        par.play("^E");
+        par.play(getNotationHauteurDuree("^E"));
     }
 
     @FXML
     public void jouerRe(){
         arezzo.notifierObservateur();
-        par.play("F");
+        par.play(getNotationHauteurDuree("F"));
     }
 
     @FXML
     public void jouerReDiese(){
         arezzo.notifierObservateur();
-        par.play("^F");
+        par.play(getNotationHauteurDuree("^F"));
     }
 
     @FXML
     public void jouerMi(){
         arezzo.notifierObservateur();
-        par.play("G");
+        par.play(getNotationHauteurDuree("G"));
     }
 
     @FXML
     public void jouerFa(){
         arezzo.notifierObservateur();
-        par.play("A");
+        par.play(getNotationHauteurDuree("A"));
     }
 
     @FXML
     public void jouerFaDiese(){
         arezzo.notifierObservateur();
-        par.play("^A");
+        par.play(getNotationHauteurDuree("^A"));
     }
 
     @FXML
     public void jouerSol(){
         arezzo.notifierObservateur();
-        par.play("B");
+        par.play(getNotationHauteurDuree("B"));
     }
 
     @FXML
     public void jouerSolDiese(){
         arezzo.notifierObservateur();
-        par.play("^B");
+        par.play(getNotationHauteurDuree("^B"));
     }
 
     @FXML
     public void jouerSilence(){
         arezzo.notifierObservateur();
-        par.setMelodie("z2");
+        par.setMelodie(getNotationHauteurDuree("z2"));
     }
 
     @Override

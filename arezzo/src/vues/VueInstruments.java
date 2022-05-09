@@ -75,13 +75,52 @@ public class VueInstruments implements Observateur{
     }
 
     @FXML
-    public void setForme(){
-        
+    public void setAigu(){
+        arezzo.setHauteur("aigu");
+        arezzo.notifierObservateur();
+    }
+
+    @FXML
+    public void setMedium(){
+        arezzo.setHauteur("medium");
+        arezzo.notifierObservateur();
+    }
+
+    @FXML
+    public void setGrave(){
+        arezzo.setHauteur("grave");
+        arezzo.notifierObservateur();
+    }
+
+    @FXML
+    public void setCroche(){
+        arezzo.setDuree("croche");
+        arezzo.notifierObservateur();
+    }
+
+    @FXML
+    public void setRonde(){
+        arezzo.setDuree("ronde");
+        arezzo.notifierObservateur();
+    }
+
+    @FXML
+    public void setBlanche(){
+        arezzo.setDuree("blanche");
+        arezzo.notifierObservateur();
+    }
+
+    @FXML
+    public void setNoire(){
+        arezzo.setDuree("noire");
+        arezzo.notifierObservateur();
     }
 
     @Override
     public void reagir() {
         par.setInstrument(boxInstruments.getValue());
+
+        //Nouveau projet
         if(arezzo.getNouveauProjet()){
             croche.setSelected(true);
             medium.setSelected(true);

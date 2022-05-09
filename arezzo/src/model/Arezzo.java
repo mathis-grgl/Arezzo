@@ -49,17 +49,17 @@ public class Arezzo extends SujetObserve {
     }
 
     public void setHauteur(String hauteur){
-        if(String.valueOf(aigu).equals(hauteur)){
+        if(hauteur.equals("aigu")){
             aigu = true;
             medium = false;
             grave = false;
         }
-        if(String.valueOf(medium).equals(hauteur)){
+        if(hauteur.equals("medium")){
             aigu = false;
             medium = true;
             grave = false;
         }
-        if(String.valueOf(grave).equals(hauteur)){
+        if(hauteur.equals("grave")){
             aigu = false;
             medium = false;
             grave = true;
@@ -67,25 +67,25 @@ public class Arezzo extends SujetObserve {
     }
 
     public void setDuree(String duree){
-        if(String.valueOf(croche).equals(duree)){
+        if(duree.equals("croche")){
             croche = true;
             ronde = false;
             blanche = false;
             noire = false;
         }
-        if(String.valueOf(ronde).equals(duree)){
+        if(duree.equals("ronde")){
             croche = false;
             ronde = true;
             blanche = false;
             noire = false;
         }
-        if(String.valueOf(blanche).equals(duree)){
+        if(duree.equals("blanche")){
             croche = false;
             ronde = false;
             blanche = true;
             noire = false;
         }
-        if(String.valueOf(noire).equals(duree)){
+        if(duree.equals("noire")){
             croche = false;
             ronde = false;
             blanche = false;
@@ -94,9 +94,9 @@ public class Arezzo extends SujetObserve {
     }
 
     public String getHauteur(){
-        if(aigu) return String.valueOf(aigu);
-        if(medium) return String.valueOf(medium);
-        if(grave) return String.valueOf(grave);
+        if(aigu) return "aigu";
+        if(medium) return "medium";
+        if(grave) return "medium";
         return null;
     }
 
