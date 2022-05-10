@@ -2,14 +2,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Arezzo;
-import vues.VueInstruments;
-import vues.VueMenu;
-import vues.VuePiano;
+import ecouteur.EcouteurInstruments;
+import ecouteur.EcouteurMenu;
+import ecouteur.EcouteurPiano;
 
 public class Main extends Application {
 
@@ -22,18 +20,18 @@ public class Main extends Application {
 
         //Déclaration et initialisation du menu et titre
         FXMLLoader menu = new FXMLLoader();
-        menu.setLocation(getClass().getResource("fxml/menu.fxml"));
-        menu.setControllerFactory(iC-> new VueMenu(arezzo));
+        menu.setLocation(getClass().getResource("/menu.fxml"));
+        menu.setControllerFactory(iC-> new EcouteurMenu(arezzo));
 
         //Déclaration et initialisation du piano
         FXMLLoader piano = new FXMLLoader();
-        piano.setLocation(getClass().getResource("fxml/piano.fxml"));
-        piano.setControllerFactory(iC->new VuePiano(arezzo));
+        piano.setLocation(getClass().getResource("/piano.fxml"));
+        piano.setControllerFactory(iC->new EcouteurPiano(arezzo));
 
         //Déclaration et initialisation des boutons instruments
         FXMLLoader instruments = new FXMLLoader();
-        instruments.setLocation(getClass().getResource("fxml/instruments.fxml"));
-        instruments.setControllerFactory(iC->new VueInstruments(arezzo));
+        instruments.setLocation(getClass().getResource("/instruments.fxml"));
+        instruments.setControllerFactory(iC->new EcouteurInstruments(arezzo));
 
         //Organisation du piano et de ses boutons
         pianoEtBoutons.getChildren().add(piano.load());

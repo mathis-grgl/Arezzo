@@ -1,4 +1,4 @@
-package vues;
+package ecouteur;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,7 +11,7 @@ import javafx.scene.image.ImageView;
 import model.Arezzo;
 import partition.Partition;
 
-public class VueInstruments implements Observateur{
+public class EcouteurInstruments implements Observateur{
     @FXML
     private ChoiceBox<String> boxInstruments;
     @FXML
@@ -23,7 +23,7 @@ public class VueInstruments implements Observateur{
     private Arezzo arezzo;
     private Partition par;
 
-    public VueInstruments(Arezzo arezzo){
+    public EcouteurInstruments(Arezzo arezzo){
         this.arezzo = arezzo;
         this.arezzo.ajouterObservateur(this);
         par = this.arezzo.getPartition();

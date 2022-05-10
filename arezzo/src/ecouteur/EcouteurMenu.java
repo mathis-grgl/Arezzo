@@ -1,19 +1,22 @@
-package vues;
+package ecouteur;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import model.Arezzo;
 import partition.Partition;
 
+import java.util.Optional;
 
-public class VueMenu implements Observateur{
+
+public class EcouteurMenu implements Observateur{
     private Arezzo arezzo;
     private Partition par;
     @FXML
     private Label titre;
 
-    public VueMenu(Arezzo arezzo){
+    public EcouteurMenu(Arezzo arezzo){
         this.arezzo = arezzo;
         this.arezzo.ajouterObservateur(this);
         par = this.arezzo.getPartition();
@@ -39,7 +42,18 @@ public class VueMenu implements Observateur{
     }
 
     @FXML
-    public void renommerNotes(){}
+    public void renommer() {
+        TextInputDialog dialogue = new TextInputDialog();
+        dialogue.setTitle("Modifier le nom");
+        dialogue.setHeaderText(null);
+        dialogue.setContentText("Nouveau nom pour " + arezzo.getPartition().getTitre());
+
+        Optional<String> out = dialogue.showAndWait();
+        out.ifPresent(nom -> {
+            arezzo.getPartition().setTitre(nom);
+        });
+        arezzo.notifierObservateur();
+    }
 
     @FXML
     public void transposerNotes(){}

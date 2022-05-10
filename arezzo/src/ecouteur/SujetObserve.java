@@ -1,4 +1,4 @@
-package vues;
+package ecouteur;
 
 import java.util.ArrayList;
 

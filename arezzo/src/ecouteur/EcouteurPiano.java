@@ -1,14 +1,14 @@
-package vues;
+package ecouteur;
 
 import javafx.fxml.FXML;
 import model.Arezzo;
 import partition.Partition;
 
-public class VuePiano implements Observateur {
+public class EcouteurPiano implements Observateur {
     private Arezzo arezzo;
     private Partition par;
 
-    public VuePiano(Arezzo arezzo){
+    public EcouteurPiano(Arezzo arezzo){
             this.arezzo = arezzo;
             this.arezzo.ajouterObservateur(this);
             par = this.arezzo.getPartition();

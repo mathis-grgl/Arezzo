@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane prefHeight="284.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.VueInstruments">
+<AnchorPane prefHeight="284.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurInstruments">
    <children>
       <ChoiceBox fx:id="boxInstruments" layoutY="0.0" prefWidth="150.0" />
       <RadioButton fx:id="aigu" layoutX="6.0" layoutY="57.0" mnemonicParsing="false" onAction="#setAigu" text="Aigu" />

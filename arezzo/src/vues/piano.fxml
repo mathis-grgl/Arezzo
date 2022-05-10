@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane prefHeight="297.0" prefWidth="294.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.VuePiano">
+<AnchorPane prefHeight="297.0" prefWidth="294.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurPiano">
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="280.0" onMouseClicked="#jouerLa" stroke="BLACK" strokeType="INSIDE" width="42.0" />
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="280.0" layoutX="42.0" onMouseClicked="#jouerSi" stroke="BLACK" strokeType="INSIDE" width="42.0" />
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="280.0" layoutX="84.0" onMouseClicked="#jouerDo" stroke="BLACK" strokeType="INSIDE" width="42.0" />

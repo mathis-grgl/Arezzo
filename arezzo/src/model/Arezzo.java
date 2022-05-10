@@ -1,11 +1,13 @@
 package model;
 
+import javafx.scene.control.TextInputDialog;
 import partition.Partition;
-import vues.SujetObserve;
+import ecouteur.SujetObserve;
 
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
+import java.util.Optional;
 
 public class Arezzo extends SujetObserve {
     private Boolean aigu,medium,grave,croche,ronde,blanche,noire,nouveauProjet;

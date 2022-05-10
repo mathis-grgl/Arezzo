@@ -7,7 +7,7 @@
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vues.VueMenu">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurMenu">
     <MenuBar prefHeight="29.0" prefWidth="1000.0">
         <Menu mnemonicParsing="false" text="Melodie">
             <MenuItem mnemonicParsing="false" onAction="#nouveauFichier" text="Nouveau" />
@@ -20,7 +20,7 @@
             </MenuItem>
         </Menu>
         <Menu mnemonicParsing="false" text="Outils">
-            <MenuItem mnemonicParsing="false" onAction="#renommerNotes" text="Renommer" />
+            <MenuItem mnemonicParsing="false" onAction="#renommer" text="Renommer" />
             <MenuItem mnemonicParsing="false" onAction="#transposerNotes" text="Transposer" />
         </Menu>
     </MenuBar>
