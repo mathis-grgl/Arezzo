@@ -17,9 +17,11 @@ public class EcouteurPiano implements Observateur {
     public String getNotationHauteurDuree(String lettre){
         StringBuilder concatenation = new StringBuilder();
         String hauteur = arezzo.getHauteur();
+        String duree = arezzo.getDuree();
         String lettreABC = lettre;
         System.out.println(lettreABC);
         System.out.println(hauteur);
+
         switch(hauteur){
             case "aigu":
                 lettreABC = lettreABC.toLowerCase();
@@ -31,6 +33,18 @@ public class EcouteurPiano implements Observateur {
                 break;
             case "medium":
                 concatenation.append(lettreABC);
+        }
+
+        switch(duree){
+            case "croche":
+                concatenation.append("/");
+                break;
+            case "ronde":
+                concatenation.append("4");
+                break;
+            case "blanche":
+                concatenation.append("2");
+                break;
         }
         System.out.println(concatenation);
         return concatenation.toString();
@@ -111,7 +125,7 @@ public class EcouteurPiano implements Observateur {
     @FXML
     public void jouerSilence(){
         arezzo.notifierObservateur();
-        par.setMelodie(getNotationHauteurDuree("z2"));
+        par.setMelodie(getNotationHauteurDuree("z1"));
     }
 
     @Override

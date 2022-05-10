@@ -23,9 +23,15 @@ public class Arezzo extends SujetObserve {
         }
         partition = new Partition(synthesizer);
         nouveauProjet = false;
+
         aigu = false;
         medium = true;
         grave = false;
+
+        croche = true;
+        ronde = false;
+        blanche = false;
+        noire = false;
     }
 
     public Partition getPartition() {
@@ -103,10 +109,10 @@ public class Arezzo extends SujetObserve {
     }
 
     public String getDuree(){
-        if(croche) return String.valueOf(croche);
-        if(ronde) return String.valueOf(ronde);
-        if(blanche) return String.valueOf(blanche);
-        if(noire) return String.valueOf(noire);
+        if(croche) return "croche";
+        if(ronde) return "ronde";
+        if(blanche) return "blanche";
+        if(noire) return "noire";
         return null;
     }
 }
