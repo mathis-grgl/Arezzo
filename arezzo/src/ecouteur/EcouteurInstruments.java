@@ -19,8 +19,6 @@ public class EcouteurInstruments implements Observateur{
     private RadioButton croche,noire,blanche, ronde,aigu,medium,grave;
     @FXML
     private Slider tempo,volume;
-    @FXML
-    private ToggleGroup groupHauteurs;
 
     private Arezzo arezzo;
     private Partition par;
@@ -42,11 +40,9 @@ public class EcouteurInstruments implements Observateur{
 
     @FXML
     public void setHauteur(){
-        //arezzo.setHauteur(groupHauteurs.getSelectedToggle().getUserData().toString());
-        /*if(aigu.isSelected()) arezzo.setHauteur("aigu");
+        if(aigu.isSelected()) arezzo.setHauteur("aigu");
         if(medium.isSelected()) arezzo.setHauteur("medium");
-        if(grave.isSelected()) arezzo.setHauteur("grave");*/
-        System.out.println(groupHauteurs.getSelectedToggle().getUserData().toString());
+        if(grave.isSelected()) arezzo.setHauteur("grave");
         arezzo.notifierObservateur();
     }
 

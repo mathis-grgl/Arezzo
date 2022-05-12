@@ -1,3 +1,4 @@
+import ecouteur.EcouteurPlayEtNotes;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -33,9 +34,15 @@ public class Main extends Application {
         instruments.setLocation(getClass().getResource("/VueInstruments.fxml"));
         instruments.setControllerFactory(iC->new EcouteurInstruments(arezzo));
 
+        ////Déclaration et initialisation des boutons play et affichage notes
+        FXMLLoader playEtNotes = new FXMLLoader();
+        playEtNotes.setLocation(getClass().getResource("/VuePlayEtNotes.fxml"));
+        playEtNotes.setControllerFactory(iC-> new EcouteurPlayEtNotes(arezzo));
+
         //Organisation du piano et de ses boutons
         pianoEtBoutons.getChildren().add(piano.load());
         pianoEtBoutons.getChildren().add(instruments.load());
+        pianoEtBoutons.getChildren().add(playEtNotes.load());
 
 
         //Ajout des éléments à l'interface
