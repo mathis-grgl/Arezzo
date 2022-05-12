@@ -142,4 +142,8 @@ public class Arezzo extends SujetObserve {
     public void setTitre(String titre) {
         this.titre = titre;
     }
+
+    public String getMelodie() {
+        return melodie;
+    }
 }
