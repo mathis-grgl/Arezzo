@@ -3,8 +3,6 @@ package ecouteur;
 import javafx.fxml.FXML;
 import model.Arezzo;
 
-import javax.swing.*;
-
 public class EcouteurPlayEtNotes implements Observateur {
     private Arezzo arezzo;
 

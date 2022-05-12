@@ -1,19 +1,21 @@
 package model;
 
 import javafx.scene.image.Image;
-import partition.Melodie;
 import partition.Partition;
 import ecouteur.SujetObserve;
 
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Arezzo extends SujetObserve {
     private Boolean nouveauProjet;
     private Synthesizer synthesizer;
     private Partition partition;
     private String melodie, hauteur,duree;
+    private List<String> listNotesABC, listNotes;
 
     public Arezzo(){
         try {
@@ -22,12 +24,22 @@ public class Arezzo extends SujetObserve {
             e.printStackTrace();
         }
         partition = new Partition(synthesizer);
+        partition.setTitre("");
 
         nouveauProjet = false;
 
         hauteur = "medium";
         duree = "croche";
         melodie = "";
+        partition.setMelodie(melodie);
+
+        //Initialisation de la liste des notes en version ABC
+        listNotesABC = new ArrayList<>();
+        listNotesABC = List.of("C","^C","D","^D","E","F","^F","G","^G","A","^A","B");
+
+        //Initialisation de la liste des notes en version classique
+        listNotes = new ArrayList<>();
+        listNotes = List.of("Do","DoDiese","Re","ReDiese","Mi","Fa","FaDiese","Sol","SolDiese","La","LaDiese","Si");
 
         partition.setVolume(80);
     }
@@ -81,11 +93,51 @@ public class Arezzo extends SujetObserve {
 
     public void jouerMelodie() {
         partition.play(melodie);
+        partition.setMelodie(melodie);
     }
 
-    public Image getMelodieImage(){
-        if(melodie.length()>1){
-            return partition.getImage();
+    public Image getImage(){
+        return partition.getImage();
+    }
+
+    public String getNotationHauteurDuree(String lettre){
+        StringBuilder concatenation = new StringBuilder();
+        String lettreABC = lettre;
+
+        switch(hauteur){
+            case "aigu":
+                lettreABC = lettreABC.toLowerCase();
+                concatenation.append(lettreABC);
+                break;
+            case "grave":
+                concatenation.append(lettreABC);
+                concatenation.append(",");
+                break;
+            case "medium":
+                concatenation.append(lettreABC);
+        }
+
+        switch(duree){
+            case "croche":
+                concatenation.append("/");
+                break;
+            case "ronde":
+                concatenation.append("4");
+                break;
+            case "blanche":
+                concatenation.append("2");
+                break;
+        }
+        addMelodie(concatenation.toString());
+        partition.setMelodie(melodie);
+        return concatenation.toString();
+    }
+
+    public String conversionNotes(String note) {
+        for (int i = 0; i < listNotes.size(); i++) {
+            if(listNotes.get(i).equals(note)){
+                return listNotesABC.get(i);
+            }
         }
         return null;
     }

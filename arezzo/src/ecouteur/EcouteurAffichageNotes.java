@@ -14,14 +14,9 @@ public class EcouteurAffichageNotes implements Observateur {
         this.arezzo = arezzo;
         this.arezzo.ajouterObservateur(this);
     }
-    
-    @FXML
-    public void initialize(){
-        //affichage.setContent(new ImageView(this.arezzo.getPartition().getImage()));
-    }
 
     @Override
     public void reagir() {
-        affichage.setContent(new ImageView(arezzo.getMelodieImage()));
+        affichage.setContent(new ImageView(arezzo.getImage()));
     }
 }
