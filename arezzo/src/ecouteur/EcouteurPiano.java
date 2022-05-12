@@ -1,26 +1,61 @@
 package ecouteur;
 
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
+
 import model.Arezzo;
 import partition.Partition;
+
+import java.util.ArrayList;
 
 public class EcouteurPiano implements Observateur {
     private Arezzo arezzo;
     private Partition par;
+    private ArrayList<String> listNotesABC, listNotes;
 
-    public EcouteurPiano(Arezzo arezzo){
-            this.arezzo = arezzo;
-            this.arezzo.ajouterObservateur(this);
-            par = this.arezzo.getPartition();
+    public EcouteurPiano(Arezzo arezzo) {
+        this.arezzo = arezzo;
+        this.arezzo.ajouterObservateur(this);
+        par = this.arezzo.getPartition();
+
+        //Initialisation de la liste des notes en version ABC
+        listNotesABC = new ArrayList<>();
+        listNotesABC.add("C");
+        listNotesABC.add("^C");
+        listNotesABC.add("D");
+        listNotesABC.add("^D");
+        listNotesABC.add("E");
+        listNotesABC.add("F");
+        listNotesABC.add("^F");
+        listNotesABC.add("G");
+        listNotesABC.add("^G");
+        listNotesABC.add("A");
+        listNotesABC.add("^A");
+        listNotesABC.add("B");
+
+        //Initialisation de la liste des notes en version classique
+        listNotes = new ArrayList<>();
+        listNotes.add("Do");
+        listNotes.add("DoDiese");
+        listNotes.add("Re");
+        listNotes.add("ReDiese");
+        listNotes.add("Mi");
+        listNotes.add("Fa");
+        listNotes.add("FaDiese");
+        listNotes.add("Sol");
+        listNotes.add("SolDiese");
+        listNotes.add("La");
+        listNotes.add("LaDiese");
+        listNotes.add("Si");
     }
+
+
 
     public String getNotationHauteurDuree(String lettre){
         StringBuilder concatenation = new StringBuilder();
         String hauteur = arezzo.getHauteur();
         String duree = arezzo.getDuree();
         String lettreABC = lettre;
-        System.out.println(lettreABC);
-        System.out.println(hauteur);
 
         switch(hauteur){
             case "aigu":
@@ -46,86 +81,33 @@ public class EcouteurPiano implements Observateur {
                 concatenation.append("2");
                 break;
         }
-        System.out.println(concatenation);
         return concatenation.toString();
     }
 
-    @FXML
-    public void jouerLa(){
-        arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("C"));
+    private String conversionNotes(String notes) {
+        for (int i = 0; i < listNotes.size(); i++) {
+            if(listNotes.get(i).equals(notes)){
+                return listNotesABC.get(i);
+            }
+        }
+        return null;
     }
 
     @FXML
-    public void jouerLaDiese(){
+    public void jouerNotes(MouseEvent event){
+        String notes = event.getPickResult().getIntersectedNode().getId();
+        String conversionABC = conversionNotes(notes);
+        par.play(getNotationHauteurDuree(conversionABC));
+
         arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("^C"));
     }
 
-    @FXML
-    public void jouerSi(){
-        arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("D"));
-    }
 
-    @FXML
-    public void jouerDo(){
-        arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("E"));
-    }
-
-    @FXML
-    public void jouerDoDiese(){
-        arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("^E"));
-    }
-
-    @FXML
-    public void jouerRe(){
-        arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("F"));
-    }
-
-    @FXML
-    public void jouerReDiese(){
-        arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("^F"));
-    }
-
-    @FXML
-    public void jouerMi(){
-        arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("G"));
-    }
-
-    @FXML
-    public void jouerFa(){
-        arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("A"));
-    }
-
-    @FXML
-    public void jouerFaDiese(){
-        arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("^A"));
-    }
-
-    @FXML
-    public void jouerSol(){
-        arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("B"));
-    }
-
-    @FXML
-    public void jouerSolDiese(){
-        arezzo.notifierObservateur();
-        par.play(getNotationHauteurDuree("^B"));
-    }
 
     @FXML
     public void jouerSilence(){
-        arezzo.notifierObservateur();
         par.setMelodie(getNotationHauteurDuree("z1"));
+        arezzo.notifierObservateur();
     }
 
     @Override

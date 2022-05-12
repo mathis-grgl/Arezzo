@@ -5,9 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Slider;
 import model.Arezzo;
 import partition.Partition;
 
@@ -15,20 +13,20 @@ public class EcouteurInstruments implements Observateur{
     @FXML
     private ChoiceBox<String> boxInstruments;
     @FXML
-    private ObservableList<String> listInstruments = FXCollections.observableArrayList("Piano","Guitare","Saxophone","Trompette");
+    private ObservableList<String> listInstruments;
     @FXML
     private RadioButton croche,noire,blanche, ronde,aigu,medium,grave;
-    private ToggleGroup groupeCouleurs,groupeHauteurs;
+    @FXML
+    private Slider tempo,volume;
 
     private Arezzo arezzo;
     private Partition par;
 
     public EcouteurInstruments(Arezzo arezzo){
         this.arezzo = arezzo;
+        listInstruments = FXCollections.observableArrayList("Piano","Guitare","Saxophone","Trompette");
         this.arezzo.ajouterObservateur(this);
         par = this.arezzo.getPartition();
-        groupeCouleurs = new ToggleGroup();
-        groupeHauteurs = new ToggleGroup();
     }
 
     @FXML
@@ -36,84 +34,45 @@ public class EcouteurInstruments implements Observateur{
         //Liste instruments
         boxInstruments.setItems(listInstruments);
         boxInstruments.setValue("Piano");
-
-        //Liste hauteurs
-        aigu.setToggleGroup(groupeHauteurs);
-        medium.setToggleGroup(groupeHauteurs);
-        grave.setToggleGroup(groupeHauteurs);
-
-
-        //Liste couleurs
-        croche.setToggleGroup(groupeCouleurs);
-        noire.setToggleGroup(groupeCouleurs);
-        blanche.setToggleGroup(groupeCouleurs);
-        ronde.setToggleGroup(groupeCouleurs);
-
-        //Image croche
-        ImageView crocheIMG = new ImageView(new Image("images/croche.png"));
-        crocheIMG.setFitHeight(30);
-        crocheIMG.setPreserveRatio(true);
-        croche.setGraphic(crocheIMG);
-
-        //Image blanche
-        ImageView blancheIMG = new ImageView(new Image("images/blanche.png"));
-        blancheIMG.setFitHeight(30);
-        blancheIMG.setPreserveRatio(true);
-        blanche.setGraphic(blancheIMG);
-
-        //Image noire
-        ImageView noireIMG = new ImageView(new Image("images/noire.png"));
-        noireIMG.setFitHeight(30);
-        noireIMG.setPreserveRatio(true);
-        noire.setGraphic(noireIMG);
-
-        //Image ronde
-        ImageView rondeIMG = new ImageView(new Image("images/ronde.png"));
-        rondeIMG.setFitHeight(15);
-        rondeIMG.setPreserveRatio(true);
-        ronde.setGraphic(rondeIMG);
     }
 
+
     @FXML
-    public void setAigu(){
-        arezzo.setHauteur("aigu");
+    public void setHauteur(){
+        if(aigu.isSelected()) arezzo.setHauteur("aigu");
+        if(medium.isSelected()) arezzo.setHauteur("medium");
+        if(grave.isSelected()) arezzo.setHauteur("grave");
         arezzo.notifierObservateur();
     }
 
     @FXML
-    public void setMedium(){
-        arezzo.setHauteur("medium");
+    public void setDuree(){
+        if(croche.isSelected()) arezzo.setDuree("croche");
+        if(ronde.isSelected()) arezzo.setDuree("ronde");
+        if(blanche.isSelected()) arezzo.setDuree("blanche");
+        if(noire.isSelected()) arezzo.setDuree("noire");
         arezzo.notifierObservateur();
     }
 
     @FXML
-    public void setGrave(){
-        arezzo.setHauteur("grave");
+    public void setTempo(){
+        par.setTempo((int) tempo.getValue());
         arezzo.notifierObservateur();
     }
 
     @FXML
-    public void setCroche(){
-        arezzo.setDuree("croche");
+    public void setVolume() {
+        par.setVolume(volume.getValue());
         arezzo.notifierObservateur();
     }
 
-    @FXML
-    public void setRonde(){
-        arezzo.setDuree("ronde");
-        arezzo.notifierObservateur();
-    }
-
-    @FXML
-    public void setBlanche(){
-        arezzo.setDuree("blanche");
-        arezzo.notifierObservateur();
-    }
-
-    @FXML
-    public void setNoire(){
-        arezzo.setDuree("noire");
-        arezzo.notifierObservateur();
+    public void reInitialize(){
+        croche.setSelected(true);
+        medium.setSelected(true);
+        boxInstruments.setValue("Piano");
+        volume.setValue(80);
+        tempo.setValue(180);
+        arezzo.setNouveauProjet(false);
     }
 
     @Override
@@ -122,10 +81,7 @@ public class EcouteurInstruments implements Observateur{
 
         //Nouveau projet
         if(arezzo.getNouveauProjet()){
-            croche.setSelected(true);
-            medium.setSelected(true);
-            boxInstruments.setValue("Piano");
-            arezzo.setNouveauProjet(false);
+            reInitialize();
         }
     }
 }
