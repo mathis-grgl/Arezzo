@@ -5,6 +5,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import model.Arezzo;
 
+
+
 public class EcouteurAffichageNotes implements Observateur {
     private Arezzo arezzo;
     @FXML

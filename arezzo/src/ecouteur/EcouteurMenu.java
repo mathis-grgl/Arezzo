@@ -46,11 +46,11 @@ public class EcouteurMenu implements Observateur{
         TextInputDialog dialogue = new TextInputDialog();
         dialogue.setTitle("Modifier le nom");
         dialogue.setHeaderText(null);
-        dialogue.setContentText("Nouveau nom pour " + arezzo.getPartition().getTitre());
+        dialogue.setContentText("Nouveau nom pour " + arezzo.getTitre());
 
         Optional<String> out = dialogue.showAndWait();
         out.ifPresent(nom -> {
-            arezzo.getPartition().setTitre(nom);
+            arezzo.setTitre(nom);
         });
         arezzo.notifierObservateur();
     }
@@ -60,7 +60,7 @@ public class EcouteurMenu implements Observateur{
 
     @Override
     public void reagir() {
-        titre.setText(par.getTitre());
+        titre.setText(arezzo.getTitre());
     }
 }
 

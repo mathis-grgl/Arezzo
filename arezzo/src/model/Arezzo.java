@@ -14,7 +14,7 @@ public class Arezzo extends SujetObserve {
     private Boolean nouveauProjet;
     private Synthesizer synthesizer;
     private Partition partition;
-    private String melodie, hauteur,duree;
+    private String melodie, hauteur,duree,titre;
     private List<String> listNotesABC, listNotes;
 
     public Arezzo(){
@@ -31,6 +31,7 @@ public class Arezzo extends SujetObserve {
         hauteur = "medium";
         duree = "croche";
         melodie = "";
+        titre = "Nouveau projet";
         partition.setMelodie(melodie);
 
         //Initialisation de la liste des notes en version ABC
@@ -51,8 +52,8 @@ public class Arezzo extends SujetObserve {
     public void resetAll(){
         partition.setInstrument("Piano");
         partition.setMelodie("");
+        melodie = "";
         partition.setTempo(180);
-        partition.setTitre("Nouveau Projet");
         partition.setVolume(80);
         nouveauProjet = true;
         this.notifierObservateur();
@@ -72,14 +73,6 @@ public class Arezzo extends SujetObserve {
 
     public void setDuree(String duree){
         this.duree = duree;
-    }
-
-    public String getHauteur(){
-        return hauteur;
-    }
-
-    public String getDuree(){
-        return duree;
     }
 
     public void addMelodie(String lettre){
@@ -140,5 +133,13 @@ public class Arezzo extends SujetObserve {
             }
         }
         return null;
+    }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
     }
 }

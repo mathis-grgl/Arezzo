@@ -5,6 +5,6 @@
 
 <AnchorPane prefHeight="475.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurAffichageNotes">
    <children>
-      <ScrollPane fx:id="affichage" hbarPolicy="NEVER" hmax="0.0" prefHeight="475.0" prefWidth="1000.0" />
+      <ScrollPane fx:id="affichage" fitToHeight="true" fitToWidth="true" layoutX="50.0" minViewportWidth="850.0" prefHeight="475.0" prefViewportWidth="900.0" prefWidth="900.0" />
    </children>
 </AnchorPane>
