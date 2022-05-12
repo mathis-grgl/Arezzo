@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane prefHeight="297.0" prefWidth="588.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurPiano">
+    <Rectangle fx:id="Do" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="280.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="84.0" />
+    <Rectangle fx:id="Re" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="280.0" layoutX="84.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="84.0" />
+    <Rectangle fx:id="Mi" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="280.0" layoutX="168.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="84.0" />
+    <Rectangle fx:id="Fa" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="280.0" layoutX="252.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="84.0" />
+    <Rectangle fx:id="Sol" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="280.0" layoutX="336.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="84.0" />
+    <Rectangle fx:id="La" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="280.0" layoutX="420.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="84.0" />
+    <Rectangle fx:id="Si" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="280.0" layoutX="504.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="84.0" />
+    <Rectangle fx:id="ReDiese" arcHeight="5.0" arcWidth="5.0" height="154.0" layoutX="147.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="64.0" />
+    <Rectangle fx:id="DoDiese" arcHeight="5.0" arcWidth="5.0" height="154.0" layoutX="42.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="64.0" />
+    <Rectangle fx:id="FaDiese" arcHeight="5.0" arcWidth="5.0" height="154.0" layoutX="294.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="64.0" />
+    <Rectangle fx:id="SolDiese" arcHeight="5.0" arcWidth="5.0" height="154.0" layoutX="388.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="64.0" />
+    <Rectangle fx:id="LaDiese" arcHeight="5.0" arcWidth="5.0" height="154.0" layoutX="482.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="64.0" />
+   <Button layoutY="280.0" mnemonicParsing="false" onMouseClicked="#jouerSilence" prefHeight="32.0" prefWidth="588.0" text="Chuuuuuuut" />
+</AnchorPane>

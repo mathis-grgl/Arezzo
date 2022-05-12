@@ -20,10 +20,12 @@ public class Arezzo extends SujetObserve {
             e.printStackTrace();
         }
         partition = new Partition(synthesizer);
+
         nouveauProjet = false;
 
         hauteur = "medium";
         duree = "croche";
+        melodie = "";
 
         partition.setVolume(80);
     }
@@ -69,6 +71,9 @@ public class Arezzo extends SujetObserve {
     public void addMelodie(String lettre){
         StringBuilder ajoutLettre = new StringBuilder();
         ajoutLettre.append(melodie);
+        ajoutLettre.append(" ");
         ajoutLettre.append(lettre);
+        melodie = ajoutLettre.toString();
+        System.out.println(melodie);
     }
 }

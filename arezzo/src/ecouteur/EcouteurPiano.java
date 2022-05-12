@@ -7,11 +7,12 @@ import model.Arezzo;
 import partition.Partition;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EcouteurPiano implements Observateur {
     private Arezzo arezzo;
     private Partition par;
-    private ArrayList<String> listNotesABC, listNotes;
+    private List<String> listNotesABC, listNotes;
 
     public EcouteurPiano(Arezzo arezzo) {
         this.arezzo = arezzo;
@@ -20,33 +21,11 @@ public class EcouteurPiano implements Observateur {
 
         //Initialisation de la liste des notes en version ABC
         listNotesABC = new ArrayList<>();
-        listNotesABC.add("C");
-        listNotesABC.add("^C");
-        listNotesABC.add("D");
-        listNotesABC.add("^D");
-        listNotesABC.add("E");
-        listNotesABC.add("F");
-        listNotesABC.add("^F");
-        listNotesABC.add("G");
-        listNotesABC.add("^G");
-        listNotesABC.add("A");
-        listNotesABC.add("^A");
-        listNotesABC.add("B");
+        listNotesABC = List.of("C","^C","D","^D","E","F","^F","G","^G","A","^A","B");
 
         //Initialisation de la liste des notes en version classique
         listNotes = new ArrayList<>();
-        listNotes.add("Do");
-        listNotes.add("DoDiese");
-        listNotes.add("Re");
-        listNotes.add("ReDiese");
-        listNotes.add("Mi");
-        listNotes.add("Fa");
-        listNotes.add("FaDiese");
-        listNotes.add("Sol");
-        listNotes.add("SolDiese");
-        listNotes.add("La");
-        listNotes.add("LaDiese");
-        listNotes.add("Si");
+        listNotes = List.of("Do","DoDiese","Re","ReDiese","Mi","Fa","FaDiese","Sol","SolDiese","La","LaDiese","Si");
     }
 
 
@@ -84,9 +63,9 @@ public class EcouteurPiano implements Observateur {
         return concatenation.toString();
     }
 
-    private String conversionNotes(String notes) {
+    private String conversionNotes(String note) {
         for (int i = 0; i < listNotes.size(); i++) {
-            if(listNotes.get(i).equals(notes)){
+            if(listNotes.get(i).equals(note)){
                 return listNotesABC.get(i);
             }
         }
@@ -95,10 +74,10 @@ public class EcouteurPiano implements Observateur {
 
     @FXML
     public void jouerNotes(MouseEvent event){
-        String notes = event.getPickResult().getIntersectedNode().getId();
-        String conversionABC = conversionNotes(notes);
-        par.play(getNotationHauteurDuree(conversionABC));
-
+        String note = event.getPickResult().getIntersectedNode().getId();
+        String noteABC = conversionNotes(note);
+        par.play(getNotationHauteurDuree(noteABC));
+        arezzo.addMelodie(noteABC);
         arezzo.notifierObservateur();
     }
 
@@ -106,7 +85,7 @@ public class EcouteurPiano implements Observateur {
 
     @FXML
     public void jouerSilence(){
-        par.setMelodie(getNotationHauteurDuree("z1"));
+        arezzo.addMelodie("z1");
         arezzo.notifierObservateur();
     }
 
