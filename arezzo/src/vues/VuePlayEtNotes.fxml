@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="297.0" prefWidth="147.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurPlayEtNotes">
    <children>
-      <Button fx:id="play" layoutX="47.0" layoutY="49.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="43.0">
-         <graphic>
-            <ImageView fitHeight="55.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/play.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
-      <Button layoutX="47.0" layoutY="194.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="43.0">
-         <graphic>
-            <ImageView fitHeight="55.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/affichage.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
+      <ImageView fitHeight="55.0" fitWidth="35.0" layoutX="56.0" layoutY="155.0" onMouseClicked="#affichageNotes" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/affichage.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="55.0" fitWidth="35.0" layoutX="56.0" layoutY="98.0" onMouseClicked="#playMelodie" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/play.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

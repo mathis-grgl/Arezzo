@@ -1,4 +1,4 @@
-import ecouteur.EcouteurPlayEtNotes;
+import ecouteur.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -6,9 +6,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.Arezzo;
-import ecouteur.EcouteurInstruments;
-import ecouteur.EcouteurMenu;
-import ecouteur.EcouteurPiano;
 
 public class Main extends Application {
 
@@ -34,10 +31,15 @@ public class Main extends Application {
         instruments.setLocation(getClass().getResource("/VueInstruments.fxml"));
         instruments.setControllerFactory(iC->new EcouteurInstruments(arezzo));
 
-        ////Déclaration et initialisation des boutons play et affichage notes
+        //Déclaration et initialisation des boutons play et affichage notes
         FXMLLoader playEtNotes = new FXMLLoader();
         playEtNotes.setLocation(getClass().getResource("/VuePlayEtNotes.fxml"));
         playEtNotes.setControllerFactory(iC-> new EcouteurPlayEtNotes(arezzo));
+
+        //Déclaration et initialisation de l'affichage des notes
+        FXMLLoader affichageNotes = new FXMLLoader();
+        affichageNotes.setLocation(getClass().getResource("/VueAffichageNotes.fxml"));
+        affichageNotes.setControllerFactory(iC-> new EcouteurAffichageNotes(arezzo));
 
         //Organisation du piano et de ses boutons
         pianoEtBoutons.getChildren().add(piano.load());
@@ -48,6 +50,7 @@ public class Main extends Application {
         //Ajout des éléments à l'interface
         root.setTop(menu.load());
         root.setBottom(pianoEtBoutons);
+        root.setCenter(affichageNotes.load());
 
         //Eléments principaux de la fenêtre
         primaryStage.setTitle("Arezzo");

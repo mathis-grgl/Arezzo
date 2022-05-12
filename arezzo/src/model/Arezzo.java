@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.image.Image;
+import partition.Melodie;
 import partition.Partition;
 import ecouteur.SujetObserve;
 
@@ -75,5 +77,16 @@ public class Arezzo extends SujetObserve {
         ajoutLettre.append(lettre);
         melodie = ajoutLettre.toString();
         System.out.println(melodie);
+    }
+
+    public void jouerMelodie() {
+        partition.play(melodie);
+    }
+
+    public Image getMelodieImage(){
+        if(melodie.length()>1){
+            return partition.getImage();
+        }
+        return null;
     }
 }
