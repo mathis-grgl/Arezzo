@@ -1,7 +1,9 @@
 package ecouteur;
 
 import javafx.fxml.FXML;
+import javafx.stage.Popup;
 import model.Arezzo;
+
 
 public class EcouteurPlayEtNotes implements Observateur {
     private Arezzo arezzo;
@@ -19,7 +21,6 @@ public class EcouteurPlayEtNotes implements Observateur {
 
     @FXML
     public void affichageNotes(){
-
     }
 
     @Override

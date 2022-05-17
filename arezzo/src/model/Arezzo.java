@@ -172,11 +172,12 @@ public class Arezzo extends SujetObserve {
         partition.close();
     }
 
-    public double getTempo() {
-        return tempo;
+    public int getTempo() {
+        return (int) tempo;
     }
 
     public void setTempo(double tempo) {
         this.tempo = tempo;
+        partition.setTempo((int) tempo);
     }
 }

@@ -79,6 +79,7 @@ public class EcouteurInstruments implements Observateur{
     @Override
     public void reagir() {
         par.setInstrument(boxInstruments.getValue());
+        tempo.setValue(arezzo.getTempo());
 
         //Nouveau projet
         if(arezzo.getNouveauProjet()){
