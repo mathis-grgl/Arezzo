@@ -7,7 +7,6 @@ import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import model.Arezzo;
-import partition.Partition;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,14 +19,12 @@ import java.util.regex.Pattern;
 
 public class EcouteurMenu implements Observateur{
     private Arezzo arezzo;
-    private Partition par;
     @FXML
     private Label titre;
 
     public EcouteurMenu(Arezzo arezzo){
         this.arezzo = arezzo;
         this.arezzo.ajouterObservateur(this);
-        par = this.arezzo.getPartition();
     }
 
     @FXML
@@ -41,25 +38,45 @@ public class EcouteurMenu implements Observateur{
     @FXML
     public void ouvrirFichier(){
         FileChooser fileChooser = new FileChooser();
-
-        Popup pop = new Popup();
-        File file = fileChooser.showOpenDialog(pop);
+        Popup popup = new Popup();
+        File file = fileChooser.showOpenDialog(popup);
 
         try {
             String contenu = Files.readString(file.toPath());
-            Pattern pattern = Pattern.compile(":\".+\",",Pattern.CASE_INSENSITIVE);
+
+            //Convertir le contenu pour trouver le titre
+            Pattern pattern = Pattern.compile("\"titre\":\".+\",\"m",Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(contenu);
+
+            //Si on a trouvé le titre on la met dans un String et on set le titre
             if(matcher.find()) {
-                String titreADonner = matcher.group().substring(2, matcher.group().length() - 2);
+                String titreADonner = matcher.group().substring(9, matcher.group().length() - 4);
                 arezzo.setTitre(titreADonner);
                 titre.setText(titreADonner);
             }
-            pattern = Pattern.compile("melodie\":\".+\"\\s}",Pattern.CASE_INSENSITIVE);
+
+
+            //Convertir le contenu pour trouver la mélodie
+            pattern = Pattern.compile("melodie\":\".+\",",Pattern.CASE_INSENSITIVE);
             matcher = pattern.matcher(contenu);
+
+            //Si on a trouvé la mélodie on la met dans un String et on set la Mélodie
             if(matcher.find()) {
-                String melodie = matcher.group().substring(10, matcher.group().length() - 3);
+                String melodie = matcher.group().substring(10, matcher.group().length() - 2);
                 arezzo.setMelodie(melodie);
             }
+
+
+            //Convertir le contenu pour trouver la mélodie
+            pattern = Pattern.compile("tempo\":\".+\"\\s}",Pattern.CASE_INSENSITIVE);
+            matcher = pattern.matcher(contenu);
+
+            //Si on a trouvé la mélodie on la met dans un String et on set la Mélodie
+            if(matcher.find()) {
+                String tempo = matcher.group().substring(8, matcher.group().length() - 3);
+                arezzo.setTempo(Double.valueOf(tempo));
+            }
+
             arezzo.notifierObservateur();
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,13 +89,13 @@ public class EcouteurMenu implements Observateur{
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialFileName(arezzo.getTitre()+".json");
 
-        Popup pop= new Popup();
+        Popup pop = new Popup();
         File file = fileChooser.showSaveDialog(pop);
 
         arezzo.setTitre(file.getName().replaceAll("[.]json",""));
         titre.setText(arezzo.getTitre());
 
-        String contenu = "{ \"titre\":\"" + arezzo.getTitre() + "\",\"melodie\":\"" + arezzo.getMelodie() + "\" }";
+        String contenu = "{ \"titre\":\"" + arezzo.getTitre() + "\",\"melodie\":\"" + arezzo.getMelodie() + "\",\"tempo\":\"" + arezzo.getTempo() + "\" }";
 
         try {
             PrintWriter writer;
@@ -93,7 +110,7 @@ public class EcouteurMenu implements Observateur{
     @FXML
     public void quitterFenetre(){
         Platform.exit();
-        par.close();
+        arezzo.fermerPartition();
     }
 
     @FXML

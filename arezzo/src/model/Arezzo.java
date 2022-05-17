@@ -15,7 +15,7 @@ public class Arezzo extends SujetObserve {
     private Synthesizer synthesizer;
     private Partition partition;
     private String melodie, hauteur,duree,titre;
-    private double temps;
+    private double temps,tempo;
     private List<String> listNotesABC, listNotes;
 
     public Arezzo(){
@@ -34,6 +34,7 @@ public class Arezzo extends SujetObserve {
         melodie = "";
         titre = "Nouveau projet";
         temps = 0;
+        tempo = 180;
         partition.setMelodie(melodie);
 
         //Initialisation de la liste des notes en version ABC
@@ -56,7 +57,8 @@ public class Arezzo extends SujetObserve {
         partition.setMelodie("");
         melodie = "";
         titre = "Nouveau projet";
-        partition.setTempo(180);
+        tempo = 180;
+        partition.setTempo(Integer.valueOf((int) tempo));
         partition.setVolume(80);
         temps = 1;
         nouveauProjet = true;
@@ -102,7 +104,7 @@ public class Arezzo extends SujetObserve {
     public String getNotationHauteurDuree(String lettre) {
         StringBuilder concatenation = new StringBuilder();
         String lettreABC = lettre;
-        if (!lettre.equals("z1")) {
+        if (!lettre.equals("z")) {
             switch (hauteur) {
                 case "aigu":
                     lettreABC = lettreABC.toLowerCase();
@@ -115,7 +117,9 @@ public class Arezzo extends SujetObserve {
                 case "medium":
                     concatenation.append(lettreABC);
             }
-
+        } else {
+            concatenation.append("z");
+        }
             switch (duree) {
                 case "croche":
                     concatenation.append("/");
@@ -133,10 +137,6 @@ public class Arezzo extends SujetObserve {
                     temps+=1;
                     break;
             }
-        } else {
-            concatenation.append("z1");
-            temps+=1;
-        }
         addMelodie(concatenation.toString());
         partition.setMelodie(melodie);
         return concatenation.toString();
@@ -166,5 +166,17 @@ public class Arezzo extends SujetObserve {
     public void setMelodie(String melodie) {
         this.melodie = melodie;
         partition.setMelodie(melodie);
+    }
+
+    public void fermerPartition(){
+        partition.close();
+    }
+
+    public double getTempo() {
+        return tempo;
+    }
+
+    public void setTempo(double tempo) {
+        this.tempo = tempo;
     }
 }

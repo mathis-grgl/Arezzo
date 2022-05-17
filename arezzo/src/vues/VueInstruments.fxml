@@ -57,7 +57,7 @@
          </graphic></RadioButton>
       <Line endY="297.0" layoutX="221.0" />
       <Line endY="297.0" layoutX="71.0" />
-      <Slider fx:id="tempo" blockIncrement="5.0" layoutX="245.0" max="220.0" min="40.0" minorTickCount="1" onMouseReleased="#setTempo" orientation="VERTICAL" prefHeight="285.0" prefWidth="1.0" showTickLabels="true" value="180.0" />
+      <Slider fx:id="tempo" blockIncrement="5.0" layoutX="245.0" max="220.0" min="40.0" minorTickCount="1" onMouseReleased="#setTempoSlider" orientation="VERTICAL" prefHeight="285.0" prefWidth="1.0" showTickLabels="true" value="180.0" />
       <Slider fx:id="volume" blockIncrement="5.0" layoutX="300.0" minorTickCount="1" onMouseReleased="#setVolume" orientation="VERTICAL" prefHeight="285.0" prefWidth="16.0" showTickLabels="true" value="80.0" />
       <Line endX="221.0" startX="71.0" />
       <Line endX="221.0" endY="297.0" startX="71.0" startY="297.0" />

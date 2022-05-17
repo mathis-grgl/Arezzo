@@ -55,7 +55,8 @@ public class EcouteurInstruments implements Observateur{
     }
 
     @FXML
-    public void setTempo(){
+    public void setTempoSlider(){
+        arezzo.setTempo(tempo.getValue());
         par.setTempo((int) tempo.getValue());
         arezzo.notifierObservateur();
     }
