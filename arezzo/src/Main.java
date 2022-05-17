@@ -41,6 +41,11 @@ public class Main extends Application {
         affichageNotes.setLocation(getClass().getResource("/VueAffichageNotes.fxml"));
         affichageNotes.setControllerFactory(iC-> new EcouteurAffichageNotes(arezzo));
 
+        //Déclaration et initialisation de l'affichage des compositions
+        FXMLLoader Composition = new FXMLLoader();
+        Composition.setLocation(getClass().getResource("/VueComposition.fxml"));
+        Composition.setControllerFactory(iC-> new EcouteurComposition(arezzo));
+
         //Organisation du piano et de ses boutons
         pianoEtBoutons.getChildren().add(piano.load());
         pianoEtBoutons.getChildren().add(instruments.load());

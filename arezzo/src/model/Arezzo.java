@@ -45,7 +45,7 @@ public class Arezzo extends SujetObserve {
         listNotes = new ArrayList<>();
         listNotes = List.of("Do","DoDiese","Re","ReDiese","Mi","Fa","FaDiese","Sol","SolDiese","La","LaDiese","Si");
 
-        partition.setVolume(80);
+        //partition.setVolume(80);
     }
 
     public Partition getPartition() {
@@ -58,8 +58,8 @@ public class Arezzo extends SujetObserve {
         melodie = "";
         titre = "Nouveau projet";
         tempo = 180;
-        partition.setTempo(Integer.valueOf((int) tempo));
-        partition.setVolume(80);
+        partition.setTempo((int) tempo);
+        //partition.setVolume(80);
         temps = 1;
         nouveauProjet = true;
     }
