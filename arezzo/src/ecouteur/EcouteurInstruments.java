@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
-import javafx.scene.control.ToggleGroup;
 import model.Arezzo;
 import partition.Partition;
 

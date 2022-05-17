@@ -28,7 +28,7 @@ public class EcouteurPiano implements Observateur {
 
     @FXML
     public void jouerSilence(){
-        arezzo.addMelodie("z1");
+        arezzo.getNotationHauteurDuree("z1");
         arezzo.notifierObservateur();
     }
 

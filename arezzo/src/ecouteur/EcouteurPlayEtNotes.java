@@ -13,6 +13,7 @@ public class EcouteurPlayEtNotes implements Observateur {
 
     @FXML
     public void playMelodie(){
+        arezzo.notifierObservateur();
         arezzo.jouerMelodie();
     }
 

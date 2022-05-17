@@ -7,10 +7,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import model.Arezzo;
-import netscape.javascript.JSObject;
 import partition.Partition;
-
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,23 +33,34 @@ public class EcouteurMenu implements Observateur{
     @FXML
     public void nouveauFichier(){
         arezzo.resetAll();
+        titre.setText(arezzo.getTitre());
+        arezzo.notifierObservateur();
 
     }
 
     @FXML
     public void ouvrirFichier(){
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialFileName(arezzo.getTitre()+".json");
 
         Popup pop = new Popup();
         File file = fileChooser.showOpenDialog(pop);
 
         try {
             String contenu = Files.readString(file.toPath());
-            Pattern pattern = Pattern.compile("\"\\*\",");
+            Pattern pattern = Pattern.compile(":\".+\",",Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(contenu);
-            String titre = matcher.group();
-            System.out.println(titre);
+            if(matcher.find()) {
+                String titreADonner = matcher.group().substring(2, matcher.group().length() - 2);
+                arezzo.setTitre(titreADonner);
+                titre.setText(titreADonner);
+            }
+            pattern = Pattern.compile("melodie\":\".+\"\\s}",Pattern.CASE_INSENSITIVE);
+            matcher = pattern.matcher(contenu);
+            if(matcher.find()) {
+                String melodie = matcher.group().substring(10, matcher.group().length() - 3);
+                arezzo.setMelodie(melodie);
+            }
+            arezzo.notifierObservateur();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,6 +74,9 @@ public class EcouteurMenu implements Observateur{
 
         Popup pop= new Popup();
         File file = fileChooser.showSaveDialog(pop);
+
+        arezzo.setTitre(file.getName().replaceAll("[.]json",""));
+        titre.setText(arezzo.getTitre());
 
         String contenu = "{ \"titre\":\"" + arezzo.getTitre() + "\",\"melodie\":\"" + arezzo.getMelodie() + "\" }";
 
@@ -95,6 +106,7 @@ public class EcouteurMenu implements Observateur{
         Optional<String> out = dialogue.showAndWait();
         out.ifPresent(nom -> {
             arezzo.setTitre(nom);
+            titre.setText(arezzo.getTitre());
         });
         arezzo.notifierObservateur();
     }
@@ -104,7 +116,6 @@ public class EcouteurMenu implements Observateur{
 
     @Override
     public void reagir() {
-        titre.setText(arezzo.getTitre());
     }
 }
 
