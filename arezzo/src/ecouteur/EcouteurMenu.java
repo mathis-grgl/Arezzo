@@ -131,7 +131,21 @@ public class EcouteurMenu implements Observateur{
     }
 
     @FXML
-    public void transposerNotes(){}
+    public void transposerNotes(){
+        TextInputDialog dialogue = new TextInputDialog();
+        dialogue.setTitle("Transposer les notes");
+        dialogue.setHeaderText(null);
+        dialogue.setContentText("De combien voulez vous transposer (en 1/2 tons) ?");
+
+        Optional<String> out = dialogue.showAndWait();
+        out.ifPresent(entierString -> {
+            int entier = Integer.parseInt(entierString);
+            if(entier>=0 && entier<=99) {
+                arezzo.transposerNotesArezzo(entier);
+            } else {
+                System.err.println("L'entier rentré est incorrect");
+            }});
+    }
 
     @Override
     public void reagir() {

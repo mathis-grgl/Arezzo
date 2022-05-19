@@ -58,6 +58,7 @@ public class Arezzo extends SujetObserve {
     public void resetAll(){
         partition.setInstrument("Piano");
         partition.setMelodie("");
+        listMelodie = new ArrayList<>();
         melodie = "";
         titre = "Nouveau projet";
         tempo = 180;
@@ -121,7 +122,7 @@ public class Arezzo extends SujetObserve {
     public String getNotationHauteurDuree(String lettre) {
         StringBuilder concatenation = new StringBuilder();
         String lettreABC = lettre;
-        if (!lettre.equals("z")) {
+        if (!lettre.equals("z") && !lettre.equals("|")) {
             switch (hauteur) {
                 case "aigu":
                     lettreABC = lettreABC.toLowerCase();
@@ -183,6 +184,21 @@ public class Arezzo extends SujetObserve {
     public void setMelodie(String melodie) {
         this.melodie = melodie;
         partition.setMelodie(melodie);
+    }
+
+    public void transposerNotesArezzo(int entier){
+        System.out.println(melodie);
+        for (int j = 0; j < listNotesABC.size(); j++) {
+            for (int i = 0; i < listMelodie.size(); i++) {
+                System.out.println(listMelodie.size());
+                if(listMelodie.get(i).equals(getNotationHauteurDuree(listNotesABC.get(j)))){
+                    //System.out.println(listMelodie.get(i)+" "+getNotationHauteurDuree(listNotesABC.get(j)));
+                    //listMelodie.set(i,listNotesABC.get((j+entier)%12));
+                }
+            }
+        }
+        convertirListEnMelodie();
+        System.out.println(melodie);
     }
 
     public void fermerPartition(){
