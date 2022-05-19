@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleGroup;
 import model.Arezzo;
 import partition.Partition;
 
@@ -18,6 +19,8 @@ public class EcouteurInstruments implements Observateur{
     private RadioButton croche,noire,blanche, ronde,aigu,medium,grave;
     @FXML
     private Slider tempo,volume;
+    @FXML
+    ToggleGroup groupHauteurs, groupDuree;
 
     private Arezzo arezzo;
     private Partition par;
@@ -39,18 +42,13 @@ public class EcouteurInstruments implements Observateur{
 
     @FXML
     public void setHauteur(){
-        if(aigu.isSelected()) arezzo.setHauteur("aigu");
-        if(medium.isSelected()) arezzo.setHauteur("medium");
-        if(grave.isSelected()) arezzo.setHauteur("grave");
+        arezzo.setHauteur(((RadioButton) groupHauteurs.getSelectedToggle()).getId());
         arezzo.notifierObservateur();
     }
 
     @FXML
     public void setDuree(){
-        if(croche.isSelected()) arezzo.setDuree("croche");
-        if(ronde.isSelected()) arezzo.setDuree("ronde");
-        if(blanche.isSelected()) arezzo.setDuree("blanche");
-        if(noire.isSelected()) arezzo.setDuree("noire");
+        arezzo.setDuree(((RadioButton) groupDuree.getSelectedToggle()).getId());
         arezzo.notifierObservateur();
     }
 

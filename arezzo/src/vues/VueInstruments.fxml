@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane prefHeight="297.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurInstruments">
+<AnchorPane prefHeight="311.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurInstruments">
    <children>
       <ChoiceBox fx:id="boxInstruments" layoutX="71.0" layoutY="1.0" prefWidth="150.0" />
       <RadioButton fx:id="aigu" layoutX="83.0" layoutY="57.0" mnemonicParsing="false" onAction="#setHauteur" text="Aigu">
@@ -61,5 +61,15 @@
       <Slider fx:id="volume" blockIncrement="5.0" layoutX="300.0" minorTickCount="1" onMouseReleased="#setVolume" orientation="VERTICAL" prefHeight="285.0" prefWidth="16.0" showTickLabels="true" value="80.0" />
       <Line endX="221.0" startX="71.0" />
       <Line endX="221.0" endY="297.0" startX="71.0" startY="297.0" />
+      <ImageView fitHeight="18.0" fitWidth="16.0" layoutX="293.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/volume.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="18.0" fitWidth="16.0" layoutX="238.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/tempo.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

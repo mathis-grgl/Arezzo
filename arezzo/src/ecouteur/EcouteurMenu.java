@@ -64,6 +64,7 @@ public class EcouteurMenu implements Observateur{
             if(matcher.find()) {
                 String melodie = matcher.group().substring(10, matcher.group().length() - 2);
                 arezzo.setMelodie(melodie);
+                arezzo.convertirMelodieEnList();
             }
 
 
@@ -95,6 +96,7 @@ public class EcouteurMenu implements Observateur{
         arezzo.setTitre(file.getName().replaceAll("[.]json",""));
         titre.setText(arezzo.getTitre());
 
+        arezzo.convertirListEnMelodie();
         String contenu = "{ \"titre\":\"" + arezzo.getTitre() + "\",\"melodie\":\"" + arezzo.getMelodie() + "\",\"tempo\":\"" + arezzo.getTempo() + "\" }";
 
         try {

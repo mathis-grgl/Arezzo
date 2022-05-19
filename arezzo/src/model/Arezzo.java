@@ -8,6 +8,7 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Arezzo extends SujetObserve {
@@ -15,6 +16,7 @@ public class Arezzo extends SujetObserve {
     private Synthesizer synthesizer;
     private Partition partition;
     private String melodie, hauteur,duree,titre;
+    private ArrayList<String> listMelodie;
     private double temps,tempo;
     private List<String> listNotesABC, listNotes;
 
@@ -45,6 +47,7 @@ public class Arezzo extends SujetObserve {
         listNotes = new ArrayList<>();
         listNotes = List.of("Do","DoDiese","Re","ReDiese","Mi","Fa","FaDiese","Sol","SolDiese","La","LaDiese","Si");
 
+        listMelodie = new ArrayList<>();
         //partition.setVolume(80);
     }
 
@@ -81,18 +84,32 @@ public class Arezzo extends SujetObserve {
     }
 
     public void addMelodie(String lettre){
-        StringBuilder ajoutLettre = new StringBuilder();
-        ajoutLettre.append(melodie);
-        ajoutLettre.append(" ");
-        ajoutLettre.append(lettre);
+        listMelodie.add(lettre);
         if(temps >= 4) {
             temps = 0;
-            ajoutLettre.append(" | ");
+            listMelodie.add("|");
         }
-        melodie = ajoutLettre.toString();
+        convertirListEnMelodie();
+    }
+
+    public void convertirListEnMelodie(){
+        StringBuilder concat = new StringBuilder();
+        for (String lettre : listMelodie) {
+            concat.append(lettre);
+            concat.append(" ");
+        }
+        melodie = concat.toString();
+    }
+
+    public void convertirMelodieEnList(){
+        String[] separation = melodie.split("\\s");
+        List<String> listCopie = Arrays.asList(separation);
+        listMelodie = new ArrayList<>();
+        listMelodie.addAll(listCopie);
     }
 
     public void jouerMelodie() {
+        convertirListEnMelodie();
         partition.play(melodie);
         partition.setMelodie(melodie);
     }
