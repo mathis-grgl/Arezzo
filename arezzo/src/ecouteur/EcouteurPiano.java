@@ -24,8 +24,6 @@ public class EcouteurPiano implements Observateur {
         arezzo.notifierObservateur();
     }
 
-
-
     @FXML
     public void jouerSilence(){
         arezzo.getNotationHauteurDuree("z");
