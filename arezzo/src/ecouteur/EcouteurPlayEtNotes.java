@@ -26,7 +26,7 @@ public class EcouteurPlayEtNotes implements Observateur {
 
     @FXML
     public void deleteMelodie(){
-        arezzo.setMelodie("");
+        arezzo.deleteMelodie();
         arezzo.notifierObservateur();
     }
 

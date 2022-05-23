@@ -18,41 +18,43 @@ public class Arezzo extends SujetObserve {
     private String melodie, hauteur,duree,titre;
     private ArrayList<String> listMelodie;
     private double temps,tempo;
-    private List<String> listNotesABC, listNotes;
+    private List<String> listNotesABC, listNotes, listNotesWOctaves;
 
     public Arezzo(){
+        //Déclaration synthesizer
         try {
             synthesizer = MidiSystem.getSynthesizer();
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
         }
+
+        //Déclaration partition
         partition = new Partition(synthesizer);
         partition.setTitre("");
+        partition.setMelodie("");
 
+        //Déclaration variable Arezzo
         nouveauProjet = false;
-
         hauteur = "medium";
         duree = "croche";
         melodie = "";
         titre = "Nouveau projet";
         temps = 0;
         tempo = 180;
-        partition.setMelodie(melodie);
 
         //Initialisation de la liste des notes en version ABC
-        listNotesABC = new ArrayList<>();
         listNotesABC = List.of("C","^C","D","^D","E","F","^F","G","^G","A","^A","B");
 
         //Initialisation de la liste des notes en version classique
-        listNotes = new ArrayList<>();
         listNotes = List.of("Do","DoDiese","Re","ReDiese","Mi","Fa","FaDiese","Sol","SolDiese","La","LaDiese","Si");
 
-        listMelodie = new ArrayList<>();
-        //partition.setVolume(80);
-    }
+        //Initialisation de la liste des notes en version octaves
+        listNotesWOctaves = List.of("C,","^C,","D,","^D,","E,","F,","^F,","G,","^G,","A,","^A,","B,","C","^C","D","^D","E","F","^F","G","^G","A","^A","B","c","^c","d","^d","e","f","^f","g","^g","a","^a","b");
 
-    public Partition getPartition() {
-        return partition;
+        listMelodie = new ArrayList<>();
+
+        //Bug sur certains pc de la faculté qui empêche le lancement (dû à des problèmes de son)
+        //partition.setVolume(80);
     }
 
     public void resetAll(){
@@ -63,25 +65,20 @@ public class Arezzo extends SujetObserve {
         titre = "Nouveau projet";
         tempo = 180;
         partition.setTempo((int) tempo);
+
+        //Bug sur certains pc de la faculté qui empêche le lancement (dû à des problèmes de son)
         //partition.setVolume(80);
+
         temps = 1;
         nouveauProjet = true;
     }
 
-    public Boolean getNouveauProjet() {
-        return nouveauProjet;
-    }
-
-    public void setNouveauProjet(Boolean nouveauProjet) {
-        this.nouveauProjet = nouveauProjet;
-    }
-
-    public void setHauteur(String hauteur){
-        this.hauteur = hauteur;
-    }
-
-    public void setDuree(String duree){
-        this.duree = duree;
+    public void deleteMelodie(){
+        partition.play("");
+        partition.setMelodie("");
+        listMelodie.clear();
+        melodie = "";
+        temps = 1;
     }
 
     public void addMelodie(String lettre){
@@ -115,8 +112,18 @@ public class Arezzo extends SujetObserve {
         partition.setMelodie(melodie);
     }
 
-    public Image getImage(){
-        return partition.getImage();
+    public String getMelodie() {
+        return melodie;
+    }
+
+    public void setMelodie(String melodie) {
+        this.melodie = melodie;
+        convertirMelodieEnList();
+        partition.setMelodie(melodie);
+    }
+
+    public void playMelodieVide(){
+        partition.play("");
     }
 
     public String getNotationHauteurDuree(String lettre) {
@@ -152,6 +159,7 @@ public class Arezzo extends SujetObserve {
                     temps+=2;
                     break;
                 case "noire":
+                    concatenation.append("1");
                     temps+=1;
                     break;
             }
@@ -169,6 +177,51 @@ public class Arezzo extends SujetObserve {
         return null;
     }
 
+    public void transposerNotesArezzo(int entier){
+        ArrayList<String> copieTemporaireMelodie = new ArrayList<>(listMelodie);
+        for (int i = 0; i < copieTemporaireMelodie.size(); i++) {
+            //Evite de modifier les barre de séparation
+            if(!listMelodie.get(i).equals("|")) {
+                //Permet d'extraire les particularités des notes et de faire une liste sans ces particularités
+                String test = String.valueOf(listMelodie.get(i).charAt(listMelodie.get(i).length() - 1));
+                copieTemporaireMelodie.set(i, copieTemporaireMelodie.get(i).substring(0, copieTemporaireMelodie.get(i).length() - 1));
+
+                //Fait les modifications de tons sur la copie puis sur la liste en elle-même
+                int indexMelodieListe = listNotesWOctaves.indexOf(copieTemporaireMelodie.get(i));
+                int indexTransposition = indexMelodieListe + entier;
+                if (indexTransposition > 35) indexTransposition = 35;
+
+                copieTemporaireMelodie.set(i, listNotesWOctaves.get(indexTransposition));
+                copieTemporaireMelodie.set(i, copieTemporaireMelodie.get(i) + test);
+                listMelodie.set(i, copieTemporaireMelodie.get(i));
+            }
+        }
+        convertirListEnMelodie();
+        setMelodie(melodie);
+        notifierObservateur();
+    }
+
+    public Boolean getNouveauProjet() {
+        return nouveauProjet;
+    }
+
+    public void setNouveauProjet(Boolean nouveauProjet) {
+        this.nouveauProjet = nouveauProjet;
+    }
+
+    public void setHauteur(String hauteur){
+        this.hauteur = hauteur;
+    }
+
+    public void setDuree(String duree){
+        this.duree = duree;
+    }
+
+    public void setTempo(double tempo) {
+        this.tempo = tempo;
+        partition.setTempo((int) tempo);
+    }
+
     public String getTitre() {
         return titre;
     }
@@ -177,50 +230,19 @@ public class Arezzo extends SujetObserve {
         this.titre = titre;
     }
 
-    public String getMelodie() {
-        return melodie;
-    }
-
-    public void setMelodie(String melodie) {
-        this.melodie = melodie;
-        convertirMelodieEnList();
-        partition.setMelodie(melodie);
-    }
-
-    public void playMelodieVide(){
-        partition.play("");
-    }
-
-    public void transposerNotesArezzo(int entier){
-        System.out.println(melodie);
-        String test = "";
-        for (int j = 0; j < listNotesABC.size(); j++) {
-            for (int i = 0; i < listMelodie.size(); i++) {
-                String testPremiereLettre = String.valueOf(listMelodie.get(i).charAt(0));
-                if(testPremiereLettre.equals("^")){
-                    test = listMelodie.get(i).substring(2);
-                } else {
-                    test = listMelodie.get(i).substring(1);
-                }
-                System.out.println(test);
-                System.out.println("test : "+listNotesABC.get(i)+test+" melodie : "+listMelodie.get(i));
-
-            }
-        }
-        convertirListEnMelodie();
-        System.out.println(melodie);
+    public Partition getPartition() {
+        return partition;
     }
 
     public void fermerPartition(){
         partition.close();
     }
 
-    public int getTempo() {
-        return (int) tempo;
+    public Image getImage(){
+        return partition.getImage();
     }
 
-    public void setTempo(double tempo) {
-        this.tempo = tempo;
-        partition.setTempo((int) tempo);
+    public int getTempo() {
+        return (int) tempo;
     }
 }
