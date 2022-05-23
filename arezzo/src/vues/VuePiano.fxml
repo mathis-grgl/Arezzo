@@ -19,7 +19,7 @@
     <Rectangle fx:id="SolDiese" arcHeight="5.0" arcWidth="5.0" height="154.0" layoutX="388.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="64.0" />
     <Rectangle fx:id="LaDiese" arcHeight="5.0" arcWidth="5.0" height="154.0" layoutX="482.0" onMouseClicked="#jouerNotes" stroke="BLACK" strokeType="INSIDE" width="64.0" />
    <Button layoutY="280.0" mnemonicParsing="false" onMouseClicked="#jouerSilence" prefHeight="32.0" prefWidth="588.0" text="Chuuuuuuut" />
-   <Label layoutX="33.0" layoutY="235.0" text="Do" />
+   <Label layoutX="35.0" layoutY="235.0" text="Do" />
    <Label layoutX="117.0" layoutY="235.0" text="Re" />
    <Label layoutX="204.0" layoutY="235.0" text="Mi" />
    <Label layoutX="286.0" layoutY="235.0" text="Fa" />

@@ -25,6 +25,16 @@ public class EcouteurPlayEtNotes implements Observateur {
     }
 
     @FXML
+    public void deleteMelodie(){
+        arezzo.setMelodie("");
+        arezzo.notifierObservateur();
+    }
+
+    public void stopMelodie(){
+        arezzo.playMelodieVide();
+    }
+
+    @FXML
     public void affichageNotes(){
         /*ListCell<String> template = new ListCell<>();
         ObservableList list = FXCollections.observableArrayList("Piano","Guitare","Saxophone","Trompette");

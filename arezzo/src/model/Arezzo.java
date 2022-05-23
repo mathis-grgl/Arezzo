@@ -183,7 +183,12 @@ public class Arezzo extends SujetObserve {
 
     public void setMelodie(String melodie) {
         this.melodie = melodie;
+        convertirMelodieEnList();
         partition.setMelodie(melodie);
+    }
+
+    public void playMelodieVide(){
+        partition.play("");
     }
 
     public void transposerNotesArezzo(int entier){
