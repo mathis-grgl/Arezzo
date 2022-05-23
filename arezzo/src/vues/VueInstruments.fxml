@@ -11,27 +11,27 @@
 
 <AnchorPane prefHeight="312.0" prefWidth="274.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurInstruments">
    <children>
-      <ChoiceBox fx:id="boxInstruments" layoutX="31.0" layoutY="40.0" prefWidth="150.0" />
-      <RadioButton fx:id="aigu" layoutX="35.0" layoutY="73.0" mnemonicParsing="false" onAction="#setHauteur" text="Aigu">
+      <ChoiceBox fx:id="boxInstruments" layoutX="120.0" layoutY="40.0" prefWidth="150.0" />
+      <RadioButton fx:id="aigu" layoutX="124.0" layoutY="73.0" mnemonicParsing="false" onAction="#setHauteur" text="Aigu">
          <toggleGroup>
             <ToggleGroup fx:id="groupHauteurs" />
          </toggleGroup></RadioButton>
-      <RadioButton fx:id="medium" layoutX="35.0" layoutY="93.0" mnemonicParsing="false" onAction="#setHauteur" selected="true" text="Medium" toggleGroup="$groupHauteurs" />
-      <RadioButton fx:id="grave" layoutX="35.0" layoutY="113.0" mnemonicParsing="false" onAction="#setHauteur" text="Grave" toggleGroup="$groupHauteurs" />
-      <Line endX="50.0" endY="16.0" layoutX="131.0" layoutY="49.0" startX="-100.0" startY="16.0" />
-      <Line endX="50.0" layoutX="131.0" layoutY="135.0" startX="-100.0" />
-      <RadioButton fx:id="ronde" alignment="BOTTOM_CENTER" layoutX="35.0" layoutY="142.0" mnemonicParsing="false" onAction="#setDuree">
+      <RadioButton fx:id="medium" layoutX="124.0" layoutY="93.0" mnemonicParsing="false" onAction="#setHauteur" selected="true" text="Medium" toggleGroup="$groupHauteurs" />
+      <RadioButton fx:id="grave" layoutX="124.0" layoutY="113.0" mnemonicParsing="false" onAction="#setHauteur" text="Grave" toggleGroup="$groupHauteurs" />
+      <Line endX="150.0" endY="16.0" layoutX="120.0" layoutY="49.0" startY="16.0" />
+      <Line endX="150.0" layoutX="120.0" layoutY="135.0" />
+      <RadioButton fx:id="ronde" alignment="BOTTOM_CENTER" layoutX="124.0" layoutY="142.0" mnemonicParsing="false" onAction="#setDuree">
          <toggleGroup>
             <ToggleGroup fx:id="groupDuree" />
          </toggleGroup>
          <graphic>
-            <ImageView fitHeight="15.0" layoutX="31.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="15.0" layoutX="120.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/ronde.png" />
                </image>
             </ImageView>
          </graphic></RadioButton>
-      <RadioButton fx:id="blanche" alignment="BOTTOM_CENTER" layoutX="35.0" layoutY="160.0" mnemonicParsing="false" onAction="#setDuree" toggleGroup="$groupDuree">
+      <RadioButton fx:id="blanche" alignment="BOTTOM_CENTER" layoutX="124.0" layoutY="160.0" mnemonicParsing="false" onAction="#setDuree" toggleGroup="$groupDuree">
          <graphic>
             <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -39,7 +39,7 @@
                </image>
             </ImageView>
          </graphic></RadioButton>
-      <RadioButton fx:id="noire" alignment="BOTTOM_CENTER" layoutX="35.0" layoutY="190.0" mnemonicParsing="false" onAction="#setDuree" toggleGroup="$groupDuree">
+      <RadioButton fx:id="noire" alignment="BOTTOM_CENTER" layoutX="124.0" layoutY="190.0" mnemonicParsing="false" onAction="#setDuree" toggleGroup="$groupDuree">
          <graphic>
             <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -47,7 +47,7 @@
                </image>
             </ImageView>
          </graphic></RadioButton>
-      <RadioButton fx:id="croche" alignment="BOTTOM_CENTER" layoutX="35.0" layoutY="220.0" mnemonicParsing="false" onAction="#setDuree" selected="true" toggleGroup="$groupDuree">
+      <RadioButton fx:id="croche" alignment="BOTTOM_CENTER" layoutX="124.0" layoutY="220.0" mnemonicParsing="false" onAction="#setDuree" selected="true" toggleGroup="$groupDuree">
          <graphic>
             <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -55,18 +55,18 @@
                </image>
             </ImageView>
          </graphic></RadioButton>
-      <Line endY="273.0" layoutX="181.0" startY="39.0" />
-      <Line endY="273.0" layoutX="31.0" startY="39.0" />
-      <Slider fx:id="tempo" blockIncrement="5.0" layoutX="245.0" max="220.0" min="40.0" minorTickCount="1" onMouseReleased="#setTempoSlider" orientation="VERTICAL" prefHeight="285.0" prefWidth="1.0" showTickLabels="true" value="180.0" />
-      <Slider fx:id="volume" blockIncrement="5.0" layoutX="300.0" minorTickCount="1" onMouseReleased="#setVolume" orientation="VERTICAL" prefHeight="285.0" prefWidth="16.0" showTickLabels="true" value="80.0" />
-      <Line endX="181.0" endY="39.0" startX="31.0" startY="39.0" />
-      <Line endX="181.0" endY="273.0" startX="31.0" startY="273.0" />
-      <ImageView fitHeight="18.0" fitWidth="16.0" layoutX="293.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
+      <Line endY="273.0" layoutX="270.0" startY="39.0" />
+      <Line endY="273.0" layoutX="120.0" startY="39.0" />
+      <Slider fx:id="tempo" blockIncrement="5.0" layoutX="31.0" max="220.0" min="40.0" minorTickCount="1" onMouseReleased="#setTempoSlider" orientation="VERTICAL" prefHeight="285.0" prefWidth="1.0" showTickLabels="true" value="180.0" />
+      <Slider fx:id="volume" blockIncrement="5.0" layoutX="81.0" minorTickCount="1" onMouseReleased="#setVolume" orientation="VERTICAL" prefHeight="285.0" prefWidth="16.0" showTickLabels="true" value="80.0" />
+      <Line endX="270.0" endY="39.0" startX="120.0" startY="39.0" />
+      <Line endX="270.0" endY="273.0" startX="120.0" startY="273.0" />
+      <ImageView fitHeight="18.0" fitWidth="16.0" layoutX="76.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/volume.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="18.0" fitWidth="16.0" layoutX="238.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="18.0" fitWidth="16.0" layoutX="26.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/tempo.png" />
          </image>
