@@ -193,13 +193,18 @@ public class Arezzo extends SujetObserve {
 
     public void transposerNotesArezzo(int entier){
         System.out.println(melodie);
+        String test = "";
         for (int j = 0; j < listNotesABC.size(); j++) {
             for (int i = 0; i < listMelodie.size(); i++) {
-                System.out.println(listMelodie.size());
-                if(listMelodie.get(i).equals(getNotationHauteurDuree(listNotesABC.get(j)))){
-                    //System.out.println(listMelodie.get(i)+" "+getNotationHauteurDuree(listNotesABC.get(j)));
-                    //listMelodie.set(i,listNotesABC.get((j+entier)%12));
+                String testPremiereLettre = String.valueOf(listMelodie.get(i).charAt(0));
+                if(testPremiereLettre.equals("^")){
+                    test = listMelodie.get(i).substring(2);
+                } else {
+                    test = listMelodie.get(i).substring(1);
                 }
+                System.out.println(test);
+                System.out.println("test : "+listNotesABC.get(i)+test+" melodie : "+listMelodie.get(i));
+
             }
         }
         convertirListEnMelodie();
