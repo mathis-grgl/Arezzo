@@ -9,6 +9,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Arezzo extends SujetObserve {
@@ -114,6 +115,16 @@ public class Arezzo extends SujetObserve {
 
     public String getMelodie() {
         return melodie;
+    }
+
+    public ArrayList<String> getListMelodie() {
+        return listMelodie;
+    }
+
+    public ArrayList<String> getListSansMesure(){
+        ArrayList<String> returnList = new ArrayList<>(listMelodie);
+        for (int i = 0; i <returnList.size(); i++) returnList.remove("|");
+        return returnList;
     }
 
     public void setMelodie(String melodie) {
