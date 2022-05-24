@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -42,6 +43,7 @@ public class EcouteurPlayEtNotes implements Observateur {
         listNotes.getItems().addAll(arezzo.getListSansMesure());
 
         listNotes.setFixedCellSize(40);
+        listNotes.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         listNotes.setCellFactory(entree -> new ListCell<>() {
             @Override
             public void updateItem(String note, boolean estVide) {
@@ -57,11 +59,10 @@ public class EcouteurPlayEtNotes implements Observateur {
                     if (note.matches(".{1,3}4"))
                         imageNote.setImage(new Image("images/ronde.png"));
 
-
-
                     String noteSP = arezzo.noteSansSurPlusMajuscule(note);
+                    String octave = String.valueOf(noteSP.charAt(noteSP.length()-1));
                     noteSP = arezzo.conversionNotesVersClassique(noteSP);
-                    setText(noteSP);
+                    setText(noteSP+"    "+octave);
 
 
                     imageNote.setPreserveRatio(true);
