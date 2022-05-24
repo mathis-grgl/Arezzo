@@ -9,7 +9,6 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Arezzo extends SujetObserve {
@@ -33,6 +32,7 @@ public class Arezzo extends SujetObserve {
         partition = new Partition(synthesizer);
         partition.setTitre("");
         partition.setMelodie("");
+        partition.setPreferedMaxWidth(800);
 
         //Déclaration variable Arezzo
         nouveauProjet = false;
@@ -66,12 +66,12 @@ public class Arezzo extends SujetObserve {
         titre = "Nouveau projet";
         tempo = 180;
         partition.setTempo((int) tempo);
+        temps = 1;
+        nouveauProjet = true;
 
         //Bug sur certains pc de la faculté qui empêche le lancement (dû à des problèmes de son)
         //partition.setVolume(80);
 
-        temps = 1;
-        nouveauProjet = true;
     }
 
     public void deleteMelodie(){
@@ -115,10 +115,6 @@ public class Arezzo extends SujetObserve {
 
     public String getMelodie() {
         return melodie;
-    }
-
-    public ArrayList<String> getListMelodie() {
-        return listMelodie;
     }
 
     public ArrayList<String> getListSansMesure(){
@@ -179,7 +175,19 @@ public class Arezzo extends SujetObserve {
         return concatenation.toString();
     }
 
-    public String conversionNotes(String note) {
+    public String noteSansSurPlusMajuscule(String note){
+        String noteSP = note;
+        String charSP = String.valueOf(noteSP.charAt(noteSP.length()-1));
+        if(charSP.equals("/") || charSP.equals("1") || charSP.equals("2") || charSP.equals("4"))
+            noteSP = noteSP.replace(charSP,"");
+        charSP = String.valueOf(noteSP.charAt(noteSP.length()-1));
+        if(charSP.equals(","))
+            noteSP = noteSP.replace(charSP,"");
+        noteSP = noteSP.toUpperCase();
+        return noteSP;
+    }
+
+    public String conversionNotesVersABC(String note) {
         for (int i = 0; i < listNotes.size(); i++) {
             if(listNotes.get(i).equals(note)){
                 return listNotesABC.get(i);
@@ -188,23 +196,29 @@ public class Arezzo extends SujetObserve {
         return null;
     }
 
+    public String conversionNotesVersClassique(String note) {
+        for (int i = 0; i < listNotesABC.size(); i++) {
+            if(listNotesABC.get(i).equals(note)){
+                return listNotes.get(i);
+            }
+        }
+        return null;
+    }
+
     public void transposerNotesArezzo(int entier){
-        ArrayList<String> copieTemporaireMelodie = new ArrayList<>(listMelodie);
-        for (int i = 0; i < copieTemporaireMelodie.size(); i++) {
+        for (int i = 0; i < listMelodie.size(); i++) {
             //Evite de modifier les barre de séparation
             if(!listMelodie.get(i).equals("|")) {
                 //Permet d'extraire les particularités des notes et de faire une liste sans ces particularités
                 String test = String.valueOf(listMelodie.get(i).charAt(listMelodie.get(i).length() - 1));
-                copieTemporaireMelodie.set(i, copieTemporaireMelodie.get(i).substring(0, copieTemporaireMelodie.get(i).length() - 1));
+                listMelodie.set(i, listMelodie.get(i).replace(test,""));
 
                 //Fait les modifications de tons sur la copie puis sur la liste en elle-même
-                int indexMelodieListe = listNotesWOctaves.indexOf(copieTemporaireMelodie.get(i));
+                int indexMelodieListe = listNotesWOctaves.indexOf(listMelodie.get(i));
                 int indexTransposition = indexMelodieListe + entier;
                 if (indexTransposition > 35) indexTransposition = 35;
 
-                copieTemporaireMelodie.set(i, listNotesWOctaves.get(indexTransposition));
-                copieTemporaireMelodie.set(i, copieTemporaireMelodie.get(i) + test);
-                listMelodie.set(i, copieTemporaireMelodie.get(i));
+                listMelodie.set(i, listNotesWOctaves.get(indexTransposition) + test);
             }
         }
         convertirListEnMelodie();

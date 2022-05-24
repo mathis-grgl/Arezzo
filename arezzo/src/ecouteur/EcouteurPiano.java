@@ -1,6 +1,8 @@
 package ecouteur;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import model.Arezzo;
@@ -19,8 +21,9 @@ public class EcouteurPiano implements Observateur {
     @FXML
     public void jouerNotes(MouseEvent event){
         String note = event.getPickResult().getIntersectedNode().getId();
-        String noteABC = arezzo.conversionNotes(note);
-        par.play(arezzo.getNotationHauteurDuree(noteABC));
+        String noteABC = arezzo.conversionNotesVersABC(note);
+        String finalNote = arezzo.getNotationHauteurDuree(noteABC);
+        par.play(finalNote);
         arezzo.notifierObservateur();
     }
 
@@ -30,8 +33,10 @@ public class EcouteurPiano implements Observateur {
         arezzo.notifierObservateur();
     }
 
-    @Override
-    public void reagir() {
-
+    @FXML
+    public void initialize(){
     }
+
+    @Override
+    public void reagir() {}
 }

@@ -61,17 +61,17 @@ class ArezzoTest {
 
     @Test
     void conversionNotes() {
-        assertEquals(arezzo.conversionNotes("Do"),"C");
-        assertEquals(arezzo.conversionNotes("DoDiese"),"^C");
-        assertEquals(arezzo.conversionNotes("Re"),"D");
-        assertEquals(arezzo.conversionNotes("ReDiese"),"^D");
-        assertEquals(arezzo.conversionNotes("Mi"),"E");
-        assertEquals(arezzo.conversionNotes("Fa"),"F");
-        assertEquals(arezzo.conversionNotes("FaDiese"),"^F");
-        assertEquals(arezzo.conversionNotes("Sol"),"G");
-        assertEquals(arezzo.conversionNotes("SolDiese"),"^G");
-        assertEquals(arezzo.conversionNotes("La"),"A");
-        assertEquals(arezzo.conversionNotes("LaDiese"),"^A");
-        assertEquals(arezzo.conversionNotes("Si"),"B");
+        assertEquals(arezzo.conversionNotesVersABC("Do"),"C");
+        assertEquals(arezzo.conversionNotesVersABC("DoDiese"),"^C");
+        assertEquals(arezzo.conversionNotesVersABC("Re"),"D");
+        assertEquals(arezzo.conversionNotesVersABC("ReDiese"),"^D");
+        assertEquals(arezzo.conversionNotesVersABC("Mi"),"E");
+        assertEquals(arezzo.conversionNotesVersABC("Fa"),"F");
+        assertEquals(arezzo.conversionNotesVersABC("FaDiese"),"^F");
+        assertEquals(arezzo.conversionNotesVersABC("Sol"),"G");
+        assertEquals(arezzo.conversionNotesVersABC("SolDiese"),"^G");
+        assertEquals(arezzo.conversionNotesVersABC("La"),"A");
+        assertEquals(arezzo.conversionNotesVersABC("LaDiese"),"^A");
+        assertEquals(arezzo.conversionNotesVersABC("Si"),"B");
     }
 }

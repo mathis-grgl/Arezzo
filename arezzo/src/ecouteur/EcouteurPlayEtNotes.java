@@ -1,15 +1,11 @@
 package ecouteur;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Arezzo;
 
@@ -44,28 +40,38 @@ public class EcouteurPlayEtNotes implements Observateur {
         list.setTitle(arezzo.getTitre());
         ListView<String> listNotes = new ListView<>();
         listNotes.getItems().addAll(arezzo.getListSansMesure());
+
+        listNotes.setFixedCellSize(40);
         listNotes.setCellFactory(entree -> new ListCell<>() {
             @Override
             public void updateItem(String note, boolean estVide) {
                 ImageView imageNote = new ImageView();
                 super.updateItem(note, estVide);
                 if (!estVide) {
-                    if(note.equals("C/"))
+                    if(note.matches(".{1,3}/"))
                         imageNote.setImage(new Image("images/croche.png"));
-                    else if (note.equals("C1"))
+                    if (note.matches(".{1,3}1"))
                         imageNote.setImage(new Image("images/noire.png"));
-                    else if (note.equals("C2"))
+                    if (note.matches(".{1,3}2"))
                         imageNote.setImage(new Image("images/blanche.png"));
-                    else if (note.equals("C4"))
+                    if (note.matches(".{1,3}4"))
                         imageNote.setImage(new Image("images/ronde.png"));
+
+
+
+                    String noteSP = arezzo.noteSansSurPlusMajuscule(note);
+                    noteSP = arezzo.conversionNotesVersClassique(noteSP);
+                    setText(noteSP);
+
+
                     imageNote.setPreserveRatio(true);
                     imageNote.setFitWidth(40);
                     imageNote.setFitHeight(40);
-                    setText(note);
                     setGraphic(imageNote);
                 }
             }
         });
+
         list.setScene(new Scene(listNotes, 300, 500));
         list.show();
     }
