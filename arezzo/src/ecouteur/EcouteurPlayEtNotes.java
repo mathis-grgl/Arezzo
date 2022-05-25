@@ -50,21 +50,14 @@ public class EcouteurPlayEtNotes implements Observateur {
                 ImageView imageNote = new ImageView();
                 super.updateItem(note, estVide);
                 if (!estVide) {
-                    if(note.matches(".{1,3}/"))
-                        imageNote.setImage(new Image("images/croche.png"));
-                    if (note.matches(".{1,3}1"))
-                        imageNote.setImage(new Image("images/noire.png"));
-                    if (note.matches(".{1,3}2"))
-                        imageNote.setImage(new Image("images/blanche.png"));
-                    if (note.matches(".{1,3}4"))
-                        imageNote.setImage(new Image("images/ronde.png"));
-
-                    String noteSP = arezzo.noteSansSurPlusMajuscule(note);
-                    String octave = String.valueOf(noteSP.charAt(noteSP.length()-1));
-                    noteSP = arezzo.conversionNotesVersClassique(noteSP);
-                    setText(noteSP+"    "+octave);
+                    String noteToClassique = arezzo.noteSansSurPlusMajuscule(note);
+                    noteToClassique = arezzo.conversionNotesVersClassique(noteToClassique);
+                    String duree = arezzo.getDureeNote(note);
+                    String octave = arezzo.getOctaveNote(note.substring(0,note.length()-1));
+                    setText(noteToClassique+"    "+octave);
 
 
+                    imageNote.setImage(new Image("images/"+duree+".png"));
                     imageNote.setPreserveRatio(true);
                     imageNote.setFitWidth(40);
                     imageNote.setFitHeight(40);

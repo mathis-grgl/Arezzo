@@ -270,4 +270,25 @@ public class Arezzo extends SujetObserve {
     public int getTempo() {
         return (int) tempo;
     }
+
+    public String getDureeNote(String note) {
+        if(note.matches(".{1,3}/"))
+            return "croche";
+        if (note.matches(".{1,3}1"))
+            return "noire";
+        if (note.matches(".{1,3}2"))
+            return "blanche";
+        if (note.matches(".{1,3}4"))
+            return "ronde";
+        return null;
+    }
+
+    public String getOctaveNote(String note) {
+        char checkLettre = note.charAt(note.length()-1);
+        if(String.valueOf(checkLettre).equals(","))
+            return "grave";
+        if(Character.isLowerCase(checkLettre) && Character.isLetter(checkLettre))
+                return "aigu";
+        return "medium";
+    }
 }
