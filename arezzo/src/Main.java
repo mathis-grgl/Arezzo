@@ -58,6 +58,7 @@ public class Main extends Application {
         root.setCenter(affichageNotes.load());
 
         //Eléments principaux de la fenêtre
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Arezzo");
         primaryStage.setScene(new Scene(root, 1000, 900));
         primaryStage.show();

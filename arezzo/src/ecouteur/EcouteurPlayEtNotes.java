@@ -1,12 +1,15 @@
 package ecouteur;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.Arezzo;
 
@@ -47,25 +50,29 @@ public class EcouteurPlayEtNotes implements Observateur {
         listNotes.setCellFactory(entree -> new ListCell<>() {
             @Override
             public void updateItem(String note, boolean estVide) {
-                ImageView imageNote = new ImageView();
                 super.updateItem(note, estVide);
                 if (!estVide) {
                     String noteToClassique = arezzo.noteSansSurPlusMajuscule(note);
                     noteToClassique = arezzo.conversionNotesVersClassique(noteToClassique);
+
                     String duree = arezzo.getDureeNote(note);
                     String octave = arezzo.getOctaveNote(note.substring(0,note.length()-1));
-                    setText(noteToClassique+"    "+octave);
+                    octave = octave.toUpperCase();
+                    octave = "  - {"+octave+"}";
 
-
+                    ImageView imageNote = new ImageView();
                     imageNote.setImage(new Image("images/"+duree+".png"));
                     imageNote.setPreserveRatio(true);
                     imageNote.setFitWidth(40);
                     imageNote.setFitHeight(40);
+
+                    setText(noteToClassique+octave);
                     setGraphic(imageNote);
                 }
             }
         });
 
+        listNotes.setStyle("-fx-background-color: beige;-fx-background-fill : beige;");
         list.setScene(new Scene(listNotes, 300, 500));
         list.show();
     }
