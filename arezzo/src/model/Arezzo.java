@@ -1,5 +1,6 @@
 package model;
 
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import partition.Partition;
 import ecouteur.SujetObserve;
@@ -44,10 +45,10 @@ public class Arezzo extends SujetObserve {
         tempo = 180;
 
         //Initialisation de la liste des notes en version ABC
-        listNotesABC = List.of("C","^C","D","^D","E","F","^F","G","^G","A","^A","B");
+        listNotesABC = List.of("C","^C","D","^D","E","F","^F","G","^G","A","^A","B","Z");
 
         //Initialisation de la liste des notes en version classique
-        listNotes = List.of("Do","DoDiese","Re","ReDiese","Mi","Fa","FaDiese","Sol","SolDiese","La","LaDiese","Si");
+        listNotes = List.of("Do","DoDiese","Re","ReDiese","Mi","Fa","FaDiese","Sol","SolDiese","La","LaDiese","Si","Silence");
 
         //Initialisation de la liste des notes en version octaves
         listNotesWOctaves = List.of("C,","^C,","D,","^D,","E,","F,","^F,","G,","^G,","A,","^A,","B,","C","^C","D","^D","E","F","^F","G","^G","A","^A","B","c","^c","d","^d","e","f","^f","g","^g","a","^a","b");
@@ -98,6 +99,7 @@ public class Arezzo extends SujetObserve {
             concat.append(" ");
         }
         melodie = concat.toString();
+        setMelodie(melodie);
     }
 
     public void convertirMelodieEnList(){
@@ -109,6 +111,7 @@ public class Arezzo extends SujetObserve {
 
     public void jouerMelodie() {
         convertirListEnMelodie();
+        System.out.println(melodie);
         partition.play(melodie);
         partition.setMelodie(melodie);
     }
@@ -175,54 +178,11 @@ public class Arezzo extends SujetObserve {
         return concatenation.toString();
     }
 
-    public String noteSansSurPlusMajuscule(String note){
-        String noteSP = note;
-        String charSP = String.valueOf(noteSP.charAt(noteSP.length()-1));
-        if(charSP.equals("/") || charSP.equals("1") || charSP.equals("2") || charSP.equals("4"))
-            noteSP = noteSP.replace(charSP,"");
-        charSP = String.valueOf(noteSP.charAt(noteSP.length()-1));
-        if(charSP.equals(","))
-            noteSP = noteSP.replace(charSP,"");
-        noteSP = noteSP.toUpperCase();
-        return noteSP;
-    }
-
-    public String conversionNotesVersABC(String note) {
-        for (int i = 0; i < listNotes.size(); i++) {
-            if(listNotes.get(i).equals(note)){
-                return listNotesABC.get(i);
-            }
-        }
-        return null;
-    }
-
-    public String conversionNotesVersClassique(String note) {
-        for (int i = 0; i < listNotesABC.size(); i++) {
-            if(listNotesABC.get(i).equals(note)){
-                return listNotes.get(i);
-            }
-        }
-        return null;
-    }
-
-    public void transposerNotesArezzo(int entier){
+    public void transposerNotesArezzo(int nbTransposition){
         for (int i = 0; i < listMelodie.size(); i++) {
-            //Evite de modifier les barre de séparation
-            if(!listMelodie.get(i).equals("|")) {
-                //Permet d'extraire les particularités des notes et de faire une liste sans ces particularités
-                String test = String.valueOf(listMelodie.get(i).charAt(listMelodie.get(i).length() - 1));
-                listMelodie.set(i, listMelodie.get(i).replace(test,""));
-
-                //Fait les modifications de tons sur la copie puis sur la liste en elle-même
-                int indexMelodieListe = listNotesWOctaves.indexOf(listMelodie.get(i));
-                int indexTransposition = indexMelodieListe + entier;
-                if (indexTransposition > 35) indexTransposition = 35;
-
-                listMelodie.set(i, listNotesWOctaves.get(indexTransposition) + test);
-            }
+            transposerNote(nbTransposition, i);
         }
         convertirListEnMelodie();
-        setMelodie(melodie);
         notifierObservateur();
     }
 
@@ -271,6 +231,70 @@ public class Arezzo extends SujetObserve {
         return (int) tempo;
     }
 
+    public String noteSansSurPlusMajuscule(String note){
+        String noteSP = note;
+        String charSP = String.valueOf(noteSP.charAt(noteSP.length()-1));
+        if(charSP.equals("/") || charSP.equals("1") || charSP.equals("2") || charSP.equals("4"))
+            noteSP = noteSP.replace(charSP,"");
+        charSP = String.valueOf(noteSP.charAt(noteSP.length()-1));
+        if(charSP.equals(","))
+            noteSP = noteSP.replace(charSP,"");
+        noteSP = noteSP.toUpperCase();
+        return noteSP;
+    }
+
+    public String conversionNotesVersABC(String note) {
+        for (int i = 0; i < listNotes.size(); i++) {
+            if(listNotes.get(i).equals(note)){
+                return listNotesABC.get(i);
+            }
+        }
+        return null;
+    }
+
+    public String conversionNotesVersClassique(String note) {
+        for (int i = 0; i < listNotesABC.size(); i++) {
+            if(listNotesABC.get(i).equals(note)){
+                return listNotes.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void supprimerNote(ObservableList<Integer> notes){
+        for(int index : notes){
+            listMelodie.remove(index);
+        }
+        convertirListEnMelodie();
+        notifierObservateur();
+    }
+
+    public void transposerNoteComposition(int nbTransposition, ObservableList<Integer> notes){
+        for (int index : notes) {
+            transposerNote(nbTransposition, index);
+        }
+        convertirListEnMelodie();
+        notifierObservateur();
+    }
+
+    private void transposerNote(int nbTransposition, int index) {
+        //Evite de modifier les barre de séparation
+        if(!listMelodie.get(index).equals("|")) {
+
+            //Permet d'extraire les particularités des notes et de faire une liste sans ces particularités
+            String symboleDuree = String.valueOf(listMelodie.get(index).charAt(listMelodie.get(index).length() - 1));
+            listMelodie.set(index, listMelodie.get(index).replace(symboleDuree,""));
+
+            //Permet de savoir l'index de la future note
+            int indexMelodieListe = listNotesWOctaves.indexOf(listMelodie.get(index));
+            int indexTransposition = indexMelodieListe + nbTransposition;
+            if (indexTransposition > 35) indexTransposition = 35;
+
+            //Fait les modifications de tons sur la note i
+            listMelodie.set(index, listNotesWOctaves.get(indexTransposition) + symboleDuree);
+        }
+    }
+
     public String getDureeNote(String note) {
         if(note.matches(".{1,3}/"))
             return "croche";
@@ -281,6 +305,30 @@ public class Arezzo extends SujetObserve {
         if (note.matches(".{1,3}4"))
             return "ronde";
         return null;
+    }
+
+    public String getDureeSilence(String note) {
+        String dureeSilence = getDureeNote(note);
+        System.out.println(dureeSilence);
+        switch (dureeSilence){
+            case "croche":
+                System.out.println("ds");
+                return "demiSoupir";
+            case "noire":
+                System.out.println("s");
+                return "soupir";
+            case "blanche":
+                System.out.println("dp");
+                return "demiPause";
+            case "ronde":
+                System.out.println("p");
+                return "pause";
+        }
+        return note;
+    }
+
+    public boolean noteEstUnSilence(String note){
+        return noteSansSurPlusMajuscule(note).equals("Z");
     }
 
     public String getOctaveNote(String note) {
