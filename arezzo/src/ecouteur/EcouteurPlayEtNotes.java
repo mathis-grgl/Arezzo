@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.Arezzo;
@@ -79,12 +81,15 @@ public class EcouteurPlayEtNotes implements Observateur {
         MenuItem augmenterSelection = new MenuItem("Augmenter d'un demi-ton");
         MenuItem descendreSelection = new MenuItem("Descendre d'un demi-ton");
 
-        cliqueDroitMenu.getItems().addAll(supprimerSelection,augmenterSelection,descendreSelection);
-
+        supprimerSelection.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));
+        descendreSelection.setAccelerator(new KeyCodeCombination(KeyCode.SUBTRACT));
+        augmenterSelection.setAccelerator(new KeyCodeCombination(KeyCode.ADD));
 
         supprimerSelection.setOnAction(e-> arezzo.supprimerNote(listNotes.getSelectionModel().getSelectedIndices()));
         augmenterSelection.setOnAction(e-> arezzo.transposerNoteComposition(1,listNotes.getSelectionModel().getSelectedIndices()));
         descendreSelection.setOnAction(e-> arezzo.transposerNoteComposition(-1,listNotes.getSelectionModel().getSelectedIndices()));
+
+        cliqueDroitMenu.getItems().addAll(supprimerSelection,augmenterSelection,descendreSelection);
     }
 
     @FXML
@@ -107,8 +112,8 @@ public class EcouteurPlayEtNotes implements Observateur {
     public void affichageNotes(){
         arezzo.notifierObservateur();
         ObservableList<String> liste = FXCollections.observableArrayList(arezzo.getListSansMesure());
-        listNotes.setItems(liste);
-
+        listNotes.getItems().clear();
+        listNotes.getItems().setAll(liste);
         list.show();
     }
 

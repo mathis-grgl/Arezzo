@@ -72,7 +72,6 @@ public class Arezzo extends SujetObserve {
 
         //Bug sur certains pc de la faculté qui empêche le lancement (dû à des problèmes de son)
         //partition.setVolume(80);
-
     }
 
     public void deleteMelodie(){
@@ -111,13 +110,8 @@ public class Arezzo extends SujetObserve {
 
     public void jouerMelodie() {
         convertirListEnMelodie();
-        System.out.println(melodie);
         partition.play(melodie);
         partition.setMelodie(melodie);
-    }
-
-    public String getMelodie() {
-        return melodie;
     }
 
     public ArrayList<String> getListSansMesure(){
@@ -186,51 +180,6 @@ public class Arezzo extends SujetObserve {
         notifierObservateur();
     }
 
-    public Boolean getNouveauProjet() {
-        return nouveauProjet;
-    }
-
-    public void setNouveauProjet(Boolean nouveauProjet) {
-        this.nouveauProjet = nouveauProjet;
-    }
-
-    public void setHauteur(String hauteur){
-        this.hauteur = hauteur;
-    }
-
-    public void setDuree(String duree){
-        this.duree = duree;
-    }
-
-    public void setTempo(double tempo) {
-        this.tempo = tempo;
-        partition.setTempo((int) tempo);
-    }
-
-    public String getTitre() {
-        return titre;
-    }
-
-    public void setTitre(String titre) {
-        this.titre = titre;
-    }
-
-    public Partition getPartition() {
-        return partition;
-    }
-
-    public void fermerPartition(){
-        partition.close();
-    }
-
-    public Image getImage(){
-        return partition.getImage();
-    }
-
-    public int getTempo() {
-        return (int) tempo;
-    }
-
     public String noteSansSurPlusMajuscule(String note){
         String noteSP = note;
         String charSP = String.valueOf(noteSP.charAt(noteSP.length()-1));
@@ -289,10 +238,24 @@ public class Arezzo extends SujetObserve {
             int indexMelodieListe = listNotesWOctaves.indexOf(listMelodie.get(index));
             int indexTransposition = indexMelodieListe + nbTransposition;
             if (indexTransposition > 35) indexTransposition = 35;
+            if (indexTransposition < 0) indexTransposition = 0;
 
             //Fait les modifications de tons sur la note i
             listMelodie.set(index, listNotesWOctaves.get(indexTransposition) + symboleDuree);
         }
+    }
+
+    public boolean noteEstUnSilence(String note){
+        return noteSansSurPlusMajuscule(note).equals("Z");
+    }
+
+    public String getOctaveNote(String note) {
+        char checkLettre = note.charAt(note.length()-1);
+        if(String.valueOf(checkLettre).equals(","))
+            return "grave";
+        if(Character.isLowerCase(checkLettre) && Character.isLetter(checkLettre))
+                return "aigu";
+        return "medium";
     }
 
     public String getDureeNote(String note) {
@@ -327,16 +290,51 @@ public class Arezzo extends SujetObserve {
         return note;
     }
 
-    public boolean noteEstUnSilence(String note){
-        return noteSansSurPlusMajuscule(note).equals("Z");
+    public String getMelodie() {
+        return melodie;
     }
 
-    public String getOctaveNote(String note) {
-        char checkLettre = note.charAt(note.length()-1);
-        if(String.valueOf(checkLettre).equals(","))
-            return "grave";
-        if(Character.isLowerCase(checkLettre) && Character.isLetter(checkLettre))
-                return "aigu";
-        return "medium";
+    public Boolean getNouveauProjet() {
+        return nouveauProjet; }
+
+    public void setNouveauProjet(Boolean nouveauProjet) {
+        this.nouveauProjet = nouveauProjet;
+    }
+
+    public void setHauteur(String hauteur){
+        this.hauteur = hauteur;
+    }
+
+    public void setDuree(String duree){
+        this.duree = duree;
+    }
+
+    public void setTempo(double tempo) {
+        this.tempo = tempo;
+        partition.setTempo((int) tempo);
+    }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public Partition getPartition() {
+        return partition;
+    }
+
+    public void fermerPartition(){
+        partition.close();
+    }
+
+    public Image getImage(){
+        return partition.getImage();
+    }
+
+    public int getTempo() {
+        return (int) tempo;
     }
 }
