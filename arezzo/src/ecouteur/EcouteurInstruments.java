@@ -11,8 +11,9 @@ import javafx.scene.layout.AnchorPane;
 import model.Arezzo;
 import partition.Partition;
 
-import javax.swing.text.html.StyleSheet;
-
+/**
+ * L'écouteur lié à la VueInstruments.
+ */
 public class EcouteurInstruments implements Observateur{
     @FXML
     private ChoiceBox<String> boxInstruments;
@@ -29,18 +30,28 @@ public class EcouteurInstruments implements Observateur{
     private Arezzo arezzo;
     private Partition par;
 
+    /**
+     * Instancie une nouvelle instance de EcouteurInstruments.
+     * @param arezzo Le model Arezzo
+     */
     public EcouteurInstruments(Arezzo arezzo){
         this.arezzo = arezzo;
         this.arezzo.ajouterObservateur(this);
-        listInstruments = FXCollections.observableArrayList("Piano","Guitare","Saxophone","Trompette");
+
         par = this.arezzo.getPartition();
+
+        listInstruments = FXCollections.observableArrayList("Piano","Guitare","Saxophone","Trompette");
     }
 
+    /**
+     * Initialise la partie graphique de la vue gérée dans l'écouteur.
+     */
     @FXML
     public void initialize(){
         //Liste instruments
         boxInstruments.setItems(listInstruments);
         boxInstruments.setValue("Piano");
+
         boxInstruments.setStyle("-fx-background-color: #B6E2D3");
         fenetreInstruments.setStyle("-fx-background-color: #B6E2D3;");
         tempo.setStyle("-fx-control-inner-background: #FAE8E0;");
@@ -48,30 +59,45 @@ public class EcouteurInstruments implements Observateur{
     }
 
 
+    /**
+     * Définit l'octave de la note depuis les différents boutons d'octaves.
+     */
     @FXML
     public void setHauteur(){
         arezzo.setHauteur(((RadioButton) groupHauteurs.getSelectedToggle()).getId());
-        arezzo.notifierObservateur();
+        arezzo.notifierObservateurs();
     }
 
+    /**
+     * Définit la durée de la note depuis les différents boutons de durée de notes.
+     */
     @FXML
     public void setDuree(){
         arezzo.setDuree(((RadioButton) groupDuree.getSelectedToggle()).getId());
-        arezzo.notifierObservateur();
+        arezzo.notifierObservateurs();
     }
 
+    /**
+     * Définit le tempo de la partition depuis le curseur.
+     */
     @FXML
     public void setTempoSlider(){
         arezzo.setTempo(tempo.getValue());
-        arezzo.notifierObservateur();
+        arezzo.notifierObservateurs();
     }
 
+    /**
+     * Définit le volume du pc depuis le curseur (linux uniquement).
+     */
     @FXML
     public void setVolume() {
         par.setVolume(volume.getValue());
-        arezzo.notifierObservateur();
+        arezzo.notifierObservateurs();
     }
 
+    /**
+     * Remet tous les boutons et curseurs à leur valeur par défaut.
+     */
     public void reInitialize(){
         croche.setSelected(true);
         medium.setSelected(true);

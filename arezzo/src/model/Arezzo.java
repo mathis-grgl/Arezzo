@@ -25,7 +25,7 @@ public class Arezzo extends SujetObserve {
     private List<String> listNotesABC, listNotes, listNotesWOctaves, listSilence;
 
     /**
-     * Instantiates a new Arezzo.
+     * Instancie un Arezzo.
      */
     public Arezzo(){
         //Déclaration synthesizer
@@ -70,7 +70,7 @@ public class Arezzo extends SujetObserve {
     }
 
     /**
-     * Reset all.
+     * Remet par défaut toutes les valeurs possibles (concernant la mélodie).
      */
     public void resetAll(){
         partition.setInstrument("Piano");
@@ -88,90 +88,103 @@ public class Arezzo extends SujetObserve {
     }
 
     /**
-     * Delete melodie.
+     * Supprime la mélodie.
      */
     public void deleteMelodie(){
         partition.play("");
         partition.setMelodie("");
+
         listMelodie.clear();
         melodie = "";
+
         temps = 1.0;
     }
 
     /**
-     * Add melodie.
-     *
-     * @param lettre the lettre
+     * Ajoute une note à la mélodie.
+     * @param lettre La note
      */
     public void addMelodie(String lettre){
         listMelodie.add(lettre);
+
         if(temps >= 4) {
             temps = 0.0;
             listMelodie.add("|");
         }
+
         convertirListEnMelodie();
     }
 
     /**
-     * Convertir list en melodie.
+     * Convertit la liste de notes en mélodie.
      */
     public void convertirListEnMelodie(){
+
         StringBuilder concat = new StringBuilder();
+
         for (String lettre : listMelodie) {
             concat.append(lettre);
             concat.append(" ");
         }
+
         melodie = concat.toString();
+
         setMelodie(melodie);
     }
 
     /**
-     * Convertir melodie en list.
+     * Convertit la mélodie en liste de notes.
      */
     public void convertirMelodieEnList(){
         String[] separation = melodie.split("\\s");
         List<String> listCopie = Arrays.asList(separation);
+
         listMelodie = new ArrayList<>();
         listMelodie.addAll(listCopie);
     }
 
     /**
-     * Jouer melodie.
+     * Joue la mélodie en entier.
      */
     public void jouerMelodie() {
         convertirListEnMelodie();
+
         partition.play(melodie);
         partition.setMelodie(melodie);
     }
 
     /**
-     * Sets melodie.
-     *
-     * @param melodie the melodie
+     * Modifie la mélodie en fonction de la mélodie en paramètre.
+     * @param melodie La nouvelle mélodie
      */
     public void setMelodie(String melodie) {
         this.melodie = melodie;
+
         convertirMelodieEnList();
+
         partition.setMelodie(melodie);
     }
 
     /**
-     * Play melodie vide.
+     * Joue une note vide (utile pour stopper une mélodie qui est en train de jouer).
      */
     public void playMelodieVide(){
         partition.play("");
     }
 
     /**
-     * Gets notation hauteur duree.
-     *
-     * @param lettre the lettre
-     * @return the notation hauteur duree
+     * Permet de retourner et d'ajouter une note à la mélodie avec ces spécificités (octave et durée).
+     * @param lettre La note vierge
+     * @return La note complète
      */
     public String getNotationHauteurDuree(String lettre) {
-        StringBuilder concatenation = new StringBuilder();
+
         String lettreABC = lettre;
+
+        StringBuilder concatenation = new StringBuilder();
+
         if (!lettre.equals("z") && !lettre.equals("|")) {
+
             switch (hauteur) {
                 case "aigu":
                     lettreABC = lettreABC.toLowerCase();
@@ -184,119 +197,143 @@ public class Arezzo extends SujetObserve {
                 case "medium":
                     concatenation.append(lettreABC);
             }
-        } else {
+        }
+
+        else {
             if(lettre.equals("z"))
                 concatenation.append("z");
         }
-            switch (duree) {
-                case "croche":
-                    concatenation.append("/");
-                    temps+=0.5;
-                    break;
-                case "ronde":
-                    concatenation.append("4");
-                    temps+=4;
-                    break;
-                case "blanche":
-                    concatenation.append("2");
-                    temps+=2;
-                    break;
-                case "noire":
-                    concatenation.append("1");
-                    temps+=1;
-                    break;
-            }
+
+        switch (duree) {
+            case "croche":
+                concatenation.append("/");
+                temps += 0.5;
+                break;
+            case "ronde":
+                concatenation.append("4");
+                temps += 4;
+                break;
+            case "blanche":
+                concatenation.append("2");
+                temps += 2;
+                break;
+            case "noire":
+                concatenation.append("1");
+                temps += 1;
+                break;
+        }
+
         addMelodie(concatenation.toString());
+
         partition.setMelodie(melodie);
+
         return concatenation.toString();
     }
 
     /**
-     * Transposer notes arezzo.
-     *
-     * @param nbTransposition the nb transposition
+     * Transpose toute la mélodie en fonction de l'entier rentré en paramètre.
+     * @param nbTransposition Le nombre de demi-tons à transposer
      */
     public void transposerNotesArezzo(int nbTransposition){
+
         for (int i = 0; i < listMelodie.size(); i++) {
             transposerNote(nbTransposition, i);
         }
+
         convertirListEnMelodie();
     }
 
     /**
-     * Note sans sur plus majuscule string.
-     *
-     * @param note the note
-     * @return the string
+     * Retourne une note vierge depuis une note complète rentrée en paramètre.
+     * @param note La note complète (^C,2)
+     * @return La note vierge (^C)
      */
     public String noteSansSurPlusMajuscule(String note){
+
         String noteSP = note;
+
         String charSP = String.valueOf(noteSP.charAt(noteSP.length()-1));
-        if(charSP.equals("/") || charSP.equals("1") || charSP.equals("2") || charSP.equals("4"))
+
+        if(charSP.equals("/") || charSP.equals("1") || charSP.equals("2") || charSP.equals("4")) {
             noteSP = noteSP.replace(charSP,"");
+        }
+
         charSP = String.valueOf(noteSP.charAt(noteSP.length()-1));
+
         if(charSP.equals(","))
             noteSP = noteSP.replace(charSP,"");
+
         noteSP = noteSP.toUpperCase();
+
         return noteSP;
     }
 
     /**
-     * Conversion notes vers abc string.
-     *
-     * @param note the note
-     * @return the string
+     * Convertit une note classique en sa version ABC.
+     * @param note La note classique (Do)
+     * @return La note version ABC (C)
      */
     public String conversionNotesVersABC(String note) {
+
         for (int i = 0; i < listNotes.size(); i++) {
             if(listNotes.get(i).equals(note)){
                 return listNotesABC.get(i);
             }
         }
+
         return null;
     }
 
     /**
-     * Conversion notes vers classique string.
-     *
-     * @param note the note
-     * @return the string
+     * Convertit une note ABC en sa version classique.
+     * @param note La note version ABC (C)
+     * @return La note classique (Do)
      */
     public String conversionNotesVersClassique(String note) {
+
         for (int i = 0; i < listNotesABC.size(); i++) {
             if(listNotesABC.get(i).equals(note)){
                 return listNotes.get(i);
             }
         }
+
         return null;
     }
 
     /**
-     * Supprimer note.
-     *
-     * @param notes the notes
+     * Supprime les notes sélectionnées dans la liste de notes en fonction des index en paramètres.
+     * @param notes Les index des notes sélectionnées
      */
     public void supprimerNote(ObservableList<Integer> notes){
+
         for(int index : notes){
             if(listMelodie.size()>1)
                 listMelodie.remove(index);
         }
+
         convertirListEnMelodie();
     }
 
     /**
-     * Transposer note composition.
-     *
-     * @param nbTransposition the nb transposition
-     * @param notes           the notes
+     * Transpose les notes sélectionnées dans la liste de notes en fonction des index en paramètres.
+     * @param nbTransposition Le nombre de demi-tons à transposer
+     * @param notes Les index des notes sélectionnées
+     * @see #transposerNote(int, int)
      */
     public void transposerNoteComposition(int nbTransposition, ObservableList<Integer> notes){
+
         for (int index : notes) {
             transposerNote(nbTransposition, index);
         }
+
         convertirListEnMelodie();
     }
 
+    /**
+     * Sous fonction qui permet de factoriser le code de transposition.
+     * @param nbTransposition Le nombre de demi-tons à transposer
+     * @param index Index de la note à transposer
+     */
     private void transposerNote(int nbTransposition, int index) {
         //Evite de modifier les barre de séparation
         if(!listMelodie.get(index).equals("|")) {
@@ -332,57 +369,65 @@ public class Arezzo extends SujetObserve {
     }
 
     /**
-     * Note est un silence boolean.
-     *
-     * @param note the note
-     * @return the boolean
+     * Permet de savoir si une note est un silence.
+     * @param note La note
+     * @return Vrai si est un silence
      */
     public boolean noteEstUnSilence(String note){
         return noteSansSurPlusMajuscule(note).equals("Z");
     }
 
     /**
-     * Gets octave note.
-     *
-     * @param note the note
-     * @return the octave note
+     * Retourne l'octave d'une note.
+     * @param note La note
+     * @return L'octave de la note
      */
     public String getOctaveNote(String note) {
+
         String noteSansDuree = note.substring(0,note.length()-1);
+
         char checkLettre = note.charAt(noteSansDuree.length()-1);
         if(String.valueOf(checkLettre).equals(","))
             return "grave";
+
         if(Character.isLowerCase(checkLettre) && Character.isLetter(checkLettre))
                 return "aigu";
+
         return "medium";
     }
 
     /**
-     * Gets duree note.
-     *
-     * @param note the note
-     * @return the duree note
+     * Retourne la durée d'une note.
+     * @param note La note
+     * @return La durée de la note
      */
     public String getDureeNote(String note) {
+
         if(note.matches(".{1,3}/"))
             return "croche";
+
         if (note.matches(".{1,3}1"))
             return "noire";
+
         if (note.matches(".{1,3}2"))
             return "blanche";
+
         if (note.matches(".{1,3}4"))
             return "ronde";
+
         return null;
     }
 
     /**
-     * Gets duree silence.
-     *
-     * @param note the note
-     * @return the duree silence
+     * Retourne la durée d'un silence.
+     * @param note Le silence
+     * @return La durée du silence
+     * @see #getDureeNote(String) 
      */
     public String getDureeSilence(String note) {
+
         String dureeSilence = getDureeNote(note);
+
         switch (dureeSilence){
             case "croche":
                 return "demiSoupir";
@@ -393,57 +438,53 @@ public class Arezzo extends SujetObserve {
             case "ronde":
                 return "pause";
         }
+
         return note;
     }
 
     /**
-     * Gets melodie.
-     *
-     * @return the melodie
+     * Retourne la mélodie.
+     * @return La mélodie en chaîne de caractère
      */
     public String getMelodie() {
         return melodie;
     }
 
     /**
-     * Gets nouveau projet.
-     *
-     * @return the nouveau projet
+     * Permet de savoir si la mélodie est un nouveau projet (utile pour réinitialiser la partie graphique).
+     * @return Vrai si c'est un nouveau projet
      */
     public Boolean getNouveauProjet() {
-        return nouveauProjet; }
+        return nouveauProjet;
+    }
 
     /**
-     * Sets nouveau projet.
-     *
-     * @param nouveauProjet the nouveau projet
+     * Modifie la valeur de nouveauProjet en fonction du booléen en paramètre.
+     * @param nouveauProjet La nouvelle valeur booléenne
      */
     public void setNouveauProjet(Boolean nouveauProjet) {
         this.nouveauProjet = nouveauProjet;
     }
 
     /**
-     * Set hauteur.
-     *
-     * @param hauteur the hauteur
+     * Définit l'octave pour les notes qui vont être ajoutées.
+     * @param hauteur Le nouvel octave
      */
     public void setHauteur(String hauteur){
         this.hauteur = hauteur;
     }
 
     /**
-     * Set duree.
-     *
-     * @param duree the duree
+     * Définit la durée pour les notes qui vont être ajoutées.
+     * @param duree La nouvelle durée
      */
     public void setDuree(String duree){
         this.duree = duree;
     }
 
     /**
-     * Sets tempo.
-     *
-     * @param tempo the tempo
+     * Définit le tempo pour la mélodie.
+     * @param tempo Le nouveau tempo
      */
     public void setTempo(Double tempo) {
         this.tempo = tempo;
@@ -451,99 +492,89 @@ public class Arezzo extends SujetObserve {
     }
 
     /**
-     * Gets titre.
-     *
-     * @return the titre
+     * Retourne le titre de la mélodie.
+     * @return Le titre de la mélodie
      */
     public String getTitre() {
         return titre;
     }
 
     /**
-     * Sets titre.
-     *
-     * @param titre the titre
+     * Modifie le titre de la mélodie en fonction du titre en paramètre.
+     * @param titre Le nouveau titre
      */
     public void setTitre(String titre) {
         this.titre = titre;
     }
 
     /**
-     * Gets partition.
-     *
-     * @return the partition
+     * Retourne la partition initialisé dans Arezzo.
+     * @return La partition actuelle
      */
     public Partition getPartition() {
         return partition;
     }
 
     /**
-     * Fermer partition.
+     * Ferme la partition (utile pour tout quitter).
      */
     public void fermerPartition(){
         partition.close();
     }
 
     /**
-     * Get image image.
-     *
-     * @return the image
+     * Retourne l'image contenant la mélodie.
+     * @return L'image de la mélodie
      */
     public Image getImage(){
         return partition.getImage();
     }
 
     /**
-     * Gets tempo.
-     *
-     * @return the tempo
+     * Retourne le tempo actuel.
+     * @return Le tempo
      */
     public int getTempo() {
         return tempo.intValue();
     }
 
     /**
-     * Get note melodie string.
-     *
-     * @param index the index
-     * @return the string
+     * Retourne une note dans la liste des notes en fonction de l'index en paramètre.
+     * @param index L'index de la note
+     * @return La note
      */
     public String getNoteMelodie(int index){
         return listMelodie.get(index);
     }
 
     /**
-     * Gets list melodie.
-     *
-     * @return the list melodie
+     * Retourne la liste des notes.
+     * @return La liste des notes.
      */
     public ArrayList<String> getListMelodie() {
         return listMelodie;
     }
 
     /**
-     * Ne peut plus etre supprimer boolean.
-     *
-     * @return the boolean
+     * Considère qu'une mélodie ne peut pas descendre en dessous d'une note.
+     * @return Vrai s'il reste une note dans la liste de notes.
      */
     public boolean nePeutPlusEtreSupprimer(){
         return listMelodie.size() == 1;
     }
 
     /**
-     * Changer couleur note.
-     *
-     * @param index the index
-     * @param color the color
+     * Change la couleur d'une note dans la liste des notes en fonction de l'index en paramètre et d'une chaîne de caractères correspondant à la couleur souhaitée (en anglais).
+     * @param index L'index de la note
+     * @param color La couleur souhaitée
      */
     public void changerCouleurNote(int index, String color){
         partition.setCouleurs(Color.valueOf(color),index);
     }
 
     /**
-     * Est vide boolean.
-     *
-     * @return the boolean
+     * Retourne vrai si la liste des notes est vide.
+     * @return Vrai si est vide
      */
     public boolean estVide(){
         return listMelodie.isEmpty();

@@ -18,6 +18,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+/**
+ * L'écouteur lié à la VueMenu.
+ */
 public class EcouteurMenu implements Observateur{
     @FXML
     private Label titre;
@@ -28,12 +31,20 @@ public class EcouteurMenu implements Observateur{
     @FXML
     private Arezzo arezzo;
 
+    /**
+     * Instancie une nouvelle instance de EcouteurMenu.
+     * @param arezzo Le model Arezzo
+     */
     public EcouteurMenu(Arezzo arezzo){
         this.arezzo = arezzo;
         this.arezzo.ajouterObservateur(this);
+
         Font.loadFont(getClass().getResource("/font/BEECH.ttf").toExternalForm(), 50);
     }
 
+    /**
+     * Initialise la partie graphique de la vue gérée dans l'écouteur.
+     */
     @FXML
     public void initialize(){
         fenetreMenu.setStyle("-fx-background-color: #B6E2D3;");
@@ -41,13 +52,20 @@ public class EcouteurMenu implements Observateur{
         titre.setStyle("-fx-font-family: BEECH;-fx-font-size: 30px;-fx-text-fill: #D8A7B1");
     }
 
+    /**
+     * Remet aux valeurs par défaut Arezzo, le titre et les modificateurs de notes (octaves, durée, instruments, tempo...).
+     */
     @FXML
     public void nouveauFichier(){
         arezzo.resetAll();
         titre.setText(arezzo.getTitre());
-        arezzo.notifierObservateur();
+
+        arezzo.notifierObservateurs();
     }
 
+    /**
+     * Ouvre une fenêtre permettant d'ouvrir un fichier .json et convertit le fichier pour modifier le titre, la mélodie et le tempo.
+     */
     @FXML
     public void ouvrirFichier(){
         //Fenêtre permettant d'ouvrir un fichier json
@@ -94,12 +112,15 @@ public class EcouteurMenu implements Observateur{
                 arezzo.setTempo(Double.valueOf(tempo));
             }
 
-            arezzo.notifierObservateur();
+            arezzo.notifierObservateurs();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Ouvre une fenêtre permettant d'enregistrer un fichier .json et convertit le titre, la mélodie et le tempo en contenu pour le fichier.
+     */
     @FXML
     public void enregistrerSous() {
 
@@ -128,16 +149,25 @@ public class EcouteurMenu implements Observateur{
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        arezzo.notifierObservateurs();
     }
 
+    /**
+     * Ferme la fenêtre et la partition.
+     */
     @FXML
     public void quitterFenetre(){
         Platform.exit();
         arezzo.fermerPartition();
     }
 
+    /**
+     * Permet de renommer la mélodie actuelle.
+     */
     @FXML
     public void renommer() {
+
         TextInputDialog dialogue = new TextInputDialog();
         dialogue.setTitle("Modifier le nom");
         dialogue.setHeaderText(null);
@@ -148,11 +178,15 @@ public class EcouteurMenu implements Observateur{
             arezzo.setTitre(nom);
             titre.setText(arezzo.getTitre());
         });
-        arezzo.notifierObservateur();
+        arezzo.notifierObservateurs();
     }
 
+    /**
+     * Permet de transposer toute la mélodie en fonction d'un entier à rentrer dans la fenêtre de dialogue qui s'ouvre.
+     */
     @FXML
     public void transposerNotes(){
+
         TextInputDialog dialogue = new TextInputDialog();
         dialogue.setTitle("Transposer les notes");
         dialogue.setHeaderText(null);
@@ -163,7 +197,7 @@ public class EcouteurMenu implements Observateur{
             int entier = Integer.parseInt(entierString);
             if(entier>=0 && entier<=99) {
                 arezzo.transposerNotesArezzo(entier);
-                arezzo.notifierObservateur();
+                arezzo.notifierObservateurs();
             } else {
                 System.err.println("L'entier rentré est incorrect");
             }});
