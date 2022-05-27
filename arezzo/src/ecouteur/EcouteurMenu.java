@@ -163,6 +163,7 @@ public class EcouteurMenu implements Observateur{
             int entier = Integer.parseInt(entierString);
             if(entier>=0 && entier<=99) {
                 arezzo.transposerNotesArezzo(entier);
+                arezzo.notifierObservateur();
             } else {
                 System.err.println("L'entier rentré est incorrect");
             }});

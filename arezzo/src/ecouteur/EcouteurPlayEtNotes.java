@@ -137,6 +137,7 @@ public class EcouteurPlayEtNotes implements Observateur {
     private void transposerListNotes(int transposition) {
         if(!arezzo.estVide()) {
             arezzo.transposerNoteComposition(transposition, listNotes.getSelectionModel().getSelectedIndices());
+            arezzo.notifierObservateur();
             for (int index : listNotes.getSelectionModel().getSelectedIndices())
                 listNotes.getItems().set(index, arezzo.getNoteMelodie(index));
         }
@@ -149,6 +150,7 @@ public class EcouteurPlayEtNotes implements Observateur {
                     listNotes.getItems().remove(index);
             }
             arezzo.supprimerNote(listNotes.getSelectionModel().getSelectedIndices());
+            arezzo.notifierObservateur();
         }
     }
 

@@ -5,7 +5,6 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import partition.Partition;
 import ecouteur.SujetObserve;
-
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
@@ -84,7 +83,7 @@ public class Arezzo extends SujetObserve {
         temps = 1.0;
         nouveauProjet = true;
 
-        //Bug sur certains pc de la faculté qui empêche le lancement (dû à des problèmes de son)
+        //Bug sur certains pc de la faculté qui crée une erreur (dû à des problèmes de son)
         //partition.setVolume(80);
     }
 
@@ -186,7 +185,8 @@ public class Arezzo extends SujetObserve {
                     concatenation.append(lettreABC);
             }
         } else {
-            concatenation.append("z");
+            if(lettre.equals("z"))
+                concatenation.append("z");
         }
             switch (duree) {
                 case "croche":
@@ -221,7 +221,6 @@ public class Arezzo extends SujetObserve {
             transposerNote(nbTransposition, i);
         }
         convertirListEnMelodie();
-        notifierObservateur();
     }
 
     /**
@@ -283,7 +282,6 @@ public class Arezzo extends SujetObserve {
                 listMelodie.remove(index);
         }
         convertirListEnMelodie();
-        notifierObservateur();
     }
 
     /**
@@ -297,7 +295,6 @@ public class Arezzo extends SujetObserve {
             transposerNote(nbTransposition, index);
         }
         convertirListEnMelodie();
-        notifierObservateur();
     }
 
     private void transposerNote(int nbTransposition, int index) {
