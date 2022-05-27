@@ -16,19 +16,18 @@ public class EcouteurInstruments implements Observateur{
     @FXML
     private ObservableList<String> listInstruments;
     @FXML
-    private RadioButton croche,noire,blanche, ronde,aigu,medium,grave;
+    private RadioButton croche,medium;
     @FXML
     private Slider tempo,volume;
     @FXML
     ToggleGroup groupHauteurs, groupDuree;
-
     private Arezzo arezzo;
     private Partition par;
 
     public EcouteurInstruments(Arezzo arezzo){
         this.arezzo = arezzo;
-        listInstruments = FXCollections.observableArrayList("Piano","Guitare","Saxophone","Trompette");
         this.arezzo.ajouterObservateur(this);
+        listInstruments = FXCollections.observableArrayList("Piano","Guitare","Saxophone","Trompette");
         par = this.arezzo.getPartition();
     }
 
@@ -55,7 +54,6 @@ public class EcouteurInstruments implements Observateur{
     @FXML
     public void setTempoSlider(){
         arezzo.setTempo(tempo.getValue());
-        par.setTempo((int) tempo.getValue());
         arezzo.notifierObservateur();
     }
 
@@ -76,10 +74,13 @@ public class EcouteurInstruments implements Observateur{
 
     @Override
     public void reagir() {
+        //Permet d'actualiser l'instrument choisit actuellement
         par.setInstrument(boxInstruments.getValue());
+
+        //Actualise la valeur du tempo sur le slider (quand on ouvre un fichier par exemple)
         tempo.setValue(arezzo.getTempo());
 
-        //Nouveau projet
+        //Si on fait un nouveau projet, on remet les paramètres par défaut
         if(arezzo.getNouveauProjet()){
             reInitialize();
         }

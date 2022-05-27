@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Le modèle Arezzo qui contient toutes les fonctions concernant la gestion des données (partition, notes, mélodie).
+ */
 public class Arezzo extends SujetObserve {
     private Boolean nouveauProjet;
     private Synthesizer synthesizer;
@@ -21,6 +24,9 @@ public class Arezzo extends SujetObserve {
     private double temps,tempo;
     private List<String> listNotesABC, listNotes, listNotesWOctaves;
 
+    /**
+     * Instantiates a new Arezzo.
+     */
     public Arezzo(){
         //Déclaration synthesizer
         try {
@@ -59,6 +65,9 @@ public class Arezzo extends SujetObserve {
         //partition.setVolume(80);
     }
 
+    /**
+     * Reset all.
+     */
     public void resetAll(){
         partition.setInstrument("Piano");
         partition.setMelodie("");
@@ -74,6 +83,9 @@ public class Arezzo extends SujetObserve {
         //partition.setVolume(80);
     }
 
+    /**
+     * Delete melodie.
+     */
     public void deleteMelodie(){
         partition.play("");
         partition.setMelodie("");
@@ -82,6 +94,11 @@ public class Arezzo extends SujetObserve {
         temps = 1;
     }
 
+    /**
+     * Add melodie.
+     *
+     * @param lettre the lettre
+     */
     public void addMelodie(String lettre){
         listMelodie.add(lettre);
         if(temps >= 4) {
@@ -91,6 +108,9 @@ public class Arezzo extends SujetObserve {
         convertirListEnMelodie();
     }
 
+    /**
+     * Convertir list en melodie.
+     */
     public void convertirListEnMelodie(){
         StringBuilder concat = new StringBuilder();
         for (String lettre : listMelodie) {
@@ -101,6 +121,9 @@ public class Arezzo extends SujetObserve {
         setMelodie(melodie);
     }
 
+    /**
+     * Convertir melodie en list.
+     */
     public void convertirMelodieEnList(){
         String[] separation = melodie.split("\\s");
         List<String> listCopie = Arrays.asList(separation);
@@ -108,28 +131,39 @@ public class Arezzo extends SujetObserve {
         listMelodie.addAll(listCopie);
     }
 
+    /**
+     * Jouer melodie.
+     */
     public void jouerMelodie() {
         convertirListEnMelodie();
         partition.play(melodie);
         partition.setMelodie(melodie);
     }
 
-    public ArrayList<String> getListSansMesure(){
-        ArrayList<String> returnList = new ArrayList<>(listMelodie);
-        for (int i = 0; i <returnList.size(); i++) returnList.remove("|");
-        return returnList;
-    }
-
+    /**
+     * Sets melodie.
+     *
+     * @param melodie the melodie
+     */
     public void setMelodie(String melodie) {
         this.melodie = melodie;
         convertirMelodieEnList();
         partition.setMelodie(melodie);
     }
 
+    /**
+     * Play melodie vide.
+     */
     public void playMelodieVide(){
         partition.play("");
     }
 
+    /**
+     * Gets notation hauteur duree.
+     *
+     * @param lettre the lettre
+     * @return the notation hauteur duree
+     */
     public String getNotationHauteurDuree(String lettre) {
         StringBuilder concatenation = new StringBuilder();
         String lettreABC = lettre;
@@ -172,6 +206,11 @@ public class Arezzo extends SujetObserve {
         return concatenation.toString();
     }
 
+    /**
+     * Transposer notes arezzo.
+     *
+     * @param nbTransposition the nb transposition
+     */
     public void transposerNotesArezzo(int nbTransposition){
         for (int i = 0; i < listMelodie.size(); i++) {
             transposerNote(nbTransposition, i);
@@ -180,6 +219,12 @@ public class Arezzo extends SujetObserve {
         notifierObservateur();
     }
 
+    /**
+     * Note sans sur plus majuscule string.
+     *
+     * @param note the note
+     * @return the string
+     */
     public String noteSansSurPlusMajuscule(String note){
         String noteSP = note;
         String charSP = String.valueOf(noteSP.charAt(noteSP.length()-1));
@@ -192,6 +237,12 @@ public class Arezzo extends SujetObserve {
         return noteSP;
     }
 
+    /**
+     * Conversion notes vers abc string.
+     *
+     * @param note the note
+     * @return the string
+     */
     public String conversionNotesVersABC(String note) {
         for (int i = 0; i < listNotes.size(); i++) {
             if(listNotes.get(i).equals(note)){
@@ -201,6 +252,12 @@ public class Arezzo extends SujetObserve {
         return null;
     }
 
+    /**
+     * Conversion notes vers classique string.
+     *
+     * @param note the note
+     * @return the string
+     */
     public String conversionNotesVersClassique(String note) {
         for (int i = 0; i < listNotesABC.size(); i++) {
             if(listNotesABC.get(i).equals(note)){
@@ -210,14 +267,26 @@ public class Arezzo extends SujetObserve {
         return null;
     }
 
+    /**
+     * Supprimer note.
+     *
+     * @param notes the notes
+     */
     public void supprimerNote(ObservableList<Integer> notes){
         for(int index : notes){
-            listMelodie.remove(index);
+            if(listMelodie.size()>1)
+                listMelodie.remove(index);
         }
         convertirListEnMelodie();
         notifierObservateur();
     }
 
+    /**
+     * Transposer note composition.
+     *
+     * @param nbTransposition the nb transposition
+     * @param notes           the notes
+     */
     public void transposerNoteComposition(int nbTransposition, ObservableList<Integer> notes){
         for (int index : notes) {
             transposerNote(nbTransposition, index);
@@ -245,10 +314,22 @@ public class Arezzo extends SujetObserve {
         }
     }
 
+    /**
+     * Note est un silence boolean.
+     *
+     * @param note the note
+     * @return the boolean
+     */
     public boolean noteEstUnSilence(String note){
         return noteSansSurPlusMajuscule(note).equals("Z");
     }
 
+    /**
+     * Gets octave note.
+     *
+     * @param note the note
+     * @return the octave note
+     */
     public String getOctaveNote(String note) {
         char checkLettre = note.charAt(note.length()-1);
         if(String.valueOf(checkLettre).equals(","))
@@ -258,6 +339,12 @@ public class Arezzo extends SujetObserve {
         return "medium";
     }
 
+    /**
+     * Gets duree note.
+     *
+     * @param note the note
+     * @return the duree note
+     */
     public String getDureeNote(String note) {
         if(note.matches(".{1,3}/"))
             return "croche";
@@ -270,6 +357,12 @@ public class Arezzo extends SujetObserve {
         return null;
     }
 
+    /**
+     * Gets duree silence.
+     *
+     * @param note the note
+     * @return the duree silence
+     */
     public String getDureeSilence(String note) {
         String dureeSilence = getDureeNote(note);
         System.out.println(dureeSilence);
@@ -290,51 +383,121 @@ public class Arezzo extends SujetObserve {
         return note;
     }
 
+    /**
+     * Gets melodie.
+     *
+     * @return the melodie
+     */
     public String getMelodie() {
         return melodie;
     }
 
+    /**
+     * Gets nouveau projet.
+     *
+     * @return the nouveau projet
+     */
     public Boolean getNouveauProjet() {
         return nouveauProjet; }
 
+    /**
+     * Sets nouveau projet.
+     *
+     * @param nouveauProjet the nouveau projet
+     */
     public void setNouveauProjet(Boolean nouveauProjet) {
         this.nouveauProjet = nouveauProjet;
     }
 
+    /**
+     * Set hauteur.
+     *
+     * @param hauteur the hauteur
+     */
     public void setHauteur(String hauteur){
         this.hauteur = hauteur;
     }
 
+    /**
+     * Set duree.
+     *
+     * @param duree the duree
+     */
     public void setDuree(String duree){
         this.duree = duree;
     }
 
+    /**
+     * Sets tempo.
+     *
+     * @param tempo the tempo
+     */
     public void setTempo(double tempo) {
         this.tempo = tempo;
         partition.setTempo((int) tempo);
     }
 
+    /**
+     * Gets titre.
+     *
+     * @return the titre
+     */
     public String getTitre() {
         return titre;
     }
 
+    /**
+     * Sets titre.
+     *
+     * @param titre the titre
+     */
     public void setTitre(String titre) {
         this.titre = titre;
     }
 
+    /**
+     * Gets partition.
+     *
+     * @return the partition
+     */
     public Partition getPartition() {
         return partition;
     }
 
+    /**
+     * Fermer partition.
+     */
     public void fermerPartition(){
         partition.close();
     }
 
+    /**
+     * Get image image.
+     *
+     * @return the image
+     */
     public Image getImage(){
         return partition.getImage();
     }
 
+    /**
+     * Gets tempo.
+     *
+     * @return the tempo
+     */
     public int getTempo() {
         return (int) tempo;
+    }
+
+    public String getNoteMelodie(int index){
+        return listMelodie.get(index);
+    }
+
+    public ArrayList<String> getListMelodie() {
+        return listMelodie;
+    }
+
+    public boolean nePeutPlusEtreSupprimer(){
+        return listMelodie.size() == 1;
     }
 }

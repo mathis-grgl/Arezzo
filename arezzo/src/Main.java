@@ -8,16 +8,14 @@ import javafx.stage.Stage;
 import model.Arezzo;
 
 public class Main extends Application {
+    private HBox pianoEtBoutons;
+    private FXMLLoader menu,affichageNotes;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        Arezzo arezzo = new Arezzo();
-
-        BorderPane root = new BorderPane();
-        HBox pianoEtBoutons = new HBox();
+    public void load(Arezzo arezzo) throws Exception{
+        pianoEtBoutons = new HBox();
 
         //Déclaration et initialisation du menu et titre
-        FXMLLoader menu = new FXMLLoader();
+        menu = new FXMLLoader();
         menu.setLocation(getClass().getResource("/VueMenu.fxml"));
         menu.setControllerFactory(iC-> new EcouteurMenu(arezzo));
 
@@ -37,20 +35,24 @@ public class Main extends Application {
         playEtNotes.setControllerFactory(iC-> new EcouteurPlayEtNotes(arezzo));
 
         //Déclaration et initialisation de l'affichage des notes
-        FXMLLoader affichageNotes = new FXMLLoader();
+        affichageNotes = new FXMLLoader();
         affichageNotes.setLocation(getClass().getResource("/VueAffichageNotes.fxml"));
         affichageNotes.setControllerFactory(iC-> new EcouteurAffichageNotes(arezzo));
-
-        //Déclaration et initialisation de l'affichage des compositions
-        FXMLLoader Composition = new FXMLLoader();
-        Composition.setLocation(getClass().getResource("/VueComposition.fxml"));
-        Composition.setControllerFactory(iC-> new EcouteurComposition(arezzo));
 
         //Organisation du piano et de ses boutons
         pianoEtBoutons.getChildren().add(piano.load());
         pianoEtBoutons.getChildren().add(instruments.load());
         pianoEtBoutons.getChildren().add(playEtNotes.load());
+    }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        //Initialisation Arezzo et root
+        Arezzo arezzo = new Arezzo();
+        BorderPane root = new BorderPane();
+
+        //Chargement des FXMLLoader (vues) et leurs controllers (écouteurs)
+        load(arezzo);
 
         //Ajout des éléments à l'interface
         root.setTop(menu.load());

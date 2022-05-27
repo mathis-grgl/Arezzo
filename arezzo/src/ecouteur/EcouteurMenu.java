@@ -18,9 +18,9 @@ import java.util.regex.Pattern;
 
 
 public class EcouteurMenu implements Observateur{
-    private Arezzo arezzo;
     @FXML
     private Label titre;
+    private Arezzo arezzo;
 
     public EcouteurMenu(Arezzo arezzo){
         this.arezzo = arezzo;
@@ -32,23 +32,25 @@ public class EcouteurMenu implements Observateur{
         arezzo.resetAll();
         titre.setText(arezzo.getTitre());
         arezzo.notifierObservateur();
-
     }
 
     @FXML
     public void ouvrirFichier(){
-        FileChooser fileChooser = new FileChooser();
+        //Fenêtre permettant d'ouvrir un fichier json
         Popup popup = new Popup();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
         File file = fileChooser.showOpenDialog(popup);
 
         try {
+            //Lit le contenu depuis le fichier
             String contenu = Files.readString(file.toPath());
 
             //Convertir le contenu pour trouver le titre
             Pattern pattern = Pattern.compile("\"titre\":\".+\",\"m",Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(contenu);
 
-            //Si on a trouvé le titre on la met dans un String et on set le titre
+            //Si on a trouvé le titre on le met dans un String et on set le titre
             if(matcher.find()) {
                 String titreADonner = matcher.group().substring(9, matcher.group().length() - 4);
                 arezzo.setTitre(titreADonner);
@@ -68,11 +70,11 @@ public class EcouteurMenu implements Observateur{
             }
 
 
-            //Convertir le contenu pour trouver la mélodie
+            //Convertir le contenu pour trouver le tempo
             pattern = Pattern.compile("tempo\":\".+\"\\s}",Pattern.CASE_INSENSITIVE);
             matcher = pattern.matcher(contenu);
 
-            //Si on a trouvé la mélodie on la met dans un String et on set la Mélodie
+            //Si on a trouvé le tempo on le met dans un double et on set le tempo
             if(matcher.find()) {
                 String tempo = matcher.group().substring(8, matcher.group().length() - 3);
                 arezzo.setTempo(Double.valueOf(tempo));
@@ -87,18 +89,23 @@ public class EcouteurMenu implements Observateur{
     @FXML
     public void enregistrerSous() {
 
+        //Fenêtre permettant d'enregistrer un fichier sous le format .json
+        Popup pop = new Popup();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialFileName(arezzo.getTitre()+".json");
-
-        Popup pop = new Popup();
         File file = fileChooser.showSaveDialog(pop);
 
+        //Remplace le titre de la mélodie sur l'affichage et dans le model, avec le nom du fichier qu'on vient d'enregistrer
         arezzo.setTitre(file.getName().replaceAll("[.]json",""));
         titre.setText(arezzo.getTitre());
 
+        //Vérifie que le contenu de la mélodie en String correspond à l'ArrayList mélodie
         arezzo.convertirListEnMelodie();
+
+        //Convertit le titre, la mélodie et le tempo en un string pour définir le contenu du fichier
         String contenu = "{ \"titre\":\"" + arezzo.getTitre() + "\",\"melodie\":\"" + arezzo.getMelodie() + "\",\"tempo\":\"" + arezzo.getTempo() + "\" }";
 
+        //Enregistre le contenu dans le fichier
         try {
             PrintWriter writer;
             writer = new PrintWriter(file);

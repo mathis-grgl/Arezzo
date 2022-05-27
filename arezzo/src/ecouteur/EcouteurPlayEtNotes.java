@@ -48,29 +48,39 @@ public class EcouteurPlayEtNotes implements Observateur {
             public void updateItem(String note, boolean estVide) {
                 super.updateItem(note, estVide);
                 if (!estVide) {
-                    String noteToClassique = arezzo.noteSansSurPlusMajuscule(note);
-                    noteToClassique = arezzo.conversionNotesVersClassique(noteToClassique);
-                    String duree;
+                    if (!note.equals("|")) {
+                        setDisable(false);
+                        String noteToClassique = arezzo.noteSansSurPlusMajuscule(note);
+                        noteToClassique = arezzo.conversionNotesVersClassique(noteToClassique);
+                        String duree;
 
-                    if(arezzo.noteEstUnSilence(note)) {
-                        duree = arezzo.getDureeSilence(note);
+                        if (arezzo.noteEstUnSilence(note))
+                            duree = arezzo.getDureeSilence(note);
+                        else
+                            duree = arezzo.getDureeNote(note);
+
+                        String octave = arezzo.getOctaveNote(note.substring(0, note.length() - 1));
+                        octave = octave.toUpperCase();
+                        octave = "  - {" + octave + "}";
+
+                        ImageView imageNote = new ImageView();
+                        imageNote.setImage(new Image("images/" + duree + ".png"));
+                        imageNote.setPreserveRatio(true);
+                        imageNote.setFitWidth(40);
+                        imageNote.setFitHeight(40);
+
+                        setText(noteToClassique + octave);
+                        setGraphic(imageNote);
+
+                    } else {
+                        setDisable(true);
+                        setText("Barre de mesure");
+                        setGraphic(null);
                     }
-                    else {
-                        duree = arezzo.getDureeNote(note);
-                    }
 
-                    String octave = arezzo.getOctaveNote(note.substring(0,note.length()-1));
-                    octave = octave.toUpperCase();
-                    octave = "  - {"+octave+"}";
-
-                    ImageView imageNote = new ImageView();
-                    imageNote.setImage(new Image("images/"+duree+".png"));
-                    imageNote.setPreserveRatio(true);
-                    imageNote.setFitWidth(40);
-                    imageNote.setFitHeight(40);
-
-                    setText(noteToClassique+octave);
-                    setGraphic(imageNote);
+                } else {
+                    setText("");
+                    setGraphic(null);
                 }
             }
         });
@@ -85,11 +95,25 @@ public class EcouteurPlayEtNotes implements Observateur {
         descendreSelection.setAccelerator(new KeyCodeCombination(KeyCode.SUBTRACT));
         augmenterSelection.setAccelerator(new KeyCodeCombination(KeyCode.ADD));
 
-        supprimerSelection.setOnAction(e-> arezzo.supprimerNote(listNotes.getSelectionModel().getSelectedIndices()));
-        augmenterSelection.setOnAction(e-> arezzo.transposerNoteComposition(1,listNotes.getSelectionModel().getSelectedIndices()));
-        descendreSelection.setOnAction(e-> arezzo.transposerNoteComposition(-1,listNotes.getSelectionModel().getSelectedIndices()));
+        supprimerSelection.setOnAction(e-> supprimerListNotes());
+        augmenterSelection.setOnAction(e-> transposerListNotes(1));
+        descendreSelection.setOnAction(e-> transposerListNotes(-1));
 
         cliqueDroitMenu.getItems().addAll(supprimerSelection,augmenterSelection,descendreSelection);
+    }
+
+    private void transposerListNotes(int transposition) {
+        arezzo.transposerNoteComposition(transposition,listNotes.getSelectionModel().getSelectedIndices());
+        for(int index : listNotes.getSelectionModel().getSelectedIndices())
+            listNotes.getItems().set(index,arezzo.getNoteMelodie(index));
+    }
+
+    private void supprimerListNotes() {
+        for(int index : listNotes.getSelectionModel().getSelectedIndices()) {
+            if (!arezzo.nePeutPlusEtreSupprimer())
+                listNotes.getItems().remove(index);
+        }
+        arezzo.supprimerNote(listNotes.getSelectionModel().getSelectedIndices());
     }
 
     @FXML
@@ -106,13 +130,14 @@ public class EcouteurPlayEtNotes implements Observateur {
 
     public void stopMelodie(){
         arezzo.playMelodieVide();
+        arezzo.notifierObservateur();
     }
 
     @FXML
     public void affichageNotes(){
         arezzo.notifierObservateur();
-        ObservableList<String> liste = FXCollections.observableArrayList(arezzo.getListSansMesure());
         listNotes.getItems().clear();
+        ObservableList<String> liste = FXCollections.observableArrayList(arezzo.getListMelodie());
         listNotes.getItems().setAll(liste);
         list.show();
     }
