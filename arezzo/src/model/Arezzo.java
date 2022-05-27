@@ -2,6 +2,7 @@ package model;
 
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import partition.Partition;
 import ecouteur.SujetObserve;
 
@@ -499,5 +500,13 @@ public class Arezzo extends SujetObserve {
 
     public boolean nePeutPlusEtreSupprimer(){
         return listMelodie.size() == 1;
+    }
+
+    public void changerCouleurNote(int index, String color){
+        partition.setCouleurs(Color.valueOf(color),index);
+    }
+
+    public boolean estVide(){
+        return listMelodie.isEmpty();
     }
 }

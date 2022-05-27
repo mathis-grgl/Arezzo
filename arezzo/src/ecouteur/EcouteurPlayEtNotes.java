@@ -6,18 +6,25 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.Arezzo;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public class EcouteurPlayEtNotes implements Observateur {
+    @FXML
+    private AnchorPane fenetrePlay;
+    @FXML
+    private ImageView affichage,stop,play,delete;
     private Arezzo arezzo;
     private ListView<String> listNotes;
     private ContextMenu cliqueDroitMenu;
@@ -35,6 +42,11 @@ public class EcouteurPlayEtNotes implements Observateur {
         list = new Stage();
         list.setTitle(arezzo.getTitre());
         list.setScene(new Scene(listNotes, 300, 500));
+    }
+
+    @FXML
+    public void initialize(){
+        fenetrePlay.setStyle("-fx-background-color: #B6E2D3;");
     }
 
     private void initialisationListNotes(){
@@ -90,6 +102,7 @@ public class EcouteurPlayEtNotes implements Observateur {
         MenuItem supprimerSelection = new MenuItem("Supprimer la sélection");
         MenuItem augmenterSelection = new MenuItem("Augmenter d'un demi-ton");
         MenuItem descendreSelection = new MenuItem("Descendre d'un demi-ton");
+        MenuItem couleurSelection = new MenuItem("Changer la couleur");
 
         supprimerSelection.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));
         descendreSelection.setAccelerator(new KeyCodeCombination(KeyCode.SUBTRACT));
@@ -98,22 +111,43 @@ public class EcouteurPlayEtNotes implements Observateur {
         supprimerSelection.setOnAction(e-> supprimerListNotes());
         augmenterSelection.setOnAction(e-> transposerListNotes(1));
         descendreSelection.setOnAction(e-> transposerListNotes(-1));
+        couleurSelection.setOnAction(e-> changerCouleurListNotes());
 
-        cliqueDroitMenu.getItems().addAll(supprimerSelection,augmenterSelection,descendreSelection);
+        cliqueDroitMenu.getItems().addAll(supprimerSelection,augmenterSelection,descendreSelection,couleurSelection);
+    }
+
+    private void changerCouleurListNotes() {
+        if(!arezzo.estVide()) {
+            TextInputDialog dialogue = new TextInputDialog();
+            dialogue.setTitle("Modifier la couleur");
+            dialogue.setHeaderText(null);
+            dialogue.setContentText("Nouvelle couleur (en anglais) pour les notes sélectionnées : ");
+
+            Optional<String> out = dialogue.showAndWait();
+            out.ifPresent(couleur -> {
+                for (int index : listNotes.getSelectionModel().getSelectedIndices())
+                    arezzo.changerCouleurNote(index, couleur);
+            });
+            arezzo.notifierObservateur();
+        }
     }
 
     private void transposerListNotes(int transposition) {
-        arezzo.transposerNoteComposition(transposition,listNotes.getSelectionModel().getSelectedIndices());
-        for(int index : listNotes.getSelectionModel().getSelectedIndices())
-            listNotes.getItems().set(index,arezzo.getNoteMelodie(index));
+        if(!arezzo.estVide()) {
+            arezzo.transposerNoteComposition(transposition, listNotes.getSelectionModel().getSelectedIndices());
+            for (int index : listNotes.getSelectionModel().getSelectedIndices())
+                listNotes.getItems().set(index, arezzo.getNoteMelodie(index));
+        }
     }
 
     private void supprimerListNotes() {
-        for(int index : listNotes.getSelectionModel().getSelectedIndices()) {
-            if (!arezzo.nePeutPlusEtreSupprimer())
-                listNotes.getItems().remove(index);
+        if(!arezzo.estVide()) {
+            for (int index : listNotes.getSelectionModel().getSelectedIndices()) {
+                if (!arezzo.nePeutPlusEtreSupprimer())
+                    listNotes.getItems().remove(index);
+            }
+            arezzo.supprimerNote(listNotes.getSelectionModel().getSelectedIndices());
         }
-        arezzo.supprimerNote(listNotes.getSelectionModel().getSelectedIndices());
     }
 
     @FXML

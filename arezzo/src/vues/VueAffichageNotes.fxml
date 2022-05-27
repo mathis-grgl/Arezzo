@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="475.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurAffichageNotes">
-   <children>
-      <ScrollPane fx:id="affichage" fitToHeight="true" fitToWidth="true" layoutX="50.0" minViewportWidth="850.0" prefHeight="475.0" prefViewportWidth="900.0" prefWidth="900.0" />
-   </children>
+<AnchorPane fx:id="fenetreAffichage" prefHeight="475.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurAffichageNotes">
+   <ScrollPane fx:id="affichage" fitToHeight="true" fitToWidth="true" layoutX="50.0" minViewportWidth="850.0"
+               prefHeight="475.0" prefViewportWidth="900.0" prefWidth="900.0"/>
 </AnchorPane>

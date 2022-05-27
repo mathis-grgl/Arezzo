@@ -2,8 +2,9 @@ package ecouteur;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import model.Arezzo;
@@ -20,11 +21,24 @@ import java.util.regex.Pattern;
 public class EcouteurMenu implements Observateur{
     @FXML
     private Label titre;
+    @FXML
+    private Pane fenetreMenu;
+    @FXML
+    private MenuBar affichageMenu;
+    @FXML
     private Arezzo arezzo;
 
     public EcouteurMenu(Arezzo arezzo){
         this.arezzo = arezzo;
         this.arezzo.ajouterObservateur(this);
+        Font.loadFont(getClass().getResource("/font/BEECH.ttf").toExternalForm(), 50);
+    }
+
+    @FXML
+    public void initialize(){
+        fenetreMenu.setStyle("-fx-background-color: #B6E2D3;");
+        affichageMenu.setStyle("-fx-background-color: #B6E2D3; -fx-border-color: #8ce2d3");
+        titre.setStyle("-fx-font-family: BEECH;-fx-font-size: 30px;-fx-text-fill: #D8A7B1");
     }
 
     @FXML

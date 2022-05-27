@@ -7,8 +7,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
 import model.Arezzo;
 import partition.Partition;
+
+import javax.swing.text.html.StyleSheet;
 
 public class EcouteurInstruments implements Observateur{
     @FXML
@@ -21,6 +24,8 @@ public class EcouteurInstruments implements Observateur{
     private Slider tempo,volume;
     @FXML
     ToggleGroup groupHauteurs, groupDuree;
+    @FXML
+    private AnchorPane fenetreInstruments;
     private Arezzo arezzo;
     private Partition par;
 
@@ -36,6 +41,10 @@ public class EcouteurInstruments implements Observateur{
         //Liste instruments
         boxInstruments.setItems(listInstruments);
         boxInstruments.setValue("Piano");
+        boxInstruments.setStyle("-fx-background-color: #B6E2D3");
+        fenetreInstruments.setStyle("-fx-background-color: #B6E2D3;");
+        tempo.setStyle("-fx-control-inner-background: #FAE8E0;");
+        volume.setStyle("-fx-control-inner-background: #FAE8E0;");
     }
 
 
