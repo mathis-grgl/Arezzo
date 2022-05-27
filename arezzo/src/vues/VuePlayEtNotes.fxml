@@ -3,7 +3,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="fenetrePlay" prefHeight="297.0" prefWidth="138.0" xmlns="http://javafx.com/javafx/16"
+<AnchorPane fx:id="fenetrePlay" prefHeight="297.0" prefWidth="138.0" xmlns="http://javafx.com/javafx/11"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurPlayEtNotes">
    <ImageView fx:id="stop" fitHeight="60.0" fitWidth="40.0" layoutX="28.5" layoutY="160.0" onMouseClicked="#stopMelodie"
               pickOnBounds="true" preserveRatio="true">

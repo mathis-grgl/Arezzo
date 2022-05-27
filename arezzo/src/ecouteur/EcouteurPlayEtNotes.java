@@ -66,14 +66,17 @@ public class EcouteurPlayEtNotes implements Observateur {
                         noteToClassique = arezzo.conversionNotesVersClassique(noteToClassique);
                         String duree;
 
-                        if (arezzo.noteEstUnSilence(note))
-                            duree = arezzo.getDureeSilence(note);
-                        else
-                            duree = arezzo.getDureeNote(note);
-
-                        String octave = arezzo.getOctaveNote(note.substring(0, note.length() - 1));
+                        String octave = arezzo.getOctaveNote(note);
                         octave = octave.toUpperCase();
                         octave = "  - {" + octave + "}";
+
+                        if (arezzo.noteEstUnSilence(note)) {
+                            duree = arezzo.getDureeSilence(note);
+                            setText(noteToClassique);
+                        } else {
+                            duree = arezzo.getDureeNote(note);
+                            setText(noteToClassique + octave);
+                        }
 
                         ImageView imageNote = new ImageView();
                         imageNote.setImage(new Image("images/" + duree + ".png"));
@@ -81,7 +84,6 @@ public class EcouteurPlayEtNotes implements Observateur {
                         imageNote.setFitWidth(40);
                         imageNote.setFitHeight(40);
 
-                        setText(noteToClassique + octave);
                         setGraphic(imageNote);
 
                     } else {
