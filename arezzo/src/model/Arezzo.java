@@ -91,6 +91,12 @@ public class Arezzo extends SujetObserve {
         //Réinitialise le tempo à 180
         tempo = 180.0;
 
+        //Réinitialise la durée à croche
+        duree = "croche";
+
+        //Réinitialise l'octave à medium
+        hauteur = "medium";
+
         //Réinitialise le tempo de la partition à 180
         partition.setTempo(tempo.intValue());
 
