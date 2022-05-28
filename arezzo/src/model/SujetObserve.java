@@ -1,4 +1,6 @@
-package ecouteur;
+package model;
+
+import ecouteur.Observateur;
 
 import java.util.ArrayList;
 

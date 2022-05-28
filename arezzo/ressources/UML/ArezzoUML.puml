@@ -1,0 +1,101 @@
+@startuml
+
+package arezzo.model{
+    class Arezzo extends SujetObserve {
+        Synthesizer synthesizer
+        Partition partition
+        String melodie
+        ArrayList<String> listMelodie
+
+        Arezzo()
+        void resetAll()
+        void deleteMelodie()
+        void addMelodie(String lettre)
+        void convertirListEnMelodie()
+        void convertirMelodieEnList()
+        void jouerMelodie()
+        void playMelodieVide()
+        void transposerNotesArezzo(int nbTransposition)
+        void supprimerNote(ObservableList<Integer> notes)
+        void transposerNoteComposition(int nbTransposition, ObservableList<Integer> notes)
+        void fermerPartition()
+        void changerCouleurNote(int index, String color)
+        String getNotationHauteurDuree(String lettre)
+        String noteSansSurPlusMajuscule(String note)
+        String conversionNotesVersABC(String note)
+        String conversionNotesVersClassique(String note)
+        String getOctaveNote(String note)
+        String getDureeNote(String note)
+        String getDureeSilence(String note)
+        Boolean noteEstUnSilence(String note)
+    }
+
+    class SujetObserve {
+        ArrayList<Observateur> tabObservateur
+        SujetObserve()
+        void ajouterObservateur(Observateur o)
+        void notifierObservateurs()
+    }
+}
+
+
+package arezzo.ecouteur{
+    interface Observateur {
+        void reagir()
+    }
+
+    class EcouteurAffichageNotes implements Observateur{
+        Arezzo arezzo
+        EcouteurAffichageNotes(Arezzo arezzo)
+    }
+
+    class EcouteurInstruments implements Observateur{
+        Arezzo arezzo
+        EcouteurInstruments(Arezzo arezzo)
+        void setHauteur()
+        void setDuree()
+        void setTempoSlider()
+        void setVolume()
+        void reInitialize()
+        void reagir()
+    }
+
+    class EcouteurMenu implements Observateur{
+        Arezzo arezzo
+        EcouteurMenu(Arezzo arezzo)
+        void nouveauFichier()
+        void ouvrirFichier()
+        void enregistrerSous()
+        void quitterFenetre()
+        void renommer()
+        void transposerNotes()
+        void reagir()
+    }
+
+    class EcouteurPiano implements Observateur{
+        Arezzo arezzo
+        EcouteurPiano(Arezzo arezzo)
+        void jouerNotes(MouseEvent event)
+        void jouerSilence()
+        void reagir()
+    }
+
+    class EcouteurPlayEtNotes implements Observateur{
+        Arezzo arezzo
+        EcouteurPlayEtNotes(Arezzo arezzo)
+        void playMelodie()
+        void deleteMelodie()
+        void stopMelodie()
+        void affichageNotes()
+        void reagir()
+    }
+}
+
+SujetObserve "1"--"*" Observateur
+Arezzo "1"-- EcouteurAffichageNotes
+Arezzo "1"-- EcouteurInstruments
+Arezzo "1"-- EcouteurMenu
+Arezzo "1"-- EcouteurPiano
+Arezzo "1"-- EcouteurPlayEtNotes
+
+@enduml
