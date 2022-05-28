@@ -21,6 +21,7 @@ public class EcouteurAffichageNotes implements Observateur {
      * @param arezzo Le model Arezzo
      */
     public EcouteurAffichageNotes(Arezzo arezzo){
+        //Initialise arezzo et ajoute l'écouteur en tant qu'Observateur
         this.arezzo = arezzo;
         this.arezzo.ajouterObservateur(this);
     }
@@ -30,12 +31,14 @@ public class EcouteurAffichageNotes implements Observateur {
      */
     @FXML
     public void initialize(){
+        //Modifie les couleurs de l'arrière-plan et de la fenêtre d'affichage des notes
         fenetreAffichage.setStyle("-fx-background-color: #B6E2D3;");
         affichage.setStyle("-fx-background: WHITE;");
     }
 
     @Override
     public void reagir() {
+        //Rafraîchit l'image de la partition dans la fenêtre d'affichage des notes
         affichage.setContent(new ImageView(arezzo.getImage()));
     }
 }

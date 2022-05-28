@@ -35,11 +35,14 @@ public class EcouteurInstruments implements Observateur{
      * @param arezzo Le model Arezzo
      */
     public EcouteurInstruments(Arezzo arezzo){
+        //Initialise le model et ajoute l'écouteur en tant qu'Observateur
         this.arezzo = arezzo;
         this.arezzo.ajouterObservateur(this);
 
+        //Initialise la partition
         par = this.arezzo.getPartition();
 
+        //Initialise la liste d'instruments
         listInstruments = FXCollections.observableArrayList("Piano","Guitare","Saxophone","Trompette");
     }
 
@@ -48,10 +51,11 @@ public class EcouteurInstruments implements Observateur{
      */
     @FXML
     public void initialize(){
-        //Liste instruments
+        //Définit la liste d'instruments dans la ChoiceBox prédéfinit et définit le Piano comme valeur par défaut
         boxInstruments.setItems(listInstruments);
         boxInstruments.setValue("Piano");
 
+        //Définit les éléments de style des curseurs, de l'arrière-plan et de la ChoiceBox
         boxInstruments.setStyle("-fx-background-color: #B6E2D3");
         fenetreInstruments.setStyle("-fx-background-color: #B6E2D3;");
         tempo.setStyle("-fx-control-inner-background: #FAE8E0;");
@@ -64,7 +68,10 @@ public class EcouteurInstruments implements Observateur{
      */
     @FXML
     public void setHauteur(){
+        //Modifie l'octave des notes qui vont être jouées en fonction du bouton qui est sélectionné
         arezzo.setHauteur(((RadioButton) groupHauteurs.getSelectedToggle()).getId());
+
+        //Notifie les observateurs
         arezzo.notifierObservateurs();
     }
 
@@ -73,7 +80,10 @@ public class EcouteurInstruments implements Observateur{
      */
     @FXML
     public void setDuree(){
+        //Modifie la durée des notes qui vont être jouées en fonction du bouton qui est sélectionné
         arezzo.setDuree(((RadioButton) groupDuree.getSelectedToggle()).getId());
+
+        //Notifie les observateurs
         arezzo.notifierObservateurs();
     }
 
@@ -82,7 +92,10 @@ public class EcouteurInstruments implements Observateur{
      */
     @FXML
     public void setTempoSlider(){
+        //Modifie le tempo en fonction de la valeur indiquée sur le curseur
         arezzo.setTempo(tempo.getValue());
+
+        //Notifie les observateurs
         arezzo.notifierObservateurs();
     }
 
@@ -91,7 +104,10 @@ public class EcouteurInstruments implements Observateur{
      */
     @FXML
     public void setVolume() {
+        //Modifie le volume en fonction de la valeur indiquée sur le curseur
         par.setVolume(volume.getValue());
+
+        //Notifie les observateurs
         arezzo.notifierObservateurs();
     }
 
@@ -99,11 +115,18 @@ public class EcouteurInstruments implements Observateur{
      * Remet tous les boutons et curseurs à leur valeur par défaut.
      */
     public void reInitialize(){
+        //Remet les boutons durée et octave sur croche et medium par défaut
         croche.setSelected(true);
         medium.setSelected(true);
+
+        //Remet la ChoiceBox sur l'instrument Piano par défaut
         boxInstruments.setValue("Piano");
+
+        //Remet le curseur volume et tempo à 80 et 180 par défaut
         volume.setValue(80);
         tempo.setValue(180);
+
+        //Permet d'éviter que cette fonction soit appelé en boucle dû à la fonction réagir ci-dessous
         arezzo.setNouveauProjet(false);
     }
 
@@ -112,7 +135,7 @@ public class EcouteurInstruments implements Observateur{
         //Permet d'actualiser l'instrument choisit actuellement
         par.setInstrument(boxInstruments.getValue());
 
-        //Actualise la valeur du tempo sur le slider (quand on ouvre un fichier par exemple)
+        //Actualise la valeur du tempo sur le curseur (quand on ouvre un fichier par exemple)
         tempo.setValue(arezzo.getTempo());
 
         //Si on fait un nouveau projet, on remet les paramètres par défaut

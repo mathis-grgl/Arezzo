@@ -25,9 +25,11 @@ public class EcouteurPiano implements Observateur {
      * @param arezzo Le model Arezzo
      */
     public EcouteurPiano(Arezzo arezzo) {
+        //Initialise le model et ajoute l'écouteur en tant qu'Observateur
         this.arezzo = arezzo;
         this.arezzo.ajouterObservateur(this);
 
+        //Initialise la partition
         par = this.arezzo.getPartition();
     }
 
@@ -36,14 +38,20 @@ public class EcouteurPiano implements Observateur {
      */
     @FXML
     public void initialize(){
+        //Initialise les listes des rectangles touches
         listToucheClassique = List.of(Do,Re,Mi,Fa,Sol,La,Si);
         listToucheDiese = List.of(DoDiese,ReDiese,FaDiese,SolDiese,LaDiese);
 
+        //Modifie la couleur des touches classiques
         for(Rectangle touche : listToucheClassique)
             touche.setStyle("-fx-fill: #FAE8E0");
 
+        //Modifie la couleur des touches dièses
         for(Rectangle touche : listToucheDiese)
             touche.setStyle("-fx-fill: #D8A7B1");
+
+        //Modifie la couleur du bouton silence en rose chaud
+        chut.setStyle("-fx-base: #EF7C8E");
     }
 
     /**
@@ -52,12 +60,19 @@ public class EcouteurPiano implements Observateur {
      */
     @FXML
     public void jouerNotes(MouseEvent event){
+        //Permet de récupérer la touche cliquée dans un String
         String note = event.getPickResult().getIntersectedNode().getId();
+
+        //On convertit la note dans sa version ABC
         String noteABC = arezzo.conversionNotesVersABC(note);
+
+        //Puis on termine par ajouter la durée et l'octave à la note (en plus de l'ajouter à la mélodie via la fonction getNotationHauteurDuree)
         String finalNote = arezzo.getNotationHauteurDuree(noteABC);
 
+        //On joue la note
         par.play(finalNote);
 
+        //Notifie les observateurs
         arezzo.notifierObservateurs();
     }
 
@@ -66,6 +81,7 @@ public class EcouteurPiano implements Observateur {
      */
     @FXML
     public void jouerSilence(){
+        //On ajoute à la mélodie un silence avec la durée de celui-ci
         arezzo.getNotationHauteurDuree("z");
         arezzo.notifierObservateurs();
     }

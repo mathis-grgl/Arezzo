@@ -36,9 +36,11 @@ public class EcouteurMenu implements Observateur{
      * @param arezzo Le model Arezzo
      */
     public EcouteurMenu(Arezzo arezzo){
+        //Initialise le model et ajoute l'écouteur en tant qu'Observateur
         this.arezzo = arezzo;
         this.arezzo.ajouterObservateur(this);
 
+        //Charge la police d'écriture BEECH
         Font.loadFont(getClass().getResource("/font/BEECH.ttf").toExternalForm(), 50);
     }
 
@@ -47,8 +49,11 @@ public class EcouteurMenu implements Observateur{
      */
     @FXML
     public void initialize(){
+        //Modifie la couleur du Menu et de l'arrière-plan en vert (avec une bordure vert-foncé pour le menu)
         fenetreMenu.setStyle("-fx-background-color: #B6E2D3;");
         affichageMenu.setStyle("-fx-background-color: #B6E2D3; -fx-border-color: #8ce2d3");
+
+        //Modifie la police d'écriture et la couleur du titre
         titre.setStyle("-fx-font-family: BEECH;-fx-font-size: 30px;-fx-text-fill: #D8A7B1");
     }
 
@@ -57,9 +62,11 @@ public class EcouteurMenu implements Observateur{
      */
     @FXML
     public void nouveauFichier(){
+        //Restaure par défaut les valeurs de du model, de l'affichage du titre et de tout le reste géré par les autres écouteurs
         arezzo.resetAll();
         titre.setText(arezzo.getTitre());
 
+        //Notifie les observateurs
         arezzo.notifierObservateurs();
     }
 
@@ -82,7 +89,7 @@ public class EcouteurMenu implements Observateur{
             Pattern pattern = Pattern.compile("\"titre\":\".+\",\"m",Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(contenu);
 
-            //Si on a trouvé le titre on le met dans un String et on set le titre
+            //Si on a trouvé le titre on le met dans un String et on set le titre dans le model et sur l'affichage
             if(matcher.find()) {
                 String titreADonner = matcher.group().substring(9, matcher.group().length() - 4);
                 arezzo.setTitre(titreADonner);
@@ -94,7 +101,7 @@ public class EcouteurMenu implements Observateur{
             pattern = Pattern.compile("melodie\":\".+\",",Pattern.CASE_INSENSITIVE);
             matcher = pattern.matcher(contenu);
 
-            //Si on a trouvé la mélodie on la met dans un String et on set la Mélodie
+            //Si on a trouvé la mélodie on la met dans un String et on set la mélodie et on convertit la mélodie en liste de notes dans le model
             if(matcher.find()) {
                 String melodie = matcher.group().substring(10, matcher.group().length() - 2);
                 arezzo.setMelodie(melodie);
@@ -112,7 +119,9 @@ public class EcouteurMenu implements Observateur{
                 arezzo.setTempo(Double.valueOf(tempo));
             }
 
+            //Notifie les observateurs
             arezzo.notifierObservateurs();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -123,7 +132,6 @@ public class EcouteurMenu implements Observateur{
      */
     @FXML
     public void enregistrerSous() {
-
         //Fenêtre permettant d'enregistrer un fichier sous le format .json
         Popup pop = new Popup();
         FileChooser fileChooser = new FileChooser();
@@ -134,7 +142,7 @@ public class EcouteurMenu implements Observateur{
         arezzo.setTitre(file.getName().replaceAll("[.]json",""));
         titre.setText(arezzo.getTitre());
 
-        //Vérifie que le contenu de la mélodie en String correspond à l'ArrayList mélodie
+        //On convertit la liste des notes en la mélodie dans le model pour vérifier que le futur contenu soit correct.
         arezzo.convertirListEnMelodie();
 
         //Convertit le titre, la mélodie et le tempo en un string pour définir le contenu du fichier
@@ -142,14 +150,21 @@ public class EcouteurMenu implements Observateur{
 
         //Enregistre le contenu dans le fichier
         try {
+            //Déclaration et initialisation de l'écriveur du fichier
             PrintWriter writer;
             writer = new PrintWriter(file);
+
+            //Permet d'écrire dans le fichier le contenu
             writer.println(contenu);
+
+            //Ferme l'écriveur du fichier
             writer.close();
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
+        //Notifie les observateurs
         arezzo.notifierObservateurs();
     }
 
@@ -158,7 +173,10 @@ public class EcouteurMenu implements Observateur{
      */
     @FXML
     public void quitterFenetre(){
+        //Ferme la fenêtre d'affichage
         Platform.exit();
+
+        //Ferme la partition
         arezzo.fermerPartition();
     }
 
@@ -167,17 +185,26 @@ public class EcouteurMenu implements Observateur{
      */
     @FXML
     public void renommer() {
-
+        //Initialise une fenêtre de dialogue
         TextInputDialog dialogue = new TextInputDialog();
+
+        //Définit le titre de la fenêtre de dialogue
         dialogue.setTitle("Modifier le nom");
+
+        //Définit le contenu de la fenêtre de dialogue
         dialogue.setHeaderText(null);
         dialogue.setContentText("Nouveau nom pour " + arezzo.getTitre());
 
+        //Ouvre la fenêtre de dialogue et prend ce qui est entré pour modifier le titre
         Optional<String> out = dialogue.showAndWait();
         out.ifPresent(nom -> {
+
+            //Modifie le titre dans le model puis dans l'affichage
             arezzo.setTitre(nom);
             titre.setText(arezzo.getTitre());
         });
+
+        //Notifie les observateurs
         arezzo.notifierObservateurs();
     }
 
@@ -186,19 +213,34 @@ public class EcouteurMenu implements Observateur{
      */
     @FXML
     public void transposerNotes(){
-
+        //Initialise une fenêtre de dialogue
         TextInputDialog dialogue = new TextInputDialog();
+
+        //Définit le titre de la fenêtre de dialogue
         dialogue.setTitle("Transposer les notes");
+
+        //Définit le contenu de la fenêtre de dialogue
         dialogue.setHeaderText(null);
         dialogue.setContentText("De combien voulez vous transposer (en 1/2 tons) ?");
 
+        //Ouvre la fenêtre de dialogue et prend ce qui est entré pour transposer les notes de la mélodie
         Optional<String> out = dialogue.showAndWait();
         out.ifPresent(entierString -> {
+
+            //Convertit le String contenant l'entier en entier
             int entier = Integer.parseInt(entierString);
+
+            //Vérifie que l'entier reste petit
             if(entier>=0 && entier<=99) {
+
+                //Transpose les notes de la mélodie en fonction de l'entier entré
                 arezzo.transposerNotesArezzo(entier);
+
+                //Notifie les observateurs
                 arezzo.notifierObservateurs();
+
             } else {
+                //Sinon prévient que l'entier rentré est incorrect
                 System.err.println("L'entier rentré est incorrect");
             }});
     }

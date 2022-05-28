@@ -28,20 +28,20 @@ public class Arezzo extends SujetObserve {
      * Instancie un Arezzo.
      */
     public Arezzo(){
-        //Déclaration synthesizer
+        //Initialisation du synthesizer
         try {
             synthesizer = MidiSystem.getSynthesizer();
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
         }
 
-        //Déclaration partition
+        //Initialisation de la partition
         partition = new Partition(synthesizer);
         partition.setTitre("");
         partition.setMelodie("");
         partition.setPreferedMaxWidth(800);
 
-        //Déclaration variable Arezzo
+        //Initialisation des variables du model
         nouveauProjet = false;
         hauteur = "medium";
         duree = "croche";
@@ -73,14 +73,31 @@ public class Arezzo extends SujetObserve {
      * Remet par défaut toutes les valeurs possibles (concernant la mélodie).
      */
     public void resetAll(){
+        //Réinitialise le piano comme instrument
         partition.setInstrument("Piano");
+
+        //Réinitialise la mélodie de la partition comme vide
         partition.setMelodie("");
+
+        //Réinitialise la liste des notes comme vide
         listMelodie = new ArrayList<>();
+
+        //Réinitialise la mélodie comme vide
         melodie = "";
+
+        //Réinitialise le titre comme "Nouveau projet"
         titre = "Nouveau projet";
+
+        //Réinitialise le tempo à 180
         tempo = 180.0;
+
+        //Réinitialise le tempo de la partition à 180
         partition.setTempo(tempo.intValue());
+
+        //Réinitialise le temps à 1 (utile pour les barres de mesure dans la mélodie)
         temps = 1.0;
+
+        //Définit le projet comme nouveau (utile pour la réinitialisation de l'affichage)
         nouveauProjet = true;
 
         //Bug sur certains pc de la faculté qui crée une erreur (dû à des problèmes de son)
@@ -91,12 +108,19 @@ public class Arezzo extends SujetObserve {
      * Supprime la mélodie.
      */
     public void deleteMelodie(){
+        //Joue une mélodie vide pour stopper une éventuelle mélodie en train de jouer
         partition.play("");
+
+        //Définit la mélodie de la partition comme vide
         partition.setMelodie("");
 
+        //Supprime toutes les notes de la liste des notes
         listMelodie.clear();
+
+        //Définit la mélodie comme vide
         melodie = "";
 
+        //Définit le temps à 1 comme si c'était un nouveau projet
         temps = 1.0;
     }
 
@@ -105,13 +129,16 @@ public class Arezzo extends SujetObserve {
      * @param lettre La note
      */
     public void addMelodie(String lettre){
+        //Ajoute la note à la liste des notes
         listMelodie.add(lettre);
 
+        //Permet d'ajouter au bon moment les barres de mesure
         if(temps >= 4) {
             temps = 0.0;
             listMelodie.add("|");
         }
 
+        //Convertit la liste des notes en mélodie
         convertirListEnMelodie();
     }
 
@@ -120,15 +147,20 @@ public class Arezzo extends SujetObserve {
      */
     public void convertirListEnMelodie(){
 
+        //Déclaration et initialisation du StringBuilder qui permet de reconstruire la mélodie depuis la liste des notes
         StringBuilder concat = new StringBuilder();
 
+        //Pour toutes les notes dans la liste des notes
         for (String lettre : listMelodie) {
+            //On ajoute la note puis un espace
             concat.append(lettre);
             concat.append(" ");
         }
 
+        //On définit la mélodie depuis le StringBuilder construit précédemment
         melodie = concat.toString();
 
+        //Redéfinit la mélodie dans la partition et vérifie que tout soit synchroniser
         setMelodie(melodie);
     }
 
@@ -136,10 +168,16 @@ public class Arezzo extends SujetObserve {
      * Convertit la mélodie en liste de notes.
      */
     public void convertirMelodieEnList(){
+        //Sépare la mélodie en un tableau de notes
         String[] separation = melodie.split("\\s");
+
+        //Convertit le tableau en liste de notes
         List<String> listCopie = Arrays.asList(separation);
 
+        //Réinitialise la liste des notes
         listMelodie = new ArrayList<>();
+
+        //Ajoute la liste temporaire dans la liste des notes
         listMelodie.addAll(listCopie);
     }
 
@@ -147,9 +185,13 @@ public class Arezzo extends SujetObserve {
      * Joue la mélodie en entier.
      */
     public void jouerMelodie() {
+        //Convertit la liste des notes en une mélodie
         convertirListEnMelodie();
 
+        //Joue la mélodie en entier
         partition.play(melodie);
+
+        //Définit la mélodie dans la partition
         partition.setMelodie(melodie);
     }
 
@@ -158,17 +200,21 @@ public class Arezzo extends SujetObserve {
      * @param melodie La nouvelle mélodie
      */
     public void setMelodie(String melodie) {
+        //Définit la mélodie en fonction de la mélodie en paramètre
         this.melodie = melodie;
 
-        convertirMelodieEnList();
-
+        //Définit la mélodie de la partion avec la nouvelle mélodie
         partition.setMelodie(melodie);
+
+        //Convertit la mélodie en liste de notes
+        convertirMelodieEnList();
     }
 
     /**
      * Joue une note vide (utile pour stopper une mélodie qui est en train de jouer).
      */
     public void playMelodieVide(){
+        //Joue une note vide
         partition.play("");
     }
 
@@ -179,54 +225,76 @@ public class Arezzo extends SujetObserve {
      */
     public String getNotationHauteurDuree(String lettre) {
 
+        //Copie le String en paramètre
         String lettreABC = lettre;
 
+        //Initialise le StringBuilder qui va concaténer une note au complet (avec octave et durée)
         StringBuilder concatenation = new StringBuilder();
 
+        //Si la lettre est une note autre qu'un silence ou une barre de mesure
         if (!lettre.equals("z") && !lettre.equals("|")) {
 
             switch (hauteur) {
+
                 case "aigu":
+                    //Ajoute la note en minuscule si l'octave est aigu
                     lettreABC = lettreABC.toLowerCase();
                     concatenation.append(lettreABC);
                     break;
+
                 case "grave":
+                    //Ajoute la note en majuscule avec une virgule si l'octave est grave
                     concatenation.append(lettreABC);
                     concatenation.append(",");
                     break;
+
                 case "medium":
+                    //Ajoute la note en majuscule si l'octave est medium
                     concatenation.append(lettreABC);
+                    break;
             }
         }
 
         else {
             if(lettre.equals("z"))
+                //Ajoute un silence si la note est un silence
                 concatenation.append("z");
         }
 
         switch (duree) {
+
             case "croche":
+                //Ajoute un / si la durée est une croche
                 concatenation.append("/");
                 temps += 0.5;
                 break;
+
             case "ronde":
+                //Ajoute un 4 si la durée est une ronde
                 concatenation.append("4");
                 temps += 4;
                 break;
+
             case "blanche":
+                //Ajoute un 2 si la durée est une blanche
                 concatenation.append("2");
                 temps += 2;
                 break;
+
             case "noire":
+                //Ajoute un 1 si la durée est une noire
                 concatenation.append("1");
                 temps += 1;
                 break;
         }
 
+        //Ajoute la note complète(StringBuilder) à la mélodie
         addMelodie(concatenation.toString());
 
+        //Définit la mélodie de la partition en fonction de la mélodie qui vient d'être modifié
         partition.setMelodie(melodie);
 
+        //Retourne la note complète
         return concatenation.toString();
     }
 
@@ -237,9 +305,11 @@ public class Arezzo extends SujetObserve {
     public void transposerNotesArezzo(int nbTransposition){
 
         for (int i = 0; i < listMelodie.size(); i++) {
+            //Pour toutes les notes dans la liste des Notes, on transpose la mélodie en fontion de l'entier en paramètre
             transposerNote(nbTransposition, i);
         }
 
+        //Convertit la liste des notes en mélodie
         convertirListEnMelodie();
     }
 
@@ -250,21 +320,28 @@ public class Arezzo extends SujetObserve {
      */
     public String noteSansSurPlusMajuscule(String note){
 
+        //Copie temporaire de la note en paramètre
         String noteSP = note;
 
+        //Définit charSP comme le caractère de fin de la note (qui correspond à la durée ici)
         String charSP = String.valueOf(noteSP.charAt(noteSP.length()-1));
 
+        //Vérifie que charSP correspond bien à la durée et on le soustrait à la note si c'est bien le cas
         if(charSP.equals("/") || charSP.equals("1") || charSP.equals("2") || charSP.equals("4")) {
             noteSP = noteSP.replace(charSP,"");
         }
 
+        //Définit charSP comme le caractère de fin de la note (qui correspond à l'octave ici)
         charSP = String.valueOf(noteSP.charAt(noteSP.length()-1));
 
+        //Vérifie que charSP correspond bien à l'octave et on le soustrait à la note si c'est bien le cas
         if(charSP.equals(","))
             noteSP = noteSP.replace(charSP,"");
 
+        //Définit la note qu'elle soit forcément en majuscule (pour éviter des bugs)
         noteSP = noteSP.toUpperCase();
 
+        //Retourne la note sans octave ni durée
         return noteSP;
     }
 
@@ -275,12 +352,17 @@ public class Arezzo extends SujetObserve {
      */
     public String conversionNotesVersABC(String note) {
 
+        /* Les index des notes classiques et ABC se correspondent
+        donc cette boucle avec le if permet de trouver le bon index */
         for (int i = 0; i < listNotes.size(); i++) {
             if(listNotes.get(i).equals(note)){
+
+                //Retourne la note ABC qui correspond à la note classique
                 return listNotesABC.get(i);
             }
         }
 
+        //Retourne null si aucune correspondance
         return null;
     }
 
@@ -291,12 +373,17 @@ public class Arezzo extends SujetObserve {
      */
     public String conversionNotesVersClassique(String note) {
 
+        /* Les index des notes classiques et ABC se correspondent
+        donc cette boucle avec le if permet de trouver le bon index */
         for (int i = 0; i < listNotesABC.size(); i++) {
             if(listNotesABC.get(i).equals(note)){
+
+                //Retourne la note classique qui correspond à la note ABC
                 return listNotes.get(i);
             }
         }
 
+        //Retourne null si aucune correspondance
         return null;
     }
 
@@ -306,11 +393,17 @@ public class Arezzo extends SujetObserve {
      */
     public void supprimerNote(ObservableList<Integer> notes){
 
+        //Pour tous les index correspondant aux notes sélectionnées
         for(int index : notes){
+
+            //Vérifie que la suppression des notes laisse une note dans la mélodie
             if(listMelodie.size()>1)
+
+                //Supprime la note dans la liste des notes
                 listMelodie.remove(index);
         }
 
+        //Convertit la liste des notes en mélodie
         convertirListEnMelodie();
     }
 
@@ -322,10 +415,13 @@ public class Arezzo extends SujetObserve {
      */
     public void transposerNoteComposition(int nbTransposition, ObservableList<Integer> notes){
 
-        for (int index : notes) {
-            transposerNote(nbTransposition, index);
-        }
+        //Pour tous les index correspondant aux notes sélectionnées
+        for (int index : notes)
 
+            //Transpose les notes en fonction de l'entier en paramètre
+            transposerNote(nbTransposition, index);
+
+        //Convertit la liste des notes en mélodie
         convertirListEnMelodie();
     }
 
@@ -384,15 +480,21 @@ public class Arezzo extends SujetObserve {
      */
     public String getOctaveNote(String note) {
 
+        //Soustrait la durée de la note
         String noteSansDuree = note.substring(0,note.length()-1);
 
-        char checkLettre = note.charAt(noteSansDuree.length()-1);
+        //Déclare et initialise checkLettre comme étant l'octave
+        Character checkLettre = note.charAt(noteSansDuree.length()-1);
+
+        //Si le caractère est ",", retourne "grave"
         if(String.valueOf(checkLettre).equals(","))
             return "grave";
 
+        //Si le caractère est une lettre et est en minuscule, retourne "aigu"
         if(Character.isLowerCase(checkLettre) && Character.isLetter(checkLettre))
                 return "aigu";
 
+        //Sinon retourne "medium"
         return "medium";
     }
 
@@ -403,18 +505,23 @@ public class Arezzo extends SujetObserve {
      */
     public String getDureeNote(String note) {
 
+        //Si la note correspond au regex suivant (se terminant par un /), retourne "croche"
         if(note.matches(".{1,3}/"))
             return "croche";
 
+        //Si la note correspond au regex suivant (se terminant par un 1), retourne "noire"
         if (note.matches(".{1,3}1"))
             return "noire";
 
+        //Si la note correspond au regex suivant (se terminant par un 2), retourne "blanche"
         if (note.matches(".{1,3}2"))
             return "blanche";
 
+        //Si la note correspond au regex suivant (se terminant par un 4), retourne "ronde"
         if (note.matches(".{1,3}4"))
             return "ronde";
 
+        //Sinon retourne null
         return null;
     }
 
@@ -426,20 +533,30 @@ public class Arezzo extends SujetObserve {
      */
     public String getDureeSilence(String note) {
 
+        //Durée de la note en paramètre
         String dureeSilence = getDureeNote(note);
 
         switch (dureeSilence){
+
             case "croche":
+                //Si la durée de la note est une croche, retourne son équivalent "demiSoupir"
                 return "demiSoupir";
+
             case "noire":
+                //Si la durée de la note est une noire, retourne son équivalent "soupir"
                 return "soupir";
+
             case "blanche":
+                //Si la durée de la note est une blanche, retourne son équivalent "demiPause"
                 return "demiPause";
+
             case "ronde":
+                //Si la durée de la note est une ronde, retourne son équivalent "pause"
                 return "pause";
         }
 
-        return note;
+        //Sinon retourne la durée sans équivalent
+        return dureeSilence;
     }
 
     /**
@@ -488,6 +605,8 @@ public class Arezzo extends SujetObserve {
      */
     public void setTempo(Double tempo) {
         this.tempo = tempo;
+
+        //Définit le tempo de la partition en fonction du tempo du model
         partition.setTempo(tempo.intValue());
     }
 
