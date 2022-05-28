@@ -71,40 +71,64 @@ public class EcouteurPlayEtNotes implements Observateur {
             public void updateItem(String note, boolean estVide) {
                 super.updateItem(note, estVide);
                 if (!estVide) {
+                    //Si c'est une vraie note
                     if (!note.equals("|")) {
+                        //On la rend sélectionnable
                         setDisable(false);
 
+                        //Crée un string de la note sans octave ni durée
                         String noteToClassique = arezzo.noteSansSurPlusMajuscule(note);
+
+                        //Note ABC -> Note classique
                         noteToClassique = arezzo.conversionNotesVersClassique(noteToClassique);
 
+                        //Initialise une variable contenant l'octave de la note (aigu,medium,grave)
                         String octave = arezzo.getOctaveNote(note);
+
+                        //Mise en page du String
                         octave = octave.toUpperCase();
                         octave = "  - {" + octave + "}";
 
                         String duree;
                         if (arezzo.noteEstUnSilence(note)) {
+                            //Permet d'avoir la durée de la note (demiSoupir, etc)
                             duree = arezzo.getDureeSilence(note);
+
+                            //Définit le texte avec la note seulement
                             setText(noteToClassique);
                         } else {
+                            //Permet d'avoir la durée de la note (croche, etc)
                             duree = arezzo.getDureeNote(note);
+
+                            //Définit le texte avec la note + l'octave
                             setText(noteToClassique + octave);
                         }
 
+                        //Iinitialisation de l'image durée avec l'url de l'image
                         ImageView imageNote = new ImageView();
                         imageNote.setImage(new Image("images/" + duree + ".png"));
+
+                        //Définit le ratio et la taille de l'image
                         imageNote.setPreserveRatio(true);
                         imageNote.setFitWidth(40);
                         imageNote.setFitHeight(40);
 
+                        //On affiche l'image dans la composition de la liste des notes
                         setGraphic(imageNote);
 
                     } else {
+                        //Si c'est une barre de mesure on désactive la sélection
                         setDisable(true);
+
+                        //On définit le texte de la cellule avec "Barre de mesure"
                         setText("Barre de mesure");
+
+                        //On définit pas d'image pour une barre de mesure
                         setGraphic(null);
                     }
 
                 } else {
+                    //Si la cellule ne contient rien on affiche rien
                     setText("");
                     setGraphic(null);
                 }

@@ -8,10 +8,8 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import model.Arezzo;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -41,7 +39,7 @@ public class EcouteurMenu implements Observateur{
         this.arezzo.ajouterObservateur(this);
 
         //Charge la police d'écriture BEECH
-        Font.loadFont(getClass().getResource("/font/BEECH.ttf").toExternalForm(), 50);
+        Font.loadFont(String.valueOf(getClass().getResource("/font/BEECH.ttf")), -1);
     }
 
     /**
@@ -231,7 +229,7 @@ public class EcouteurMenu implements Observateur{
             int entier = Integer.parseInt(entierString);
 
             //Vérifie que l'entier reste petit
-            if(entier>=0 && entier<=99) {
+            if(entier>=-100 && entier<=99) {
 
                 //Transpose les notes de la mélodie en fonction de l'entier entré
                 arezzo.transposerNotesArezzo(entier);
