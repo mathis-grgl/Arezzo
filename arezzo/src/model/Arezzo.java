@@ -139,7 +139,7 @@ public class Arezzo extends SujetObserve {
         listMelodie.add(lettre);
 
         //Permet d'ajouter au bon moment les barres de mesure
-        if(temps >= 4) {
+        if((temps % 4)==0) {
             temps = 0.0;
             listMelodie.add("|");
         }
