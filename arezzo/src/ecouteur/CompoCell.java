@@ -12,6 +12,9 @@ import model.Arezzo;
 
 import java.io.IOException;
 
+/**
+ * Représente la composition d'une cellule de la listView qui gère la liste des compositions.
+ */
 public class CompoCell extends ListCell<String> {
     private Arezzo arezzo;
     @FXML
@@ -21,13 +24,19 @@ public class CompoCell extends ListCell<String> {
     @FXML
     private HBox hBoxCell;
 
+    /**
+     * Instancie un CompoCell.
+     * @param arezzo le model
+     */
     public CompoCell(Arezzo arezzo){
         this.arezzo = arezzo;
 
+        //Initialise et déclare le fxmlloader et son controller
         FXMLLoader cell = new FXMLLoader();
         cell.setLocation(getClass().getResource("/CompoCell.fxml"));
         cell.setControllerFactory(iC-> this);
 
+        //Charge le fxml en question
         try {
             cell.load();
         } catch (IOException e) {
@@ -82,6 +91,8 @@ public class CompoCell extends ListCell<String> {
                 //On définit pas d'image pour une barre de mesure
                 dureeImageCell.setImage(null);
             }
+
+            //Met la hbox crée en fxml en tant qu'image
             setGraphic(hBoxCell);
         }
     }

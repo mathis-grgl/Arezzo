@@ -88,7 +88,7 @@ public class EcouteurPiano implements Observateur {
 
     @Override
     public void reagir() {
-        arezzo.//Applique les couleurs correspondantes aux notes
-applyCouleurListe();
+        //Applique les couleurs correspondantes aux notes
+        arezzo.applyCouleurListe();
     }
 }

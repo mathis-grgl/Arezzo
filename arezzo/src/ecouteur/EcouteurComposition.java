@@ -6,11 +6,19 @@ import model.Arezzo;
 
 import java.util.Optional;
 
+
+/**
+ * Représente l'écouteur lié à la la liste de la composition des notes (listView)
+ */
 public class EcouteurComposition implements Observateur{
     @FXML
     private ListView<String> listNotes;
     private Arezzo arezzo;
 
+    /**
+     * Instancie un nouveau EcouteurComposition.
+     * @param arezzo le model
+     */
     public EcouteurComposition(Arezzo arezzo){
         this.arezzo = arezzo;
         this.arezzo.ajouterObservateur(this);
@@ -118,6 +126,7 @@ public class EcouteurComposition implements Observateur{
 
     @Override
     public void reagir() {
+        //Supprime les notes de la listView et les rajoute un par un
         listNotes.getItems().clear();
         for(String note : arezzo) listNotes.getItems().add(note);
     }
