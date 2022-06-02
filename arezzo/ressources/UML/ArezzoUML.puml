@@ -26,7 +26,7 @@ package arezzo.model{
         String conversionNotesVersClassique(String note)
         String getOctaveNote(String note)
         String getDureeNote(String note)
-        String getDureeSilence(String note)
+        String getDureeNote(String note)
         Boolean noteEstUnSilence(String note)
     }
 

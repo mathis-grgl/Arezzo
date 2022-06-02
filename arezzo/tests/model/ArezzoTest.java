@@ -217,20 +217,20 @@ class ArezzoTest {
         arezzo.addMelodie("D1");
         arezzo.addMelodie("A1");
         arezzo.addMelodie("A4");
-        assertEquals("C1",arezzo.getNoteMelodie(0),"Bug dans supprimerNote");
-        assertEquals("D1",arezzo.getNoteMelodie(2),"Bug dans supprimerNote");
-        assertEquals("C/",arezzo.getNoteMelodie(6),"Bug dans supprimerNote");
-        assertEquals("A1",arezzo.getNoteMelodie(8),"Bug dans supprimerNote");
-        assertEquals("D1",arezzo.getNoteMelodie(7),"Bug dans supprimerNote");
-        assertEquals("C1",arezzo.getNoteMelodie(5),"Bug dans supprimerNote");
-        arezzo.supprimerNote(FXCollections.observableArrayList(List.of(0,2,6,8,7,5)));
-        assertEquals("C/",arezzo.getNoteMelodie(0),"Bug dans supprimerNote");
-        assertEquals("A4",arezzo.getNoteMelodie(2),"Bug dans supprimerNote");
-        assertEquals("D1",arezzo.getNoteMelodie(6),"Bug dans supprimerNote");
-        assertEquals("A4",arezzo.getNoteMelodie(8),"Bug dans supprimerNote");
-        assertEquals("A1",arezzo.getNoteMelodie(7),"Bug dans supprimerNote");
-        assertEquals("A4",arezzo.getNoteMelodie(5),"Bug dans supprimerNote");
-        assertEquals(9,arezzo.getListMelodie().size(),"Bug dans supprimerNote");
+        assertEquals("C1",arezzo.getNoteMelodie(0),"Bug dans ListeNotesSelectionneesToSilence");
+        assertEquals("D1",arezzo.getNoteMelodie(2),"Bug dans ListeNotesSelectionneesToSilence");
+        assertEquals("C/",arezzo.getNoteMelodie(6),"Bug dans ListeNotesSelectionneesToSilence");
+        assertEquals("A1",arezzo.getNoteMelodie(8),"Bug dans ListeNotesSelectionneesToSilence");
+        assertEquals("D1",arezzo.getNoteMelodie(7),"Bug dans ListeNotesSelectionneesToSilence");
+        assertEquals("C1",arezzo.getNoteMelodie(5),"Bug dans ListeNotesSelectionneesToSilence");
+        arezzo.ListeNotesSelectionneesToSilence(FXCollections.observableArrayList(List.of(0,2,6,8,7,5)));
+        assertEquals("C/",arezzo.getNoteMelodie(0),"Bug dans ListeNotesSelectionneesToSilence");
+        assertEquals("A4",arezzo.getNoteMelodie(2),"Bug dans ListeNotesSelectionneesToSilence");
+        assertEquals("D1",arezzo.getNoteMelodie(6),"Bug dans ListeNotesSelectionneesToSilence");
+        assertEquals("A4",arezzo.getNoteMelodie(8),"Bug dans ListeNotesSelectionneesToSilence");
+        assertEquals("A1",arezzo.getNoteMelodie(7),"Bug dans ListeNotesSelectionneesToSilence");
+        assertEquals("C/",arezzo.getNoteMelodie(5),"Bug dans ListeNotesSelectionneesToSilence");
+        assertEquals(9,arezzo.getListMelodie().size(),"Bug dans ListeNotesSelectionneesToSilence");
     }
 
     @Test
@@ -300,24 +300,9 @@ class ArezzoTest {
         assertEquals("noire",arezzo.getDureeNote("^c1"),"Bug dans getDureeNote");
         assertEquals("blanche",arezzo.getDureeNote("D2"),"Bug dans getDureeNote");
         assertEquals("ronde",arezzo.getDureeNote("D4"),"Bug dans getDureeNote");
-    }
-
-    @Test
-    void getDureeSilence() {
-        assertEquals("demiSoupir",arezzo.getDureeSilence("C,/"),"Bug dans getDureeSilence");
-        assertEquals("soupir",arezzo.getDureeSilence("^c1"),"Bug dans getDureeSilence");
-        assertEquals("demiPause",arezzo.getDureeSilence("D2"),"Bug dans getDureeSilence");
-        assertEquals("pause",arezzo.getDureeSilence("D4"),"Bug dans getDureeSilence");
-    }
-
-    @Test
-    void nePeutPlusEtreSupprimer() {
-        assertFalse(arezzo.nePeutPlusEtreSupprimer(),"Bug dans nePeutPlusEtreSupprimer");
-        arezzo.addMelodie("C");
-        assertTrue(arezzo.nePeutPlusEtreSupprimer(),"Bug dans nePeutPlusEtreSupprimer");
-        arezzo.addMelodie("C");
-        assertFalse(arezzo.nePeutPlusEtreSupprimer(),"Bug dans nePeutPlusEtreSupprimer");
-        arezzo.supprimerNote(FXCollections.observableArrayList(List.of(0)));
-        assertTrue(arezzo.nePeutPlusEtreSupprimer(),"Bug dans nePeutPlusEtreSupprimer");
+        assertEquals("demiSoupir",arezzo.getDureeNote("Z/"),"Bug dans getDureeNote");
+        assertEquals("soupir",arezzo.getDureeNote("Z1"),"Bug dans getDureeNote");
+        assertEquals("demiPause",arezzo.getDureeNote("Z2"),"Bug dans getDureeNote");
+        assertEquals("pause",arezzo.getDureeNote("Z4"),"Bug dans getDureeNote");
     }
 }

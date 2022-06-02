@@ -1,5 +1,6 @@
 package model;
 
+import ecouteur.CompoCell;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -10,19 +11,20 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Synthesizer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Le modèle Arezzo qui contient toutes les fonctions concernant la gestion des données (partition, notes, mélodie).
  */
-public class Arezzo extends SujetObserve {
+public class Arezzo extends SujetObserve implements Iterable<String> {
     private Boolean nouveauProjet;
     private Synthesizer synthesizer;
     private Partition partition;
     private String melodie, hauteur,duree,titre;
     private ArrayList<String> listMelodie;
     private Double temps,tempo;
-    private List<String> listNotesABC, listNotes, listNotesWOctaves, listSilence;
+    private List<String> listNotesABC, listNotes, listNotesWOctaves, listSilence,listCouleurs;
 
     /**
      * Instancie un Arezzo.
@@ -62,11 +64,15 @@ public class Arezzo extends SujetObserve {
         //Initialisation de la liste des silences
         listSilence = List.of("z/","z1","z2","z4");
 
+        //Initialisation de la liste des couleurs des notes
+        listCouleurs = new ArrayList<>();
+        for (int i = 0; i < 1024; i++) listCouleurs.add("Black");
+
         //Initialisation de la liste contenant la mélodie
         listMelodie = new ArrayList<>();
 
         //Bug sur certains pc de la faculté qui empêche le lancement (dû à des problèmes de son)
-        //partition.setVolume(80);
+        partition.setVolume(80);
     }
 
     /**
@@ -107,7 +113,7 @@ public class Arezzo extends SujetObserve {
         nouveauProjet = true;
 
         //Bug sur certains pc de la faculté qui crée une erreur (dû à des problèmes de son)
-        //partition.setVolume(80);
+        partition.setVolume(80);
     }
 
     /**
@@ -128,6 +134,9 @@ public class Arezzo extends SujetObserve {
 
         //Définit le temps à 1 comme si c'était un nouveau projet
         temps = 1.0;
+
+        //Supprime toutes les couleurs de la liste des couleurs
+        listCouleurs.clear();
     }
 
     /**
@@ -146,6 +155,9 @@ public class Arezzo extends SujetObserve {
 
         //Convertit la liste des notes en mélodie
         convertirListEnMelodie();
+
+        
+        applyCouleurListe();
     }
 
     /**
@@ -185,6 +197,9 @@ public class Arezzo extends SujetObserve {
 
         //Ajoute la liste temporaire dans la liste des notes
         listMelodie.addAll(listCopie);
+
+
+        applyCouleurListe();
     }
 
     /**
@@ -214,6 +229,9 @@ public class Arezzo extends SujetObserve {
 
         //Convertit la mélodie en liste de notes
         convertirMelodieEnList();
+
+
+        applyCouleurListe();
     }
 
     /**
@@ -222,6 +240,8 @@ public class Arezzo extends SujetObserve {
     public void playMelodieVide(){
         //Joue une note vide
         partition.play("");
+
+        applyCouleurListe();
     }
 
     /**
@@ -397,20 +417,30 @@ public class Arezzo extends SujetObserve {
      * Supprime les notes sélectionnées dans la liste de notes en fonction des index en paramètres.
      * @param notes Les index des notes sélectionnées
      */
-    public void supprimerNote(ObservableList<Integer> notes){
+    public void ListeNotesSelectionneesToSilence(ObservableList<Integer> notes){
 
         //Pour tous les index correspondant aux notes sélectionnées
-        for(int index : notes){
+        for (int index : notes) {
 
             //Vérifie que la suppression des notes laisse une note dans la mélodie
             if(listMelodie.size()>1)
 
                 //Supprime la note dans la liste des notes
-                listMelodie.remove(index);
+                listMelodie.set(index,"z"+ getDureeABC(listMelodie.get(index)));
+                listCouleurs.set(index,"black");
         }
 
         //Convertit la liste des notes en mélodie
         convertirListEnMelodie();
+
+    }
+
+    private void SupprimerSilenceFin(){
+        /*Boolean continuer = true;
+        int index =
+        while(continuer){
+
+        }*/
     }
 
     /**
@@ -468,6 +498,7 @@ public class Arezzo extends SujetObserve {
                 listMelodie.set(index, listSilence.get(indexTransposition));
             }
         }
+        applyCouleurListe();
     }
 
     /**
@@ -505,66 +536,56 @@ public class Arezzo extends SujetObserve {
     }
 
     /**
-     * Retourne la durée d'une note.
+     * Retourne la durée d'une note ou d'un silence.
      * @param note La note
      * @return La durée de la note
      */
     public String getDureeNote(String note) {
 
-        //Si la note correspond au regex suivant (se terminant par un /), retourne "croche"
-        if(note.matches(".{1,3}/"))
-            return "croche";
+        if(noteEstUnSilence(note)) {
 
-        //Si la note correspond au regex suivant (se terminant par un 1), retourne "noire"
-        if (note.matches(".{1,3}1"))
-            return "noire";
+            //Si la note correspond au regex suivant (se terminant par un /), retourne "croche"
+            if (note.matches(".{1,3}/"))
+                return "demiSoupir";
 
-        //Si la note correspond au regex suivant (se terminant par un 2), retourne "blanche"
-        if (note.matches(".{1,3}2"))
-            return "blanche";
+            //Si la note correspond au regex suivant (se terminant par un 1), retourne "noire"
+            if (note.matches(".{1,3}1"))
+                return "soupir";
 
-        //Si la note correspond au regex suivant (se terminant par un 4), retourne "ronde"
-        if (note.matches(".{1,3}4"))
-            return "ronde";
+            //Si la note correspond au regex suivant (se terminant par un 2), retourne "blanche"
+            if (note.matches(".{1,3}2"))
+                return "demiPause";
+
+            //Si la note correspond au regex suivant (se terminant par un 4), retourne "ronde"
+            if (note.matches(".{1,3}4"))
+                return "pause";
+
+        } else {
+
+            //Si la note correspond au regex suivant (se terminant par un /), retourne "croche"
+            if (note.matches(".{1,3}/"))
+                return "croche";
+
+            //Si la note correspond au regex suivant (se terminant par un 1), retourne "noire"
+            if (note.matches(".{1,3}1"))
+                return "noire";
+
+            //Si la note correspond au regex suivant (se terminant par un 2), retourne "blanche"
+            if (note.matches(".{1,3}2"))
+                return "blanche";
+
+            //Si la note correspond au regex suivant (se terminant par un 4), retourne "ronde"
+            if (note.matches(".{1,3}4"))
+                return "ronde";
+        }
 
         //Sinon retourne null
         return null;
     }
 
-    /**
-     * Retourne la durée d'un silence.
-     * @param note Le silence
-     * @return La durée du silence
-     * @see #getDureeNote(String) 
-     */
-    public String getDureeSilence(String note) {
-
-        //Durée de la note en paramètre
-        String dureeSilence = getDureeNote(note);
-
-        switch (dureeSilence){
-
-            case "croche":
-                //Si la durée de la note est une croche, retourne son équivalent "demiSoupir"
-                return "demiSoupir";
-
-            case "noire":
-                //Si la durée de la note est une noire, retourne son équivalent "soupir"
-                return "soupir";
-
-            case "blanche":
-                //Si la durée de la note est une blanche, retourne son équivalent "demiPause"
-                return "demiPause";
-
-            case "ronde":
-                //Si la durée de la note est une ronde, retourne son équivalent "pause"
-                return "pause";
-        }
-
-        //Sinon retourne la durée sans équivalent
-        return dureeSilence;
+    public String getDureeABC(String note){
+        return String.valueOf(note.charAt(note.length()-1));
     }
-
     /**
      * Retourne la mélodie.
      * @return La mélodie en chaîne de caractère
@@ -681,20 +702,26 @@ public class Arezzo extends SujetObserve {
     }
 
     /**
-     * Considère qu'une mélodie ne peut pas descendre en dessous d'une note.
-     * @return Vrai s'il reste une note dans la liste de notes.
-     */
-    public boolean nePeutPlusEtreSupprimer(){
-        return listMelodie.size() == 1;
-    }
-
-    /**
      * Change la couleur d'une note dans la liste des notes en fonction de l'index en paramètre et d'une chaîne de caractères correspondant à la couleur souhaitée (en anglais).
      * @param index L'index de la note
      * @param color La couleur souhaitée
      */
     public void changerCouleurNote(int index, String color){
         partition.setCouleurs(Color.valueOf(color),index);
+
+        //Modifie la couleur dans la liste de couleurs des notes
+        listCouleurs.set(index,color);
+    }
+
+    /**
+     * Applique la couleur de chaque note dans toute la mélodie.
+     */
+    public void applyCouleurListe(){
+        if(!listCouleurs.isEmpty()) {
+            for (int i = 0; i < listMelodie.size() - 1; i++) {
+                partition.setCouleurs(Color.valueOf(listCouleurs.get(i)),i);
+            }
+        }
     }
 
     /**
@@ -703,5 +730,10 @@ public class Arezzo extends SujetObserve {
      */
     public boolean estVide(){
         return listMelodie.isEmpty();
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return listMelodie.iterator();
     }
 }

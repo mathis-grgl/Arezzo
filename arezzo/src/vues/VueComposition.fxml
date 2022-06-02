@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ecouteur.EcouteurComposition">
+   <children>
+      <ListView fx:id="listNotes" editable="true" prefHeight="500.0" prefWidth="300.0">
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#supprimerNotes" text="Supprimer la sélection">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="DELETE" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#transposerPlusUn" text="Augmenter d'un demi-ton">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="ADD" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#transposerMoinsUn" text="Descendre d'un demi-ton">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="SUBTRACT" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#changerCouleur" text="Changer la couleur" />
+              </items>
+            </ContextMenu>
+         </contextMenu></ListView>
+   </children>
+</AnchorPane>
