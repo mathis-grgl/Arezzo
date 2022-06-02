@@ -1,6 +1,5 @@
 package model;
 
-import ecouteur.CompoCell;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -18,7 +17,7 @@ import java.util.List;
  * Le modèle Arezzo qui contient toutes les fonctions concernant la gestion des données (partition, notes, mélodie).
  */
 public class Arezzo extends SujetObserve implements Iterable<String> {
-    private Boolean nouveauProjet;
+    private Boolean nouveauProjet, fermerFenetre;
     private Synthesizer synthesizer;
     private Partition partition;
     private String melodie, hauteur,duree,titre;
@@ -45,6 +44,7 @@ public class Arezzo extends SujetObserve implements Iterable<String> {
 
         //Initialisation des variables du model
         nouveauProjet = false;
+        fermerFenetre = false;
         hauteur = "medium";
         duree = "croche";
         melodie = "";
@@ -103,6 +103,9 @@ public class Arezzo extends SujetObserve implements Iterable<String> {
         //Réinitialise l'octave à medium
         hauteur = "medium";
 
+        //Réinitialise la liste des couleurs
+        for (int i = 0; i < 1024; i++) listCouleurs.add("Black");
+
         //Réinitialise le tempo de la partition à 180
         partition.setTempo(tempo.intValue());
 
@@ -136,7 +139,7 @@ public class Arezzo extends SujetObserve implements Iterable<String> {
         temps = 1.0;
 
         //Supprime toutes les couleurs de la liste des couleurs
-        listCouleurs.clear();
+        for (int i = 0; i < 1024; i++) listCouleurs.add("Black");
     }
 
     /**
@@ -157,6 +160,7 @@ public class Arezzo extends SujetObserve implements Iterable<String> {
         convertirListEnMelodie();
 
         
+        //Applique les couleurs correspondantes aux notes
         applyCouleurListe();
     }
 
@@ -199,6 +203,7 @@ public class Arezzo extends SujetObserve implements Iterable<String> {
         listMelodie.addAll(listCopie);
 
 
+        //Applique les couleurs correspondantes aux notes
         applyCouleurListe();
     }
 
@@ -231,6 +236,7 @@ public class Arezzo extends SujetObserve implements Iterable<String> {
         convertirMelodieEnList();
 
 
+        //Applique les couleurs correspondantes aux notes
         applyCouleurListe();
     }
 
@@ -241,6 +247,7 @@ public class Arezzo extends SujetObserve implements Iterable<String> {
         //Joue une note vide
         partition.play("");
 
+        //Applique les couleurs correspondantes aux notes
         applyCouleurListe();
     }
 
@@ -430,17 +437,45 @@ public class Arezzo extends SujetObserve implements Iterable<String> {
                 listCouleurs.set(index,"black");
         }
 
+        //Supprime les silences d'affilés à la fin de la mélodie
+        SupprimerSilenceFin();
+
         //Convertit la liste des notes en mélodie
         convertirListEnMelodie();
 
+        //Applique les couleurs correspondantes aux notes
+        applyCouleurListe();
     }
 
+    /**
+     * Supprime la note si c'est un silence à la fin de la mélodie
+     */
     private void SupprimerSilenceFin(){
-        /*Boolean continuer = true;
-        int index =
+        //Initialisation des variables
+        Boolean continuer = true;
+        int index = listMelodie.size()-1;
+
+        //Tant qu'on est sur une suite de silence depuis la fin de la mélodie on supprime la note
         while(continuer){
 
-        }*/
+            //Vérifie que la note est un silence
+            if(noteEstUnSilence(listMelodie.get(index))){
+
+                //Supprime la note de la mélodie
+                listMelodie.remove(index);
+
+                //Décrémentation de l'index
+                index--;
+
+            } else {
+
+                //Sinon on arrête la boucle
+                continuer = false;
+            }
+        }
+
+        //Convertit la liste des notes en mélodie
+        convertirListEnMelodie();
     }
 
     /**
@@ -498,6 +533,7 @@ public class Arezzo extends SujetObserve implements Iterable<String> {
                 listMelodie.set(index, listSilence.get(indexTransposition));
             }
         }
+        //Applique les couleurs correspondantes aux notes
         applyCouleurListe();
     }
 
@@ -544,19 +580,19 @@ public class Arezzo extends SujetObserve implements Iterable<String> {
 
         if(noteEstUnSilence(note)) {
 
-            //Si la note correspond au regex suivant (se terminant par un /), retourne "croche"
+            //Si la note correspond au regex suivant (se terminant par un /), retourne "demiSoupir"
             if (note.matches(".{1,3}/"))
                 return "demiSoupir";
 
-            //Si la note correspond au regex suivant (se terminant par un 1), retourne "noire"
+            //Si la note correspond au regex suivant (se terminant par un 1), retourne "soupir"
             if (note.matches(".{1,3}1"))
                 return "soupir";
 
-            //Si la note correspond au regex suivant (se terminant par un 2), retourne "blanche"
+            //Si la note correspond au regex suivant (se terminant par un 2), retourne "demiPause"
             if (note.matches(".{1,3}2"))
                 return "demiPause";
 
-            //Si la note correspond au regex suivant (se terminant par un 4), retourne "ronde"
+            //Si la note correspond au regex suivant (se terminant par un 4), retourne "pause"
             if (note.matches(".{1,3}4"))
                 return "pause";
 
@@ -583,6 +619,11 @@ public class Arezzo extends SujetObserve implements Iterable<String> {
         return null;
     }
 
+    /**
+     * Retourne le caractère qui concerne la durée d'une note.
+     * @param note la note qui a la durée
+     * @return
+     */
     public String getDureeABC(String note){
         return String.valueOf(note.charAt(note.length()-1));
     }
@@ -730,6 +771,22 @@ public class Arezzo extends SujetObserve implements Iterable<String> {
      */
     public boolean estVide(){
         return listMelodie.isEmpty();
+    }
+
+    /**
+     * Retourne si on doit fermer la fenêtre.
+     * @return Vrai si on doit fermer la fenêtre
+     */
+    public Boolean getFermerFenetre() {
+        return fermerFenetre;
+    }
+
+    /**
+     * Définit si on doit fermer la fenêtre
+     * @param fermerFenetre le booléen
+     */
+    public void setFermerFenetre(Boolean fermerFenetre) {
+        this.fermerFenetre = fermerFenetre;
     }
 
     @Override

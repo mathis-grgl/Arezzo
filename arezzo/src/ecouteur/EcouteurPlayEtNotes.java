@@ -105,6 +105,10 @@ public class EcouteurPlayEtNotes implements Observateur {
 
     @Override
     public void reagir() {
+        //Ferme la fenêtre si en arrière plan
         if(!list.isFocused()) list.close();
+
+        //Ferme la fenêtre quand on supprime une note
+        if(arezzo.getFermerFenetre()) list.close();
     }
 }

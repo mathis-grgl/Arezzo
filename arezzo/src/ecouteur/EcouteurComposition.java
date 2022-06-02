@@ -109,9 +109,7 @@ public class EcouteurComposition implements Observateur{
             //Supprime les notes sélectionnées dans la liste des notes du model
             arezzo.ListeNotesSelectionneesToSilence(listNotes.getSelectionModel().getSelectedIndices());
 
-            //Modifie la composition de la liste des notes en fonction du résultat de la transposition des notes
-            for (int index : listNotes.getSelectionModel().getSelectedIndices())
-                listNotes.getItems().set(index, arezzo.getNoteMelodie(index));
+            arezzo.setFermerFenetre(true);
 
             //Notifie les observateurs
             arezzo.notifierObservateurs();
